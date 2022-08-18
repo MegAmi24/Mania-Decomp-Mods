@@ -1,2 +1,5 @@
-# Auto detect text files and perform LF normalization
+# default behaviour
 * text=auto
+
+# I do not like \r\n, \n supremacy
+*.txt text eol=lf
