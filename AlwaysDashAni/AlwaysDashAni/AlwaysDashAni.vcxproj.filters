@@ -30,7 +30,7 @@
     <ClInclude Include="..\AlwaysDashAni\Objects\Player.h">
       <Filter>Source Files\Objects</Filter>
     </ClInclude>
-    <ClInclude Include="..\ModConfig.h">
+    <ClInclude Include="..\AlwaysDashAni\ModConfig.h">
       <Filter>Source Files</Filter>
     </ClInclude>
   </ItemGroup>

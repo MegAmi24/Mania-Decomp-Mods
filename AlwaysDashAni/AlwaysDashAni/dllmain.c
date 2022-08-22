@@ -1,5 +1,5 @@
 #include "../GameAPI/C/GameAPI/Game.h"
-#include "../ModConfig.h"
+#include "ModConfig.h"
 
 #include "Objects/Player.h"
 #include "Objects/Camera.h"

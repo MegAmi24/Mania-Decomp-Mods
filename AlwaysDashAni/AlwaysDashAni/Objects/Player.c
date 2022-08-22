@@ -1,5 +1,5 @@
 #include "Player.h"
-#include "../../ModConfig.h"
+#include "../ModConfig.h"
 
 ObjectPlayer *Player;
 
