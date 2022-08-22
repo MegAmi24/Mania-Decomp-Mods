@@ -1,7 +1,10 @@
 #include "../GameAPI/C/GameAPI/Game.h"
+#include "../ModConfig.h"
 
 #include "Objects/Player.h"
 #include "Objects/Camera.h"
+
+ModConfig config;
 
 #if RETRO_USE_MOD_LOADER
 DLLExport bool32 LinkModLogic(EngineInfo *info, const char *id);
@@ -9,6 +12,11 @@ DLLExport bool32 LinkModLogic(EngineInfo *info, const char *id);
 
 void InitModAPI(void)
 {
+    // Setup Config
+    config.PeeloutAnim = Mod.GetSettingsBool("", "Config:PeeloutAnim", false);
+    Mod.SetSettingsBool("Config:PeeloutAnim", config.PeeloutAnim);
+    Mod.SaveSettings();
+
     MOD_REGISTER_OBJ_OVERLOAD(Player, NULL, NULL, NULL, NULL, Player_Create, NULL, NULL, NULL, NULL);
 
     printf("Hello From Always Dash Ani Initialization!\n");
