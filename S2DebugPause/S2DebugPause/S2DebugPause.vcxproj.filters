@@ -1,0 +1,45 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <ClCompile Include="dllmain.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\GameAPI\C\GameAPI\Game.c">
+      <Filter>GameAPI</Filter>
+    </ClCompile>
+    <ClCompile Include="Objects\DebugMode.c">
+      <Filter>Source Files\Objects</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="..\GameAPI\C\GameAPI\GameVariables.h">
+      <Filter>GameAPI</Filter>
+    </ClInclude>
+    <ClInclude Include="..\GameAPI\C\GameAPI\GameObjects.h">
+      <Filter>GameAPI</Filter>
+    </ClInclude>
+    <ClInclude Include="..\GameAPI\C\GameAPI\Game.h">
+      <Filter>GameAPI</Filter>
+    </ClInclude>
+    <ClInclude Include="..\GameAPI\C\GameAPI\GameLink.h">
+      <Filter>GameAPI</Filter>
+    </ClInclude>
+    <ClInclude Include="Objects\DebugMode.h">
+      <Filter>Source Files\Objects</Filter>
+    </ClInclude>
+    <ClInclude Include="Objects\Player.h">
+      <Filter>Source Files\Objects</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <Filter Include="GameAPI">
+      <UniqueIdentifier>{e0b4caa9-3193-4d7f-a065-f4e526ed1224}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files">
+      <UniqueIdentifier>{e8c3e1cf-bebb-4057-addb-e4716c845274}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Objects">
+      <UniqueIdentifier>{b096e544-4774-4ccd-83ba-5023e2020665}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+</Project>
