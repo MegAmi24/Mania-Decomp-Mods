@@ -184,6 +184,7 @@
     <ClInclude Include="..\GameAPI\C\GameAPI\GameLink.h" />
     <ClInclude Include="..\GameAPI\C\GameAPI\GameObjects.h" />
     <ClInclude Include="..\GameAPI\C\GameAPI\GameVariables.h" />
+    <ClInclude Include="ModVersion.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

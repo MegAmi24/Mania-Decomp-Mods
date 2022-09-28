@@ -33,6 +33,9 @@
     <ClInclude Include="..\AlwaysDashAni\ModConfig.h">
       <Filter>Source Files</Filter>
     </ClInclude>
+    <ClInclude Include="ModVersion.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="GameAPI">
