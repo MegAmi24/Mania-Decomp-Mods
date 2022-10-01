@@ -234,6 +234,8 @@ FakesAssemblies/
 # Visual Studio 6 workspace options file
 *.opt
 
+make symlink.bat
+
 # LightSwitch generated files
 GeneratedArtifacts/
 _Pvt_Extensions/
