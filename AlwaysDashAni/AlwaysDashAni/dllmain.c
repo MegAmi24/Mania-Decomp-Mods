@@ -1,13 +1,13 @@
 #include "../GameAPI/C/GameAPI/Game.h"
 #include "ModVersion.h"
-#if !MODVER_100
+#if MOD_VERSION != MODVER_100
 #include "ModConfig.h"
 #endif
 
 #include "Objects/Player.h"
 #include "Objects/Camera.h"
 
-#if !MODVER_100
+#if MOD_VERSION != MODVER_100
 ModConfig config;
 #endif
 
@@ -17,7 +17,7 @@ DLLExport bool32 LinkModLogic(EngineInfo *info, const char *id);
 
 void InitModAPI(void)
 {
-#if !MODVER_100
+#if MOD_VERSION != MODVER_100
     // Setup Config
     config.PeeloutAnim = Mod.GetSettingsBool("", "Config:PeeloutAnim", false);
     Mod.SetSettingsBool("Config:PeeloutAnim", config.PeeloutAnim);

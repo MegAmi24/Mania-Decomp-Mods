@@ -168,7 +168,7 @@ typedef struct {
 #endif
 } EntityCamera;
 
-#if !MODVER_100
+#if MOD_VERSION != MODVER_100
 typedef struct {
     RSDK_OBJECT
     int32 activeScreens;
@@ -383,7 +383,7 @@ typedef struct {
 } ObjectPlayer;
 #endif
 
-#if !MODVER_100
+#if MOD_VERSION != MODVER_100
 typedef struct {
     uint16 sfxOuttahereT;
     uint16 sfxOuttahereK;
@@ -496,13 +496,13 @@ typedef struct {
 
 // Object Struct
 extern ObjectPlayer *Player;
-#if !MODVER_100
+#if MOD_VERSION != MODVER_100
 extern ModObjectPlayer *Mod_Player;
 
 void Player_StageLoad(void);
 #endif
 void (*Player_State_OuttaHere)(void);
-#if !MODVER_100
+#if MOD_VERSION != MODVER_100
 void (*Player_HandleAirMovement)(void);
 bool32 Player_State_OuttaHere_Hook(bool32 skipped);
 #endif

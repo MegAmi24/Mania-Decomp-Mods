@@ -1,12 +1,12 @@
 #include "GameAPI/Game.h"
 #include "../ModVersion.h"
 #include "Player.h"
-#if !MODVER_100
+#if MOD_VERSION != MODVER_100
 #include "../ModConfig.h"
 #endif
 
 ObjectPlayer *Player;
-#if !MODVER_100
+#if MOD_VERSION != MODVER_100
 ModObjectPlayer *Mod_Player;
 #endif
 
@@ -14,7 +14,7 @@ void Player_SetOuttaHere(void)
 {
     RSDK_THIS(Player);
 
-#if !MODVER_100
+#if MOD_VERSION != MODVER_100
     // Check for character related things
     uint16 outtaHereSfx = Player->sfxOuttahere;
     bool32 canOuttaHere = false;
@@ -53,11 +53,10 @@ void Player_SetOuttaHere(void)
 #endif
 
     // Wait for ~3 minutes to do outta here
-#if MODVER_100
+#if MOD_VERSION == MODVER_100
     if (self->outtaHereTimer >= 10620 && self->characterID == ID_SONIC) {
 #else
-    RSDKControllerState *controller = &ControllerInfo[self->controllerID];
-    if (canOuttaHere && (self->outtaHereTimer >= 10620 || controller->keyZ.press)) {
+    if (canOuttaHere && (self->outtaHereTimer >= 10620 || (SKU->platform == PLATFORM_DEV && ControllerInfo[self->controllerID].keyZ.press))) {
 #endif
         RSDK.SetSpriteAnimation(self->aniFrames, ANI_OUTTA_HERE, &self->animator, false, 0);
         self->state           = Player_State_OuttaHere;
@@ -67,7 +66,7 @@ void Player_SetOuttaHere(void)
         self->nextGroundState = StateMachine_None;
         self->velocity.x      = 0;
         self->velocity.y      = 0;
-#if MODVER_100
+#if MOD_VERSION == MODVER_100
         RSDK.PlaySfx(Player->sfxOuttahere, false, 255);
 #else
         RSDK.PlaySfx(outtaHereSfx, false, 255);
@@ -75,7 +74,7 @@ void Player_SetOuttaHere(void)
     }
 }
 
-#if !MODVER_100
+#if MOD_VERSION != MODVER_100
 bool32 Player_State_OuttaHere_Hook(bool32 skipped)
 {
     RSDK_THIS(Player);
