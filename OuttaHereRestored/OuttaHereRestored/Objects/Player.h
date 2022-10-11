@@ -2,6 +2,7 @@
 #define OBJ_PLAYER_H
 
 #include "GameAPI/Game.h"
+#include "../ModVersion.h"
 
 typedef enum {
     ANI_IDLE,
@@ -139,7 +140,37 @@ typedef enum {
     SUPERSTATE_DONE,
 } SuperStates;
 
-typedef struct { RSDK_ENTITY } EntityCamera;
+typedef struct {
+    RSDK_ENTITY
+    StateMachine(state);
+    Entity *target;
+    int32 screenID;
+    Vector2 center;
+    Vector2 targetMoveVel;
+    Vector2 lastPos;
+    Vector2 shakePos;
+    Vector2 lookPos;
+    Vector2 offset;
+    bool32 disableYOffset;
+    int32 centerY;
+    int32 adjustY;
+    int32 lerpPercent;
+    int32 lerpSpeed;
+    int32 lerpType;
+    Vector2 endLerpPos;
+    Vector2 startLerpPos;
+    Vector2 boundsOffset;
+    int32 boundsL;
+    int32 boundsR;
+    int32 boundsT;
+    int32 boundsB;
+} EntityCamera;
+
+typedef struct {
+    RSDK_OBJECT
+    int32 activeScreens;
+    uint16 aniFrames;
+} ObjectGameOver;
 
 // Object Class
 #if MANIA_USE_PLUS
@@ -348,6 +379,17 @@ typedef struct {
 } ObjectPlayer;
 #endif
 
+#if !MODVER_100
+typedef struct {
+    uint16 sfxOuttahereT;
+    uint16 sfxOuttahereK;
+#if MANIA_USE_PLUS
+    uint16 sfxOuttahereM;
+    uint16 sfxOuttahereR;
+#endif
+} ModObjectPlayer;
+#endif
+
 // Entity Class
 typedef struct {
     RSDK_ENTITY
@@ -450,8 +492,16 @@ typedef struct {
 
 // Object Struct
 extern ObjectPlayer *Player;
+#if !MODVER_100
+extern ModObjectPlayer *Mod_Player;
 
+void Player_StageLoad(void);
+#endif
 void (*Player_State_OuttaHere)(void);
+void (*Player_HandleAirMovement)(void);
+#if !MODVER_100
+bool32 Player_State_OuttaHere_Hook(bool32 skipped);
+#endif
 void Player_SetOuttaHere(void);
 
 #endif //! OBJ_PLAYER_H

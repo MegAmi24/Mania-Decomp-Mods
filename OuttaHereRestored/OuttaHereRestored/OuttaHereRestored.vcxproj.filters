@@ -42,5 +42,8 @@
     <ClInclude Include="Objects\Player.h">
       <Filter>Source Files\Objects</Filter>
     </ClInclude>
+    <ClInclude Include="ModVersion.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

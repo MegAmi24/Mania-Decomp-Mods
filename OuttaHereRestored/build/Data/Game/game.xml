@@ -1,0 +1,9 @@
+<?xml version="1.0"?>
+<game>
+    <sounds>
+        <soundfx path="OuttaHere/OuttaHereT.wav"> </soundfx>
+        <soundfx path="OuttaHere/OuttaHereK.wav"> </soundfx>
+        <soundfx path="OuttaHere/OuttaHereM.wav"> </soundfx>
+        <soundfx path="OuttaHere/OuttaHereR.wav"> </soundfx>
+    </sounds>
+</game>
