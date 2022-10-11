@@ -1,10 +1,14 @@
 #include "GameAPI/Game.h"
 #include "../ModVersion.h"
 #include "Player.h"
+#if !MODVER_100
 #include "../ModConfig.h"
+#endif
 
 ObjectPlayer *Player;
+#if !MODVER_100
 ModObjectPlayer *Mod_Player;
+#endif
 
 void Player_SetOuttaHere(void)
 {
