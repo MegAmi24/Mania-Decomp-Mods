@@ -1,0 +1,6 @@
+<?xml version="1.0"?>
+<game>
+    <sounds>
+        <soundfx path="Global/ItemBox.wav"> </soundfx>
+    </sounds>
+</game>
