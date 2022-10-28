@@ -15,8 +15,6 @@ void Player_Update(void)
     Mod.Super(Player->classID, SUPER_UPDATE, NULL);
 
     self->crushDeath = (self->deathType != deathCheck && !self->sidekick);
-
-    //Mod.Super(Player->classID, SUPER_CREATE, NULL);
 }
 
 void Player_LateUpdate(void)
