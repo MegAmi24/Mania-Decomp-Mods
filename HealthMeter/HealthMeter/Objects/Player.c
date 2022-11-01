@@ -1,7 +1,6 @@
 #include "GameAPI/Game.h"
 #include "Player.h"
 #include "../ModConfig.h"
-#include "Zone.h"
 
 ObjectPlayer *Player;
 ModObjectPlayer *Mod_Player;

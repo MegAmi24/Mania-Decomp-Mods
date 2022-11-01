@@ -2,6 +2,8 @@
 #define OBJ_ITEMBOX_H
 
 #include "GameAPI/Game.h"
+#include "Player.h"
+#include "Misc.h"
 
 typedef enum {
     ITEMBOX_RING,

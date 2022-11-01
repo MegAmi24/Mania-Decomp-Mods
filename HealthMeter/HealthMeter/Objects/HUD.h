@@ -2,22 +2,8 @@
 #define OBJ_HUD_H
 
 #include "GameAPI/Game.h"
-
-typedef enum {
-    HUDOFF_SCORE,
-    HUDOFF_TIME,
-    HUDOFF_RINGS,
-    HUDOFF_HEALTH,
-    HUDOFF_LIFE,
-} HUDOffsetTypes;
-
-typedef enum {
-    KEY_A,
-    KEY_B,
-    KEY_X,
-    KEY_Y,
-    KEY_START,
-} KeyIDs;
+#include "Player.h"
+#include "Misc.h"
 
 // Object Class
 typedef struct {

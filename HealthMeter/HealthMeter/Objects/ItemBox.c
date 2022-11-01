@@ -1,17 +1,15 @@
 #include "GameAPI/Game.h"
-#include "Player.h"
-#include "../ModConfig.h"
 #include "ItemBox.h"
-#include "LRZConvItem.h"
+#include "../ModConfig.h"
 
 ObjectItemBox *ItemBox;
-ObjectLRZConvItem *LRZConvItem;
 
 bool32 ItemBox_State_Break_Hook(bool32 skipped)
 {
     RSDK_THIS(ItemBox);
 
     EntityPlayer *player = (EntityPlayer *)self->storedEntity;
+    ObjectLRZConvItem *LRZConvItem = Mod.FindObject("LRZConvItem");
 
     if (LRZConvItem && self->lrzConvPhys)
         LRZConvItem_HandleLRZConvPhys(self);

@@ -19,23 +19,11 @@
     <ClCompile Include="Objects\Ring.c">
       <Filter>Source Files\Objects</Filter>
     </ClCompile>
-    <ClCompile Include="Objects\TitleCard.c">
-      <Filter>Source Files\Objects</Filter>
-    </ClCompile>
-    <ClCompile Include="Objects\Zone.c">
+    <ClCompile Include="Objects\Misc.c">
       <Filter>Source Files\Objects</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Objects\Camera.h">
-      <Filter>Source Files\Objects</Filter>
-    </ClInclude>
-    <ClInclude Include="Objects\Competition.h">
-      <Filter>Source Files\Objects</Filter>
-    </ClInclude>
-    <ClInclude Include="Objects\CompetitionSession.h">
-      <Filter>Source Files\Objects</Filter>
-    </ClInclude>
     <ClInclude Include="..\GameAPI\C\GameAPI\Game.h">
       <Filter>GameAPI</Filter>
     </ClInclude>
@@ -44,9 +32,6 @@
     </ClInclude>
     <ClInclude Include="..\GameAPI\C\GameAPI\GameObjects.h">
       <Filter>GameAPI</Filter>
-    </ClInclude>
-    <ClInclude Include="Objects\GameOver.h">
-      <Filter>Source Files\Objects</Filter>
     </ClInclude>
     <ClInclude Include="..\GameAPI\C\GameAPI\GameVariables.h">
       <Filter>GameAPI</Filter>
@@ -57,23 +42,17 @@
     <ClInclude Include="Objects\ItemBox.h">
       <Filter>Source Files\Objects</Filter>
     </ClInclude>
-    <ClInclude Include="Objects\LRZConvItem.h">
-      <Filter>Source Files\Objects</Filter>
-    </ClInclude>
     <ClInclude Include="Objects\Player.h">
       <Filter>Source Files\Objects</Filter>
     </ClInclude>
     <ClInclude Include="Objects\Ring.h">
       <Filter>Source Files\Objects</Filter>
     </ClInclude>
-    <ClInclude Include="Objects\TitleCard.h">
-      <Filter>Source Files\Objects</Filter>
-    </ClInclude>
-    <ClInclude Include="Objects\Zone.h">
-      <Filter>Source Files\Objects</Filter>
-    </ClInclude>
     <ClInclude Include="ModConfig.h">
       <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Objects\Misc.h">
+      <Filter>Source Files\Objects</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

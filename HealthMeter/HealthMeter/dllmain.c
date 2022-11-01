@@ -3,15 +3,9 @@
 
 #include "Objects/Player.h"
 #include "Objects/HUD.h"
-#include "Objects/Zone.h"
-#include "Objects/Competition.h"
-#include "Objects/CompetitionSession.h"
-#include "Objects/GameOver.h"
-#include "Objects/Camera.h"
 #include "Objects/Ring.h"
-#include "Objects/TitleCard.h"
 #include "Objects/ItemBox.h"
-#include "Objects/LRZConvItem.h"
+#include "Objects/Misc.h"
 
 ModConfig config;
 
@@ -62,6 +56,11 @@ void InitModAPI(void)
     ItemBox_GivePowerup            = Mod.GetPublicFunction(NULL, "ItemBox_GivePowerup");
     ItemBox_HandleFallingCollision = Mod.GetPublicFunction(NULL, "ItemBox_HandleFallingCollision");
     LRZConvItem_HandleLRZConvPhys  = Mod.GetPublicFunction(NULL, "LRZConvItem_HandleLRZConvPhys");
+#if !MANIA_USE_PLUS
+    CompSession_DeriveWinner       = Mod.GetPublicFunction(NULL, "CompetitionSession_DeriveWinner");
+#else
+    CompSession_DeriveWinner       = Mod.GetPublicFunction(NULL, "Competition_DeriveWinner");
+#endif
     
     // Register State Hooks
     Mod.RegisterStateHook(HUD_State_MoveIn, HUD_State_MoveIn_Hook, false);
@@ -78,7 +77,7 @@ void InitModAPI(void)
 
     MOD_REGISTER_OBJ_OVERLOAD_MSV(Player, Mod_Player, Player_Update, Player_LateUpdate, NULL, NULL, Player_Create, NULL, NULL, NULL, NULL);
     MOD_REGISTER_OBJ_OVERLOAD(HUD, HUD_Update, NULL, NULL, HUD_Draw, HUD_Create, NULL, NULL, NULL, NULL);
-    MOD_REGISTER_OBJ_OVERLOAD(Ring, Ring_Update, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+    MOD_REGISTER_OBJ_OVERLOAD(Ring, NULL, Ring_LateUpdate, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
 
     printf("Hello From Health Meter Initialization!\n");
 }

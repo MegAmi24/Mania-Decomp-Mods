@@ -52,7 +52,7 @@ typedef struct {
 extern ObjectRing *Ring;
 
 // Standard Entity Events
-void Ring_Update(void);
+void Ring_LateUpdate(void);
 
 void (*Ring_State_Lost)(void);
 void (*Ring_State_LostFX)(void);

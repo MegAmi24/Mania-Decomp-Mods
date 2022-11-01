@@ -87,7 +87,7 @@
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <LinkIncremental>false</LinkIncremental>
-    <OutDir>..\..\..\..\Sonic Decomps\Sonic Mania\mods\HealthMeter</OutDir>
+    <OutDir>$(SolutionDir)build\$(Platform)\$(Configuration)\</OutDir>
     <IntDir>$(SolutionDir)build\$(Platform)\$(Configuration)\Intermediate\</IntDir>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
@@ -177,8 +177,7 @@
     <ClCompile Include="Objects\ItemBox.c" />
     <ClCompile Include="Objects\Player.c" />
     <ClCompile Include="Objects\Ring.c" />
-    <ClCompile Include="Objects\TitleCard.c" />
-    <ClCompile Include="Objects\Zone.c" />
+    <ClCompile Include="Objects\Misc.c" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\GameAPI\C\GameAPI\Game.h" />
@@ -186,17 +185,11 @@
     <ClInclude Include="..\GameAPI\C\GameAPI\GameObjects.h" />
     <ClInclude Include="..\GameAPI\C\GameAPI\GameVariables.h" />
     <ClInclude Include="ModConfig.h" />
-    <ClInclude Include="Objects\Camera.h" />
-    <ClInclude Include="Objects\Competition.h" />
-    <ClInclude Include="Objects\CompetitionSession.h" />
-    <ClInclude Include="Objects\GameOver.h" />
     <ClInclude Include="Objects\HUD.h" />
     <ClInclude Include="Objects\ItemBox.h" />
-    <ClInclude Include="Objects\LRZConvItem.h" />
+    <ClInclude Include="Objects\Misc.h" />
     <ClInclude Include="Objects\Player.h" />
     <ClInclude Include="Objects\Ring.h" />
-    <ClInclude Include="Objects\TitleCard.h" />
-    <ClInclude Include="Objects\Zone.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

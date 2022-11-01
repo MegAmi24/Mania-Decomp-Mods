@@ -1,15 +1,7 @@
 #include "GameAPI/Game.h"
 #include "HUD.h"
-#include "Player.h"
-#include "Zone.h"
-#include "Competition.h"
-#include "CompetitionSession.h"
-#include "GameOver.h"
 
 ObjectHUD *HUD;
-ObjectGameOver *GameOver;
-ObjectCompetition *Competition;
-ObjectCompetitionSession *CompetitionSession;
 
 void HUD_Update(void)
 {
@@ -170,7 +162,11 @@ bool32 HUD_State_MoveOut_Hook(bool32 skipped)
     if (healthPos->x < -TO_FIXED(80)) {
         if (globals->gameMode == MODE_COMPETITION) {
             *state = StateMachine_None;
-            CompetitionSession_DeriveWinner(self->screenID, FINISHTYPE_GAMEOVER);
+            CompSession_DeriveWinner(self->screenID, FINISHTYPE_GAMEOVER);
+
+            ObjectGameOver *GameOver       = Mod.FindObject("GameOver");
+            ObjectCompetition *Competition = Mod.FindObject("Competition");
+
             EntityGameOver *gameOver   = RSDK_GET_ENTITY(self->screenID + Player->playerCount, GameOver);
             EntityCompetition *manager = Competition->sessionManager;
 

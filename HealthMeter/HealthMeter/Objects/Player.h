@@ -2,7 +2,7 @@
 #define OBJ_PLAYER_H
 
 #include "GameAPI/Game.h"
-#include "Camera.h"
+#include "Misc.h"
 
 typedef enum {
     ANI_IDLE,
@@ -98,47 +98,12 @@ typedef enum {
 #endif
 } PlayerAnimationIDs;
 
-// for "characterID" in editor
-typedef enum {
-    PLAYER_CHAR_NONE,
-    PLAYER_CHAR_SONIC,
-    PLAYER_CHAR_TAILS,
-    PLAYER_CHAR_SONIC_TAILS,
-    PLAYER_CHAR_KNUX,
-    PLAYER_CHAR_SONIC_KNUX,
-    PLAYER_CHAR_TAILS_KNUX,
-    PLAYER_CHAR_SONIC_TAILS_KNUX,
-} PlayerCharacterIDS;
-
-typedef enum {
-    SHIELD_NONE,
-    SHIELD_BLUE,
-    SHIELD_BUBBLE,
-    SHIELD_FIRE,
-    SHIELD_LIGHTNING,
-} ShieldTypes;
-
 typedef enum {
     PLAYER_DEATH_NONE,
     PLAYER_DEATH_DIE_USESFX,
     PLAYER_DEATH_DIE_NOSFX,
     PLAYER_DEATH_DROWN,
 } DeathTypes;
-
-typedef enum {
-    PLAYER_HURT_NONE,
-    PLAYER_HURT_HASSHIELD,
-    PLAYER_HURT_RINGLOSS,
-    PLAYER_HURT_DIE,
-} HurtTypes;
-
-typedef enum {
-    SUPERSTATE_NONE,
-    SUPERSTATE_FADEIN,
-    SUPERSTATE_SUPER,
-    SUPERSTATE_FADEOUT,
-    SUPERSTATE_DONE,
-} SuperStates;
 
 // Object Class
 #if MANIA_USE_PLUS

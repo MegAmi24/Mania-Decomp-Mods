@@ -3,7 +3,7 @@
 
 ObjectRing *Ring;
 
-void Ring_Update(void)
+void Ring_LateUpdate(void)
 {
     RSDK_THIS(Ring);
 

@@ -1,8 +1,12 @@
 #include "GameAPI/Game.h"
-#include "Zone.h"
+#include "Misc.h"
 #include "Player.h"
+#include "../ModConfig.h"
 
+ObjectTitleCard *TitleCard;
 ObjectZone *Zone;
+
+void Zone_TitleCard_SupressCB_Hook(void) { Mod_Player->health = config.StartingHealth; }
 
 void Zone_State_ReloadScene_Hook(void)
 {
