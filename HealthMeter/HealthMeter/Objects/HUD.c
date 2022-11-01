@@ -11,7 +11,15 @@ ObjectGameOver *GameOver;
 ObjectCompetition *Competition;
 ObjectCompetitionSession *CompetitionSession;
 
-void (*CompetitionSession_DeriveWinner)(int32 playerID, int32 finishType)      = NULL;
+void HUD_Update(void)
+{
+    RSDK_THIS(HUD);
+
+    if (self->state != HUD_State_MoveOut && self->scorePos.x == (self->targetPos - TO_FIXED(0x100)))
+        self->healthPos.x = self->targetPos - TO_FIXED(0x130);
+
+    Mod.Super(HUD->classID, SUPER_UPDATE, NULL);
+}
 
 void HUD_Draw(void)
 {
@@ -36,15 +44,15 @@ void HUD_Draw(void)
         healthPos.y = self->vsHealthPos[SceneInfo->currentScreenID].y;
     }
 #endif
-    
+
     ObjectZone *Zone = Mod.FindObject("Zone");
-    
+
     self->ringFlashFrame = player->health > 1 ? 0 : ((Zone->persistentTimer >> 3) & 1);
-    
+
     // Draw "Health"
     self->hudElementsAnimator.frameID = self->ringFlashFrame + 20;
     RSDK.DrawSprite(&self->hudElementsAnimator, &healthPos, true);
-    
+
     // Draw Health
     drawPos.x = healthPos.x + TO_FIXED(93);
 #if MANIA_USE_PLUS
@@ -65,7 +73,7 @@ void HUD_Draw(void)
         if (i == 6)
             drawPos.x = healthPos.x + TO_FIXED(93);
     }
-    
+
     Mod.Super(HUD->classID, SUPER_DRAW, NULL);
 
     // Draw non-flashing "Rings"
@@ -105,9 +113,11 @@ void HUD_State_MoveIn_Hook(void)
 
     if (globals->gameMode == MODE_COMPETITION) {
         healthPos = &self->vsHealthPos[SceneInfo->currentScreenID];
+        targetPos = &self->vsTargetPos[SceneInfo->currentScreenID];
     }
     else {
         healthPos = &self->healthPos;
+        targetPos = &self->targetPos;
     }
 
     if (healthPos->x < *targetPos)

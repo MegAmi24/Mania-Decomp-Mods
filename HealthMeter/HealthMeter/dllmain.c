@@ -77,7 +77,7 @@ void InitModAPI(void)
     MOD_REGISTER_OBJECT_HOOK(TitleCard);
 
     MOD_REGISTER_OBJ_OVERLOAD_MSV(Player, Mod_Player, Player_Update, Player_LateUpdate, NULL, NULL, Player_Create, NULL, NULL, NULL, NULL);
-    MOD_REGISTER_OBJ_OVERLOAD(HUD, NULL, NULL, NULL, HUD_Draw, HUD_Create, NULL, NULL, NULL, NULL);
+    MOD_REGISTER_OBJ_OVERLOAD(HUD, HUD_Update, NULL, NULL, HUD_Draw, HUD_Create, NULL, NULL, NULL, NULL);
     MOD_REGISTER_OBJ_OVERLOAD(Ring, Ring_Update, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
 
     printf("Hello From Health Meter Initialization!\n");
