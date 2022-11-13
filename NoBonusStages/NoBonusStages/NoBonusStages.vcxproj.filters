@@ -5,9 +5,6 @@
       <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
       <Extensions>cpp;c;cc;cxx;c++;cppm;ixx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
     </Filter>
-    <Filter Include="Source Files\Objects">
-      <UniqueIdentifier>{203768f6-512d-45e5-87d4-5aec72c1561b}</UniqueIdentifier>
-    </Filter>
     <Filter Include="GameAPI">
       <UniqueIdentifier>{c2e2d1aa-1805-487f-9beb-763e5b22492c}</UniqueIdentifier>
     </Filter>
@@ -20,7 +17,7 @@
       <Filter>GameAPI</Filter>
     </ClCompile>
     <ClCompile Include="Objects\StarPost.c">
-      <Filter>Source Files\Objects</Filter>
+      <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -37,7 +34,7 @@
       <Filter>GameAPI</Filter>
     </ClInclude>
     <ClInclude Include="Objects\StarPost.h">
-      <Filter>Source Files\Objects</Filter>
+      <Filter>Source Files</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

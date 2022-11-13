@@ -1,8 +1,8 @@
 #include "GameAPI/Game.h"
-#include "../ModVersion.h"
+#include "ModVersion.h"
 #include "Player.h"
 #if MOD_VERSION != MODVER_100
-#include "../ModConfig.h"
+#include "ModConfig.h"
 #endif
 
 ObjectPlayer *Player;

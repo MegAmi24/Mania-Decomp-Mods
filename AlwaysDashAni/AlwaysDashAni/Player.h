@@ -2,7 +2,6 @@
 #define OBJ_PLAYER_H
 
 #include "GameAPI/Game.h"
-#include "Camera.h"
 
 typedef enum {
     ANI_IDLE,
@@ -98,47 +97,32 @@ typedef enum {
 #endif
 } PlayerAnimationIDs;
 
-// for "characterID" in editor
-typedef enum {
-    PLAYER_CHAR_NONE,
-    PLAYER_CHAR_SONIC,
-    PLAYER_CHAR_TAILS,
-    PLAYER_CHAR_SONIC_TAILS,
-    PLAYER_CHAR_KNUX,
-    PLAYER_CHAR_SONIC_KNUX,
-    PLAYER_CHAR_TAILS_KNUX,
-    PLAYER_CHAR_SONIC_TAILS_KNUX,
-} PlayerCharacterIDS;
-
-typedef enum {
-    SHIELD_NONE,
-    SHIELD_BLUE,
-    SHIELD_BUBBLE,
-    SHIELD_FIRE,
-    SHIELD_LIGHTNING,
-} ShieldTypes;
-
-typedef enum {
-    PLAYER_DEATH_NONE,
-    PLAYER_DEATH_DIE_USESFX,
-    PLAYER_DEATH_DIE_NOSFX,
-    PLAYER_DEATH_DROWN,
-} DeathTypes;
-
-typedef enum {
-    PLAYER_HURT_NONE,
-    PLAYER_HURT_HASSHIELD,
-    PLAYER_HURT_RINGLOSS,
-    PLAYER_HURT_DIE,
-} HurtTypes;
-
-typedef enum {
-    SUPERSTATE_NONE,
-    SUPERSTATE_FADEIN,
-    SUPERSTATE_SUPER,
-    SUPERSTATE_FADEOUT,
-    SUPERSTATE_DONE,
-} SuperStates;
+// Entity Class
+typedef struct {
+    RSDK_ENTITY
+    StateMachine(state);
+    Entity *target;
+    int32 screenID;
+    Vector2 center;
+    Vector2 targetMoveVel;
+    Vector2 lastPos;
+    Vector2 shakePos;
+    Vector2 lookPos;
+    Vector2 offset;
+    bool32 disableYOffset;
+    int32 centerY;
+    int32 adjustY;
+    int32 lerpPercent;
+    int32 lerpSpeed;
+    int32 lerpType;
+    Vector2 endLerpPos;
+    Vector2 startLerpPos;
+    Vector2 boundsOffset;
+    int32 boundsL;
+    int32 boundsR;
+    int32 boundsT;
+    int32 boundsB;
+} EntityCamera;
 
 // Object Class
 #if MANIA_USE_PLUS

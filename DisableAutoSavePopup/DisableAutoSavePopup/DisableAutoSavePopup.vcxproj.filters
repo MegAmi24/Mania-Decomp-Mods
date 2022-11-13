@@ -5,9 +5,6 @@
       <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
       <Extensions>cpp;c;cc;cxx;c++;cppm;ixx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
     </Filter>
-    <Filter Include="Source Files\Objects">
-      <UniqueIdentifier>{203768f6-512d-45e5-87d4-5aec72c1561b}</UniqueIdentifier>
-    </Filter>
     <Filter Include="GameAPI">
       <UniqueIdentifier>{c2e2d1aa-1805-487f-9beb-763e5b22492c}</UniqueIdentifier>
     </Filter>
@@ -33,11 +30,11 @@
     <ClInclude Include="..\GameAPI\C\GameAPI\GameVariables.h">
       <Filter>GameAPI</Filter>
     </ClInclude>
-    <ClInclude Include="Objects\UIUsernamePopup.h">
-      <Filter>Source Files\Objects</Filter>
+    <ClInclude Include="UIUsernamePopup.h">
+      <Filter>Source Files</Filter>
     </ClInclude>
-    <ClInclude Include="Objects\UIWaitSpinner.h">
-      <Filter>Source Files\Objects</Filter>
+    <ClInclude Include="UIWaitSpinner.h">
+      <Filter>Source Files</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

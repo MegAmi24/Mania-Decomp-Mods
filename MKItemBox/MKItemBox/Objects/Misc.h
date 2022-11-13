@@ -1,7 +1,54 @@
-#ifndef OBJ_ZONE_H
-#define OBJ_ZONE_H
+#ifndef OBJ_MISC_H
+#define OBJ_MISC_H
 
 #include "GameAPI/Game.h"
+
+#define COMPETITION_STAGE_COUNT (12)
+
+// created so I can easily set up times in an array
+typedef struct {
+    int32 minutes;
+    int32 seconds;
+    int32 milliseconds;
+} vsTime;
+
+// Object Class
+typedef struct {
+    RSDK_OBJECT
+} ObjectCompetitionSession;
+
+// Entity Class
+typedef struct {
+    RSDK_ENTITY
+    bool32 inMatch;
+    int32 playerCount;
+    int32 stageIndex;
+    int32 zoneID;
+    int32 actID;
+    int32 matchID;
+    int32 matchCount;
+    int32 itemMode;
+#if MANIA_USE_PLUS
+    int32 swapType;
+#endif
+    bool32 completedStages[COMPETITION_STAGE_COUNT];
+    uint8 playerID[PLAYER_COUNT];
+    uint8 matchWinner[COMPETITION_STAGE_COUNT];
+    int32 rings[PLAYER_COUNT];
+    int32 score[PLAYER_COUNT];
+    int32 items[PLAYER_COUNT];
+    vsTime time[PLAYER_COUNT];
+    uint8 finishState[PLAYER_COUNT];
+    int32 totalRings[PLAYER_COUNT];
+    int32 wins[PLAYER_COUNT];
+    int32 lives[PLAYER_COUNT];
+#if MANIA_USE_PLUS
+    int32 screenBorderType[SCREEN_COUNT];
+    int32 displayMode;
+    int32 inputSlots[PLAYER_COUNT];
+    int32 prevMatchID;
+#endif
+} EntityCompetitionSession;
 
 // Object Class
 typedef struct {
@@ -65,18 +112,34 @@ typedef struct {
 #endif
 } ObjectZone;
 
+// Object Class
+typedef struct {
+    RSDK_OBJECT
+    Hitbox hitboxRock;
+    Hitbox hitboxSpikeball;
+    uint16 aniFrames;
+    uint16 sfxSizzle;
+} ObjectLRZConvItem;
+
+// Object Class
+typedef struct {
+    RSDK_OBJECT
+} ObjectDebris;
+
 // Entity Class
 typedef struct {
     RSDK_ENTITY
     StateMachine(state);
-    StateMachine(stateDraw);
-    int32 screenID;
     int32 timer;
-    int32 fadeSpeed;
-    int32 fadeColor;
-} EntityZone;
+    int32 gravityStrength;
+    int32 rotSpeed;
+    Vector2 scaleSpeed;
+    int32 delay;
+    Animator animator;
+} EntityDebris;
 
-// Object Struct
-extern ObjectZone *Zone;
+Vector2 (*LRZConvItem_HandleLRZConvPhys)(void *e);
 
-#endif //! OBJ_ZONE_H
+void (*Debris_State_Fall)(void);
+
+#endif //! OBJ_MISC_H

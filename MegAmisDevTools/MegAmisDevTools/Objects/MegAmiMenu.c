@@ -16,9 +16,8 @@ void MegAmiMenu_Update(void)
     RSDK_THIS(MegAmiMenu);
 
     EntityPlayer *player = (EntityPlayer *)self->parent;
-    if (player->classID != Player->classID) {
+    if (player->classID != Player->classID)
         destroyEntity(self);
-    }
     else {
         if (ControllerInfo[player->controllerID].keySelect.press)
             destroyEntity(self);

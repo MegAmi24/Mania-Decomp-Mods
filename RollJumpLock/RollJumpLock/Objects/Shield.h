@@ -45,7 +45,4 @@ typedef struct {
     Animator fxAnimator;
 } EntityShield;
 
-// Object Struct
-extern ObjectShield *Shield;
-
 #endif //! OBJ_SHIELD_H

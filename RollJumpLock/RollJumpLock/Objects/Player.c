@@ -3,7 +3,6 @@
 #include "Shield.h"
 
 ObjectPlayer *Player;
-ObjectShield *Shield;
 
 void Player_SetRollJumpLock(void)
 {
@@ -22,6 +21,7 @@ void Player_State_RollingAir(void)
     self->left  = false;
     self->right = false;
 
+    ObjectShield *Shield = Mod.FindObject("Shield");
     EntityShield *shield = RSDK_GET_ENTITY(Player->playerCount + RSDK.GetEntitySlot(self), Shield);
     bool32 abilityCheck  = self->jumpAbilityState == 1; // Check if the player has yet to use an ability
 

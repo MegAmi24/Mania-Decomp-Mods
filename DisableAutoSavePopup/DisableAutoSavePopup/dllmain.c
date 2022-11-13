@@ -1,7 +1,7 @@
 #include "../GameAPI/C/GameAPI/Game.h"
 #include "ModConfig.h"
-#include "Objects/UIUsernamePopup.h"
-#include "Objects/UIWaitSpinner.h"
+#include "UIUsernamePopup.h"
+#include "UIWaitSpinner.h"
 
 ObjectUIUsernamePopup *UIUsernamePopup;
 ObjectUIWaitSpinner *UIWaitSpinner;

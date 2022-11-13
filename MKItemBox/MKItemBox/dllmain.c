@@ -1,10 +1,7 @@
 #include "../GameAPI/C/GameAPI/Game.h"
 
 #include "Objects/ItemBox.h"
-#include "Objects/LRZConvItem.h"
-#include "Objects/Zone.h"
-#include "Objects/CompetitionSession.h"
-#include "Objects/Debris.h"
+#include "Objects/Misc.h"
 
 #if RETRO_USE_MOD_LOADER
 #define ADD_PUBLIC_FUNC(func) Mod.AddPublicFunction(#func, (void *)(func))
@@ -43,11 +40,6 @@ void InitModAPI(void)
     Mod.RegisterStateHook(ItemBox_State_Conveyor, ItemBox_State_Conveyor_Hook, true);
 
     MOD_REGISTER_OBJECT_HOOK(ItemBox);
-    MOD_REGISTER_OBJECT_HOOK(LRZConvItem);
-    MOD_REGISTER_OBJECT_HOOK(Zone);
-    MOD_REGISTER_OBJECT_HOOK(Player);
-    MOD_REGISTER_OBJECT_HOOK(CompetitionSession);
-    MOD_REGISTER_OBJECT_HOOK(Debris);
 
     ADD_PUBLIC_FUNC(ItemBox_CheckHit_New);
     ADD_PUBLIC_FUNC(ItemBox_Break_New);

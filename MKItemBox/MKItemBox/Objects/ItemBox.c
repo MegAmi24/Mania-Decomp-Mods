@@ -1,19 +1,10 @@
 #include "GameAPI/Game.h"
 #include "ItemBox.h"
 #include "Player.h"
-#include "Zone.h"
-#include "LRZConvItem.h"
-#include "DebugMode.h"
-#include "CompetitionSession.h"
-#include "Debris.h"
+#include "Misc.h"
 
 ObjectItemBox *ItemBox;
 ModObjectItemBox *Mod_ItemBox;
-ObjectLRZConvItem *LRZConvItem;
-ObjectZone *Zone;
-ObjectPlayer *Player;
-ObjectCompetitionSession *CompetitionSession;
-ObjectDebris *Debris;
 
 void ItemBox_StaticUpdate(void)
 {
@@ -40,6 +31,8 @@ void ItemBox_StaticUpdate(void)
 void ItemBox_Draw(void)
 {
     RSDK_THIS(ItemBox);
+
+    ObjectZone *Zone = Mod.FindObject("Zone");
 
     if (!self->hidden) {
         if (self->isContents) {
@@ -92,6 +85,8 @@ void ItemBox_CheckHit_New(void)
 {
     RSDK_THIS(ItemBox);
 
+    ObjectPlayer *Player = Mod.FindObject("Player");
+
     foreach_active(Player, player)
     {
         if (self->planeFilter <= 0 || player->collisionPlane == (((uint8)self->planeFilter - 1) & 1)) {
@@ -124,6 +119,9 @@ void ItemBox_Break_New(EntityItemBox *itemBox, EntityPlayer *player)
     ItemBox->brokenFrame %= 3;
     RSDK.SetSpriteAnimation(-1, 0, &itemBox->overlayAnimator, true, 0);
     RSDK.SetSpriteAnimation(-1, 0, &itemBox->debrisAnimator, true, 0);
+
+    ObjectDebris *Debris = Mod.FindObject("Debris");
+    ObjectZone *Zone = Mod.FindObject("Zone");
 
     for (int32 d = 0; d < 12; ++d) {
         EntityDebris *debris    = CREATE_ENTITY(Debris, NULL, itemBox->position.x + RSDK.Rand(-0x80000, 0x80000),
@@ -213,6 +211,8 @@ void ItemBox_HandleBox(void)
 bool32 ItemBox_State_IconFinish_Hook(bool32 skipped)
 {
     RSDK_THIS(ItemBox);
+
+    ObjectLRZConvItem *LRZConvItem = Mod.FindObject("LRZConvItem");
 
     if (LRZConvItem && self->lrzConvPhys)
         LRZConvItem_HandleLRZConvPhys(self);

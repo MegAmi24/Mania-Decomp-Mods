@@ -1,6 +1,6 @@
 #include "../GameAPI/C/GameAPI/Game.h"
 #include "ModVersion.h"
-#include "Objects/Player.h"
+#include "Player.h"
 #if MOD_VERSION != MODVER_100
 #include "ModConfig.h"
 

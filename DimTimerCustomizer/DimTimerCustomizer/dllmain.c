@@ -1,5 +1,5 @@
 #include "../GameAPI/C/GameAPI/Game.h"
-#include "Objects/ReplayRecorder.h"
+#include "ReplayRecorder.h"
 #include "ModConfig.h"
 
 #if RETRO_USE_MOD_LOADER

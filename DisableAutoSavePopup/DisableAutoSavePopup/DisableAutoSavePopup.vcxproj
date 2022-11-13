@@ -179,8 +179,8 @@
     <ClInclude Include="..\GameAPI\C\GameAPI\GameLink.h" />
     <ClInclude Include="..\GameAPI\C\GameAPI\GameObjects.h" />
     <ClInclude Include="..\GameAPI\C\GameAPI\GameVariables.h" />
-    <ClInclude Include="Objects\UIUsernamePopup.h" />
-    <ClInclude Include="Objects\UIWaitSpinner.h" />
+    <ClInclude Include="UIUsernamePopup.h" />
+    <ClInclude Include="UIWaitSpinner.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

@@ -3,9 +3,7 @@
 #if MOD_VERSION != MODVER_100
 #include "ModConfig.h"
 #endif
-
-#include "Objects/Player.h"
-#include "Objects/Camera.h"
+#include "Player.h"
 
 #if MOD_VERSION != MODVER_100
 ModConfig config;

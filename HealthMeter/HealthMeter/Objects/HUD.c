@@ -18,8 +18,7 @@ void HUD_Draw(void)
     RSDK_THIS(HUD);
     EntityPlayer *player = RSDK_GET_ENTITY(SceneInfo->currentScreenID, Player);
 
-    Vector2 drawPos;
-    Vector2 ringPos, healthPos;
+    Vector2 drawPos, ringPos, healthPos;
 
     ringPos.x = self->ringsPos.x;
     ringPos.y = self->ringsPos.y;

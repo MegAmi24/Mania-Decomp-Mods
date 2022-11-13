@@ -1,5 +1,5 @@
 #include "../GameAPI/C/GameAPI/Game.h"
-#include "Objects/StarPost.h"
+#include "StarPost.h"
 
 #if RETRO_USE_MOD_LOADER
 DLLExport bool32 LinkModLogic(EngineInfo *info, const char *id);
