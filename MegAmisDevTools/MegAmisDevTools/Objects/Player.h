@@ -4,6 +4,8 @@
 #include "GameAPI/Game.h"
 #include "Misc.h"
 
+#define IMAGETRAIL_TRACK_COUNT (7)
+
 typedef enum {
     SHIELD_NONE,
     SHIELD_BLUE,
@@ -233,7 +235,7 @@ typedef struct {
     StateMachine(state);
     StateMachine(nextAirState);
     StateMachine(nextGroundState);
-    void *camera;
+    EntityCamera *camera;
     Animator animator;
     Animator tailAnimator;
     int32 maxWalkSpeed;
@@ -339,6 +341,26 @@ typedef struct {
     Animator fxAnimator;
 } EntityShield;
 
+typedef struct {
+    RSDK_ENTITY
+    EntityPlayer *player;
+    int32 playerClassID;
+    Vector2 currentPos;
+    Vector2 statePos[IMAGETRAIL_TRACK_COUNT];
+    int32 currentRotation;
+    int32 stateRotation[IMAGETRAIL_TRACK_COUNT];
+    uint8 currentDirection;
+    uint8 stateDirection[IMAGETRAIL_TRACK_COUNT];
+    uint8 currentVisible;
+    uint8 stateVisible[IMAGETRAIL_TRACK_COUNT];
+    int32 currentScale;
+    int32 stateScale[IMAGETRAIL_TRACK_COUNT];
+    Animator currentAnimator;
+    Animator stateAnimator[IMAGETRAIL_TRACK_COUNT];
+    int32 baseAlpha;
+    int32 fadeoutTimer;
+} EntityImageTrail;
+
 // Object Struct
 extern ObjectPlayer *Player;
 
@@ -356,6 +378,9 @@ void (*Player_State_ReturnToPlayer)(void);
 // Input States
 void (*Player_Input_P1)(void);
 void (*Player_Input_P2_Delay)(void);
+
+// State helpers
+void (*Player_UpdatePhysicsState)(EntityPlayer *entity);
 
 // Extra Entity Functions
 bool32 Player_Input_P1_Hook(bool32 skippedState);

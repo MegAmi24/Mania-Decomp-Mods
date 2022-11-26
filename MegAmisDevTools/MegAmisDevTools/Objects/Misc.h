@@ -3,6 +3,35 @@
 
 #include "GameAPI/Game.h"
 
+typedef enum {
+    TRACK_NONE       = -1,
+    TRACK_STAGE      = 0,
+    TRACK_INVINCIBLE = 1,
+    TRACK_SNEAKERS   = 2,
+    TRACK_MINIBOSS   = 3,
+    TRACK_HBHBOSS    = 4,
+    TRACK_EGGMAN1    = 5,
+    TRACK_EGGMAN2    = 6,
+    TRACK_ACTCLEAR   = 7,
+    TRACK_DROWNING   = 8,
+    TRACK_GAMEOVER   = 9,
+    TRACK_SUPER      = 10,
+#if MANIA_USE_PLUS
+    TRACK_HBHMISCHIEF = 11,
+    TRACK_SOUNDTEST   = 12,
+#else
+    TRACK_SOUNDTEST   = 11,
+    TRACK_HBHMISCHIEF = 12,
+#endif
+    TRACK_1UP = 13,
+
+    // Aliases/Reused slots
+    TRACK_METALSONIC   = TRACK_EGGMAN1,
+    TRACK_RUBYPRESENCE = TRACK_EGGMAN1,
+    TRACK_BUDDYBEAT    = TRACK_EGGMAN2,
+    TRACK_ERZBOSS      = TRACK_SUPER,
+} MusicTracks;
+
 typedef struct {
     RSDK_OBJECT
 #if MANIA_USE_PLUS
@@ -165,11 +194,43 @@ typedef struct {
 } ObjectShield;
 
 typedef struct {
+    RSDK_OBJECT
+} ObjectImageTrail;
+
+typedef struct {
     RSDK_ENTITY
     StateMachine(state);
     int32 timer;
     Entity *parent;
     Animator animator;
 } EntityDust;
+
+typedef struct {
+    RSDK_ENTITY
+    StateMachine(state);
+    Entity *target;
+    int32 screenID;
+    Vector2 center;
+    Vector2 targetMoveVel;
+    Vector2 lastPos;
+    Vector2 shakePos;
+    Vector2 lookPos;
+    Vector2 offset;
+    bool32 disableYOffset;
+    int32 centerY;
+    int32 adjustY;
+    int32 lerpPercent;
+    int32 lerpSpeed;
+    int32 lerpType;
+    Vector2 endLerpPos;
+    Vector2 startLerpPos;
+    Vector2 boundsOffset;
+    int32 boundsL;
+    int32 boundsR;
+    int32 boundsT;
+    int32 boundsB;
+} EntityCamera;
+
+void (*Music_PlayJingle)(uint8 trackID);
 
 #endif

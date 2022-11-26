@@ -1,3 +1,4 @@
+#include "GameAPI/Game.h"
 #include "Player.h"
 #include "MegAmiMenu.h"
 
@@ -8,9 +9,11 @@ void Player_Update(void)
     RSDK_THIS(Player);
 
     // Handle Invincibility Toggle
-    ObjectMegAmiMenu *menu = Mod.FindObject("MegAmiMenu");
-    if (menu->playerInv && self->blinkTimer >= 0 && self->blinkTimer <= 2)
+    if (MegAmiMenu->playerInv && self->blinkTimer >= 0 && self->blinkTimer <= 2)
         self->blinkTimer = 2;
+
+    if (self->outerbox && !self->innerbox)
+        self->innerbox = RSDK.GetHitbox(&self->animator, 1);
 
     Mod.Super(Player->classID, SUPER_UPDATE, NULL);
 }

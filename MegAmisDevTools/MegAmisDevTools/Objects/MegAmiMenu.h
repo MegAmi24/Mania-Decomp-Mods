@@ -12,6 +12,8 @@ typedef enum {
     MEGAMIMENU_P1CHAR,
     MEGAMIMENU_P2CHAR,
     MEGAMIMENU_SHIELD,
+    MEGAMIMENU_SHOES,
+    MEGAMIMENU_RING,
     MEGAMIMENU_SUPER,
     MEGAMIMENU_INV,
     MEGAMIMENU_EXIT,
@@ -36,6 +38,8 @@ typedef struct {
     String p1char;
     String p2char;
     String shield;
+    String shoes;
+    String ring;
     String super;
     String inv;
     String exit;

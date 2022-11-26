@@ -2,6 +2,7 @@
 
 #include "Objects/Player.h"
 #include "Objects/MegAmiMenu.h"
+#include "Objects/Misc.h"
 
 #if RETRO_USE_MOD_LOADER
 DLLExport bool32 LinkModLogic(EngineInfo *info, const char *id);
@@ -27,6 +28,8 @@ void InitModAPI(void)
     Player_State_FlyToPlayer    = Mod.GetPublicFunction(NULL, "Player_State_FlyToPlayer");
     Player_State_ReturnToPlayer = Mod.GetPublicFunction(NULL, "Player_State_ReturnToPlayer");
     Player_Input_P2_Delay       = Mod.GetPublicFunction(NULL, "Player_Input_P2_Delay");
+    Player_UpdatePhysicsState   = Mod.GetPublicFunction(NULL, "Player_UpdatePhysicsState");
+    Music_PlayJingle            = Mod.GetPublicFunction(NULL, "Music_PlayJingle");
 
     // Add Public Functions
     ADD_PUBLIC_FUNC(MegAmiMenu_State_Main);

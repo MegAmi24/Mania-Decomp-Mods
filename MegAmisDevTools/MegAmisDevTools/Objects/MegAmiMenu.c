@@ -8,6 +8,7 @@
 #include "GameAPI/Game.h"
 #include "MegAmiMenu.h"
 #include "Player.h"
+#include "Misc.h"
 
 ObjectMegAmiMenu *MegAmiMenu;
 
@@ -41,7 +42,7 @@ void MegAmiMenu_Draw(void)
     EntityPlayer *camplayer    = RSDK_GET_ENTITY(SceneInfo->currentScreenID, Player);
     
     if (RSDK.GetEntitySlot(parentplayer) == RSDK.GetEntitySlot(camplayer)) {
-        RSDK.DrawRect(16, 12, 150, 100, 0xFF0000, 0xFF, INK_NONE, true);
+        RSDK.DrawRect(16, 12, 150, ((MEGAMIMENU_EXIT + 1) * VERT_SPACING) + 6, 0xFF0000, 0xFF, INK_NONE, true);
 
         Vector2 drawPos;
 
@@ -61,16 +62,20 @@ void MegAmiMenu_Draw(void)
         drawPos.y += TO_FIXED(VERT_SPACING);
         RSDK.DrawText(&self->animator, &drawPos, &self->shield, 0, self->shield.length, ALIGN_LEFT, 0, 0, 0, true);
         drawPos.y += TO_FIXED(VERT_SPACING);
+        RSDK.DrawText(&self->animator, &drawPos, &self->shoes, 0, self->shoes.length, ALIGN_LEFT, 0, 0, 0, true);
+        drawPos.y += TO_FIXED(VERT_SPACING);
+        RSDK.DrawText(&self->animator, &drawPos, &self->ring, 0, self->ring.length, ALIGN_LEFT, 0, 0, 0, true);
+        drawPos.y += TO_FIXED(VERT_SPACING);
         RSDK.DrawText(&self->animator, &drawPos, &self->super, 0, self->super.length, ALIGN_LEFT, 0, 0, 0, true);
         drawPos.y += TO_FIXED(VERT_SPACING);
         RSDK.DrawText(&self->animator, &drawPos, &self->inv, 0, self->inv.length, ALIGN_LEFT, 0, 0, 0, true);
         drawPos.y += TO_FIXED(VERT_SPACING);
         RSDK.DrawText(&self->animator, &drawPos, &self->exit, 0, self->exit.length, ALIGN_LEFT, 0, 0, 0, true);
 
-        if (self->stateDraw)
-            RSDK.DrawRect(16, 12, 150, 100, 0x000000, 0x80, INK_ALPHA, true);
-
-        StateMachine_Run(self->stateDraw);
+        if (self->stateDraw) {
+            RSDK.DrawRect(16, 12, 150, ((MEGAMIMENU_EXIT + 1) * VERT_SPACING) + 6, 0x000000, 0x80, INK_ALPHA, true);
+            StateMachine_Run(self->stateDraw);
+        }
     }
 }
 
@@ -95,6 +100,11 @@ void MegAmiMenu_Create(void *data)
         RSDK.InitString(&self->p1char, "CHANGE CHARACTER", false);
         RSDK.InitString(&self->p2char, "CHANGE SIDEKICK", false);
         RSDK.InitString(&self->shield, "CHANGE SHIELD", false);
+        RSDK.InitString(&self->shoes, "GIVE SPEED SHOES", false);
+        if (!player->hyperRing)
+            RSDK.InitString(&self->ring, "GIVE HYPER RING", false);
+        else
+            RSDK.InitString(&self->ring, "REMOVE HYPER RING", false);
         if (player->superState != SUPERSTATE_SUPER)
             RSDK.InitString(&self->super, "TURN SUPER", false);
         else
@@ -121,6 +131,8 @@ void MegAmiMenu_Create(void *data)
         RSDK.SetSpriteString(uiwidgets->fontFrames, 0, &self->p1char);
         RSDK.SetSpriteString(uiwidgets->fontFrames, 0, &self->p2char);
         RSDK.SetSpriteString(uiwidgets->fontFrames, 0, &self->shield);
+        RSDK.SetSpriteString(uiwidgets->fontFrames, 0, &self->shoes);
+        RSDK.SetSpriteString(uiwidgets->fontFrames, 0, &self->ring);
         RSDK.SetSpriteString(uiwidgets->fontFrames, 0, &self->super);
         RSDK.SetSpriteString(uiwidgets->fontFrames, 0, &self->inv);
         RSDK.SetSpriteString(uiwidgets->fontFrames, 0, &self->exit);
@@ -187,6 +199,21 @@ void MegAmiMenu_State_Main(void)
                 self->stateDraw    = MegAmiMenu_State_DrawShield;
                 self->subSelection = 0;
                 break;
+            case MEGAMIMENU_SHOES:
+                player->speedShoesTimer = 1320;
+                Player_UpdatePhysicsState(player);
+                if (player->superState == SUPERSTATE_NONE) {
+                    Music_PlayJingle(TRACK_SNEAKERS);
+                    ObjectImageTrail *ImageTrail = Mod.FindObject("ImageTrail");
+                    EntityImageTrail *powerup = RSDK_GET_ENTITY(2 * Player->playerCount + RSDK.GetEntitySlot(player), ImageTrail);
+                    RSDK.ResetEntity(powerup, ImageTrail->classID, player);
+                }
+                destroyEntity(self);
+                break;
+            case MEGAMIMENU_RING:
+                player->hyperRing ^= true;
+                destroyEntity(self);
+                break;
             case MEGAMIMENU_SUPER:
                 if (player->superState != SUPERSTATE_SUPER) {
                     Player_GiveRings(player, 50, false);
@@ -197,7 +224,7 @@ void MegAmiMenu_State_Main(void)
                 destroyEntity(self);
                 break;
             case MEGAMIMENU_INV:
-                MegAmiMenu->playerInv = MegAmiMenu->playerInv ? false : true;
+                MegAmiMenu->playerInv ^= true;
                 destroyEntity(self);
                 break;
             case MEGAMIMENU_EXIT: destroyEntity(self); break;
@@ -279,79 +306,87 @@ void MegAmiMenu_State_P2Char(void)
                 destroyEntity(sidekick);
 
                 // Handle new player count
+                ObjectShield *Shield = Mod.FindObject("Shield");
                 EntityShield *shield = RSDK_GET_ENTITY(RSDK.GetEntitySlot(player) + Player->playerCount, Shield);
-                if (shield->classID)
-                    RSDK.CopyEntity(sidekick, shield, true);
+                ObjectImageTrail *ImageTrail = Mod.FindObject("ImageTrail");
+                EntityImageTrail *powerup    = RSDK_GET_ENTITY(2 * Player->playerCount + RSDK.GetEntitySlot(player), ImageTrail);
 #if MANIA_USE_PLUS
                 Player->playerCount = globals->gameMode == MODE_ENCORE ? 2 : RSDK.GetEntityCount(Player->classID, false);
 #else
                 Player->playerCount = RSDK.GetEntityCount(Player->classID, false);
 #endif
+                if (shield->classID)
+                    RSDK.CopyEntity(RSDK_GET_ENTITY_GEN(RSDK.GetEntitySlot(player) + Player->playerCount), shield, true);
+                if (powerup->classID)
+                    RSDK.CopyEntity(RSDK_GET_ENTITY_GEN(2 * Player->playerCount + RSDK.GetEntitySlot(player)), powerup, true);
             }
             else
                 Player_ChangeCharacter(sidekick, 1 << (self->subSelection - 1));
         }
-        else {
-            if (self->subSelection > 0) {
-                // P2 doesn't exist, spawn them
-                ObjectZone *zone = Mod.FindObject("Zone");
-                ObjectDust *Dust = Mod.FindObject("Dust");
+        else if (self->subSelection > 0) {
+            // P2 doesn't exist, spawn them
+            ObjectImageTrail *ImageTrail = Mod.FindObject("ImageTrail");
+            EntityImageTrail *powerup    = RSDK_GET_ENTITY(2 * Player->playerCount + RSDK.GetEntitySlot(player), ImageTrail);
+            if (powerup->classID)
+                RSDK.CopyEntity(RSDK_GET_ENTITY_GEN(RSDK.GetEntitySlot(powerup) + 2), powerup, true);
 
-                if (sidekick->classID) // If this is a powerup
-                    RSDK.CopyEntity(RSDK.GetEntity(RSDK.GetEntitySlot(sidekick) + 1), sidekick, true);
+            if (sidekick->classID) // If this is a powerup
+                RSDK.CopyEntity(RSDK_GET_ENTITY_GEN(RSDK.GetEntitySlot(sidekick) + 1), sidekick, false);
+            destroyEntity(sidekick);
 
-                sidekick->classID = Player->classID;
-                Player->jumpInTimer = 0;
-                sidekick->playerID  = 1;
+            sidekick->classID   = Player->classID;
+            Player->jumpInTimer = 0;
+            sidekick->playerID  = 1;
 
-                EntityDust *entdust  = CREATE_ENTITY(Dust, INT_TO_VOID(1), sidekick->position.x, sidekick->position.y);
-                entdust->visible     = false;
-                entdust->active      = ACTIVE_NEVER;
-                entdust->isPermanent = true;
-                entdust->position.y  = TO_FIXED(ScreenInfo->position.y - 128);
+            ObjectDust *Dust  = Mod.FindObject("Dust");
+            EntityDust *dust  = CREATE_ENTITY(Dust, INT_TO_VOID(1), sidekick->position.x, sidekick->position.y);
+            dust->visible     = false;
+            dust->active      = ACTIVE_NEVER;
+            dust->isPermanent = true;
+            dust->position.y  = TO_FIXED(ScreenInfo->position.y - 128);
 
-                Player_ChangeCharacter(sidekick, 1 << (self->subSelection - 1));
-                sidekick->velocity.x = 0;
-                sidekick->velocity.y = 0;
-                sidekick->groundVel  = 0;
-                sidekick->position.x = -TO_FIXED(64);
-                sidekick->position.y = -TO_FIXED(64);
-                sidekick->angle      = 0x80;
-                if (sidekick->characterID == ID_TAILS) {
-                    sidekick->state = Player_State_FlyToPlayer;
-                }
-                else {
-                    sidekick->state            = Player_State_ReturnToPlayer;
-                    sidekick->abilityValues[0] = ((ScreenInfo->position.y + ScreenInfo->size.y + 16) << 16) - player->position.y;
-                    sidekick->drawFX |= FX_SCALE;
-                    sidekick->scale.x    = 0x400;
-                    sidekick->scale.y    = 0x400;
-                    sidekick->velocity.y = CLAMP(sidekick->abilityValues[0] / -12, -0xE0000, -0x68000);
-                }
-                sidekick->abilityPtrs[0]   = entdust;
-                sidekick->abilityValues[0] = 0;
-                sidekick->nextAirState     = StateMachine_None;
-                sidekick->nextGroundState  = StateMachine_None;
-                sidekick->stateInput       = Player_Input_P2_Delay;
-                sidekick->tileCollisions   = TILECOLLISION_NONE;
-                sidekick->interaction      = false;
-                sidekick->drawGroup        = zone->playerDrawGroup[1];
-                sidekick->drownTimer       = 0;
-                sidekick->active           = ACTIVE_NORMAL;
-                sidekick->collisionPlane   = 0;
-                sidekick->collisionMode    = CMODE_FLOOR;
-                sidekick->collisionLayers  = zone->collisionLayers;
-                sidekick->controllerID     = CONT_P2;
-                sidekick->sidekick         = true;
-                sidekick->drawFX           = FX_FLIP | FX_ROTATE;
-                sidekick->visible          = true;
+            ObjectZone *Zone     = Mod.FindObject("Zone");
+            Player_ChangeCharacter(sidekick, 1 << (self->subSelection - 1));
+            sidekick->velocity.x = 0;
+            sidekick->velocity.y = 0;
+            sidekick->groundVel  = 0;
+            sidekick->position.x = -TO_FIXED(64);
+            sidekick->position.y = -TO_FIXED(64);
+            sidekick->camera     = NULL;
+            sidekick->angle      = 0x80;
+            if (sidekick->characterID == ID_TAILS)
+                sidekick->state = Player_State_FlyToPlayer;
+            else {
+                sidekick->state            = Player_State_ReturnToPlayer;
+                sidekick->abilityValues[0] = ((ScreenInfo->position.y + ScreenInfo->size.y + 16) << 16) - player->position.y;
+                sidekick->drawFX |= FX_SCALE;
+                sidekick->scale.x    = 0x400;
+                sidekick->scale.y    = 0x400;
+                sidekick->velocity.y = CLAMP(sidekick->abilityValues[0] / -12, -0xE0000, -0x68000);
+            }
+            sidekick->abilityPtrs[0]   = dust;
+            sidekick->abilityValues[0] = 0;
+            sidekick->nextAirState     = StateMachine_None;
+            sidekick->nextGroundState  = StateMachine_None;
+            sidekick->stateInput       = Player_Input_P2_Delay;
+            sidekick->tileCollisions   = TILECOLLISION_NONE;
+            sidekick->interaction      = false;
+            sidekick->drawGroup        = Zone->playerDrawGroup[1];
+            sidekick->drownTimer       = 0;
+            sidekick->active           = ACTIVE_NORMAL;
+            sidekick->collisionPlane   = 0;
+            sidekick->collisionMode    = CMODE_FLOOR;
+            sidekick->collisionLayers  = Zone->collisionLayers;
+            sidekick->controllerID     = CONT_P2;
+            sidekick->sidekick         = true;
+            sidekick->drawFX           = FX_FLIP | FX_ROTATE;
+            sidekick->visible          = true;
 
 #if MANIA_USE_PLUS
-                Player->playerCount = globals->gameMode == MODE_ENCORE ? 2 : RSDK.GetEntityCount(Player->classID, false);
+            Player->playerCount = globals->gameMode == MODE_ENCORE ? 2 : RSDK.GetEntityCount(Player->classID, false);
 #else
-                Player->playerCount = RSDK.GetEntityCount(Player->classID, false);
+            Player->playerCount = RSDK.GetEntityCount(Player->classID, false);
 #endif
-            }
         }
         destroyEntity(self);
     }
