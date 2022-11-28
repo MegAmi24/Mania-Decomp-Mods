@@ -36,9 +36,11 @@ void InitModAPI(void)
     ADD_PUBLIC_FUNC(MegAmiMenu_State_P1Char);
     ADD_PUBLIC_FUNC(MegAmiMenu_State_P2Char);
     ADD_PUBLIC_FUNC(MegAmiMenu_State_Shield);
+    ADD_PUBLIC_FUNC(MegAmiMenu_State_SetRings);
 
     ADD_PUBLIC_FUNC(MegAmiMenu_State_DrawChar);
     ADD_PUBLIC_FUNC(MegAmiMenu_State_DrawShield);
+    ADD_PUBLIC_FUNC(MegAmiMenu_State_DrawSetValue);
 
     // Add Mod Callbacks
     Mod.AddModCallback(MODCB_ONSTAGELOAD, StageLoadCallback);
