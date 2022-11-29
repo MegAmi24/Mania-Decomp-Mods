@@ -46,9 +46,10 @@ void MegAmiMenu_Draw(void)
         Vector2 drawPos;
 
         // Draw Selection Arrow
-        drawPos.x = TO_FIXED(MAINBOX_XPOS + 6);
+        drawPos.x = TO_FIXED(MAINBOX_XPOS + 8);
         drawPos.y = TO_FIXED(BOX_YPOS + 9 + (self->mainSelection * OPTION_SPACING));
-        RSDK.DrawText(&self->animator, &drawPos, &self->arrow, 0, self->arrow.length, ALIGN_LEFT, 0, 0, 0, true);
+        self->animator.frameID = 30; // >
+        RSDK.DrawSprite(&self->animator, &drawPos, true);
 
         // Initialize Option Text Position
         drawPos.x = TO_FIXED(MAINBOX_XPOS + 16);
@@ -119,9 +120,6 @@ void MegAmiMenu_Create(void *data)
         RSDK.InitString(&self->bubble, "BUBBLE SHIELD", false);
         RSDK.InitString(&self->fire, "FIRE SHIELD", false);
         RSDK.InitString(&self->lightning, "LIGHTNING SHIELD", false);
-        RSDK.InitString(&self->arrow, ">", false);
-        RSDK.InitString(&self->plus, "+", false);
-        RSDK.InitString(&self->minus, "-", false);
 
         RSDK.SetSpriteString(uiwidgets->fontFrames, 0, &self->p1char);
         RSDK.SetSpriteString(uiwidgets->fontFrames, 0, &self->p2char);
@@ -144,9 +142,6 @@ void MegAmiMenu_Create(void *data)
         RSDK.SetSpriteString(uiwidgets->fontFrames, 0, &self->bubble);
         RSDK.SetSpriteString(uiwidgets->fontFrames, 0, &self->fire);
         RSDK.SetSpriteString(uiwidgets->fontFrames, 0, &self->lightning);
-        RSDK.SetSpriteString(uiwidgets->fontFrames, 0, &self->arrow);
-        RSDK.SetSpriteString(uiwidgets->fontFrames, 0, &self->plus);
-        RSDK.SetSpriteString(uiwidgets->fontFrames, 0, &self->minus);
 
         self->state     = MegAmiMenu_State_Main;
         self->stateDraw = StateMachine_None;
@@ -497,9 +492,10 @@ void MegAmiMenu_State_DrawChar(void)
     Vector2 drawPos;
 
     // Draw Selection Arrow
-    drawPos.x = TO_FIXED(SUBBOX_XPOS + 6);
+    drawPos.x = TO_FIXED(SUBBOX_XPOS + 8);
     drawPos.y = TO_FIXED(BOX_YPOS + 9 + (self->subSelection * OPTION_SPACING));
-    RSDK.DrawText(&self->animator, &drawPos, &self->arrow, 0, self->arrow.length, ALIGN_LEFT, 0, 0, 0, true);
+    self->animator.frameID = 30; // >
+    RSDK.DrawSprite(&self->animator, &drawPos, true);
 
     // Initialize Option Text Position
     drawPos.x = TO_FIXED(SUBBOX_XPOS + 16);
@@ -534,9 +530,10 @@ void MegAmiMenu_State_DrawShield(void)
     Vector2 drawPos;
 
     // Draw Selection Arrow
-    drawPos.x = TO_FIXED(SUBBOX_XPOS + 6);
+    drawPos.x = TO_FIXED(SUBBOX_XPOS + 8);
     drawPos.y = TO_FIXED(BOX_YPOS + 9 + (self->subSelection * OPTION_SPACING));
-    RSDK.DrawText(&self->animator, &drawPos, &self->arrow, 0, self->arrow.length, ALIGN_LEFT, 0, 0, 0, true);
+    self->animator.frameID = 30; // >
+    RSDK.DrawSprite(&self->animator, &drawPos, true);
 
     // Initialize Option Text Position
     drawPos.x = TO_FIXED(SUBBOX_XPOS + 16);
@@ -558,17 +555,18 @@ void MegAmiMenu_State_DrawSetValue(void)
 {
     RSDK_THIS(MegAmiMenu);
 
-    RSDK.DrawRect(SUBBOX_XPOS, BOX_YPOS, 40, BOX_HEIGHT(3), 0xFF0000, 0xFF, INK_NONE, true);
+    RSDK.DrawRect(SUBBOX_XPOS, BOX_YPOS, (self->valueDigits * 8) + 11, BOX_HEIGHT(3), 0xFF0000, 0xFF, INK_NONE, true);
 
     Vector2 drawPos;
 
     // Draw Plus Sign
-    drawPos.x = TO_FIXED(SUBBOX_XPOS + 6 + (self->subSelection * 8));
+    drawPos.x = TO_FIXED(SUBBOX_XPOS + 9 + (self->subSelection * 8));
     drawPos.y = TO_FIXED(BOX_YPOS + 9);
-    RSDK.DrawText(&self->animator, &drawPos, &self->plus, 0, self->plus.length, ALIGN_LEFT, 0, 0, 0, true);
+    self->animator.frameID = 11; // +
+    RSDK.DrawSprite(&self->animator, &drawPos, true);
 
     // Initialize Number Position
-    drawPos.x = TO_FIXED(SUBBOX_XPOS + 25);
+    drawPos.x = TO_FIXED(SUBBOX_XPOS + 1 + (self->valueDigits * 8));
     drawPos.y += TO_FIXED(OPTION_SPACING);
 
     // Draw Number
@@ -585,9 +583,10 @@ void MegAmiMenu_State_DrawSetValue(void)
     }
 
     // Draw Minus Sign
-    drawPos.x = TO_FIXED(SUBBOX_XPOS + 6 + (self->subSelection * 8));
+    drawPos.x = TO_FIXED(SUBBOX_XPOS + 9 + (self->subSelection * 8));
     drawPos.y += TO_FIXED(OPTION_SPACING);
-    RSDK.DrawText(&self->animator, &drawPos, &self->minus, 0, self->minus.length, ALIGN_LEFT, 0, 0, 0, true);
+    self->animator.frameID = 13; // -
+    RSDK.DrawSprite(&self->animator, &drawPos, true);
 }
 
 #if RETRO_INCLUDE_EDITOR

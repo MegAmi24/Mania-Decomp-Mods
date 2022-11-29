@@ -65,9 +65,6 @@ typedef struct {
     String bubble;
     String fire;
     String lightning;
-    String arrow;
-    String plus;
-    String minus;
     Animator animator;
 } EntityMegAmiMenu;
 
