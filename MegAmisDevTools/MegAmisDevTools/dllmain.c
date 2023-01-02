@@ -15,6 +15,11 @@ void StageLoadCallback(void *data)
     UNUSED(data);
     globals->notifiedAutosave = true;
     SceneInfo->debugMode = true;
+#if MANIA_USE_PLUS
+    ObjectMusic *Music = Mod.FindObject("Music");
+    if (Music && SKU->platform != PLATFORM_DEV)
+        RSDK.AddViewableVariable("Vape Mode", &globals->vapeMode, VIEWVAR_BOOL, false, true);
+#endif
 }
 
 void InitModAPI(void)
