@@ -15,16 +15,8 @@ void Player_Create(void)
     if (!SceneInfo->inEditor && self->characterID == ID_SONIC) {
         self->aniFrames = Player->sonicFrames;
 
-        // Set Peelout animation to Dash
-#if MOD_VERSION == MODVER_100
-        for (int32 f = 0; f < 4; ++f) {
-            SpriteFrame *dst = RSDK.GetFrame(self->aniFrames, ANI_PEELOUT, f);
-            SpriteFrame *src = RSDK.GetFrame(self->aniFrames, ANI_DASH, f + 1);
-
-            *dst = *src;
-            printf("Setting Peelout Animation Frame!\n");
-        }
-#else
+        // Set Peelout animation to Dash (or vice versa)
+#if MOD_VERSION != MODVER_100
         if (config.PeeloutAnim) {
             for (int32 f = 0; f < 4; ++f) {
                 SpriteFrame *dst = RSDK.GetFrame(self->aniFrames, ANI_DASH, f + 1);
@@ -35,6 +27,7 @@ void Player_Create(void)
             }
         }
         else {
+#endif
             for (int32 f = 0; f < 4; ++f) {
                 SpriteFrame *dst = RSDK.GetFrame(self->aniFrames, ANI_PEELOUT, f);
                 SpriteFrame *src = RSDK.GetFrame(self->aniFrames, ANI_DASH, f + 1);
@@ -42,6 +35,7 @@ void Player_Create(void)
                 *dst = *src;
                 printf("Setting Peelout Animation Frame!\n");
             }
+#if MOD_VERSION != MODVER_100
         }
 #endif
     }

@@ -23,7 +23,9 @@ typedef struct {
 } ObjectDebugMode;
 
 // Entity Class
-typedef struct { RSDK_ENTITY } EntityDebugMode;
+typedef struct {
+    RSDK_ENTITY
+} EntityDebugMode;
 
 // Object Struct
 extern ObjectDebugMode *DebugMode;

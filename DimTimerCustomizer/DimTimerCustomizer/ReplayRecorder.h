@@ -38,7 +38,9 @@ typedef struct {
     int32 padding;
 } Replay;
 
-typedef struct { RSDK_ENTITY } EntityPlayer;
+typedef struct {
+    RSDK_ENTITY
+} EntityPlayer;
 
 // Entity Class
 typedef struct {

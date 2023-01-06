@@ -9,7 +9,7 @@ void DebugMode_Update(void)
     RSDK_THIS(DebugMode);
 
     if (ControllerInfo[CONT_P1].keyStart.press) {
-        // Do this so we can access the player variables again
+        // Do this so we can access the player variables
         RSDK_THIS(Player);
         RSDK.SetEngineState(ENGINESTATE_FROZEN);
         SceneInfo->timeEnabled = false;

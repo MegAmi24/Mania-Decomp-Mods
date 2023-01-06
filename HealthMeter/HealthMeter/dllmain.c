@@ -16,7 +16,7 @@ DLLExport bool32 LinkModLogic(EngineInfo *info, const char *id);
 void InitModAPI(void)
 {
     // Setup Config
-    config.MaxHealth = Mod.GetSettingsInteger("", "Config:MaxHealth", 3);
+    config.MaxHealth      = Mod.GetSettingsInteger("", "Config:MaxHealth", 3);
     config.StartingHealth = Mod.GetSettingsInteger("", "Config:StartingHealth", 3);
 
     if (config.MaxHealth > 10) {
@@ -57,11 +57,11 @@ void InitModAPI(void)
     ItemBox_HandleFallingCollision = Mod.GetPublicFunction(NULL, "ItemBox_HandleFallingCollision");
     LRZConvItem_HandleLRZConvPhys  = Mod.GetPublicFunction(NULL, "LRZConvItem_HandleLRZConvPhys");
 #if !MANIA_USE_PLUS
-    CompSession_DeriveWinner       = Mod.GetPublicFunction(NULL, "CompetitionSession_DeriveWinner");
+    CompSession_DeriveWinner = Mod.GetPublicFunction(NULL, "CompetitionSession_DeriveWinner");
 #else
-    CompSession_DeriveWinner       = Mod.GetPublicFunction(NULL, "Competition_DeriveWinner");
+    CompSession_DeriveWinner = Mod.GetPublicFunction(NULL, "Competition_DeriveWinner");
 #endif
-    
+
     // Register State Hooks
     Mod.RegisterStateHook(HUD_State_MoveIn, HUD_State_MoveIn_Hook, false);
     Mod.RegisterStateHook(HUD_State_MoveOut, HUD_State_MoveOut_Hook, true);

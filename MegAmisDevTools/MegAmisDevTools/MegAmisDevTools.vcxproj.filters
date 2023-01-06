@@ -25,6 +25,9 @@
     <ClCompile Include="Objects\MegAmiMenu.c">
       <Filter>Source Files\Objects</Filter>
     </ClCompile>
+    <ClCompile Include="Objects\DebugMode.c">
+      <Filter>Source Files\Objects</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\GameAPI\C\GameAPI\Game.h">
@@ -46,6 +49,9 @@
       <Filter>Source Files\Objects</Filter>
     </ClInclude>
     <ClInclude Include="Objects\Misc.h">
+      <Filter>Source Files\Objects</Filter>
+    </ClInclude>
+    <ClInclude Include="Objects\DebugMode.h">
       <Filter>Source Files\Objects</Filter>
     </ClInclude>
   </ItemGroup>

@@ -52,7 +52,7 @@ void Player_SetOuttaHere(void)
     }
 #endif
 
-    // Wait for ~3 minutes to do outta here
+        // Wait for ~3 minutes to do outta here
 #if MOD_VERSION == MODVER_100
     if (self->outtaHereTimer >= 10620 && self->characterID == ID_SONIC) {
 #else
@@ -80,7 +80,8 @@ bool32 Player_State_OuttaHere_Hook(bool32 skipped)
     RSDK_THIS(Player);
 
     if (self->onGround) {
-        if (self->animator.frameID == (self->characterID == ID_SONIC && self->superState == SUPERSTATE_SUPER && config.superSonicOuttaHere ? 22 : 14)) {
+        if (self->animator.frameID
+            == (self->characterID == ID_SONIC && self->superState == SUPERSTATE_SUPER && config.superSonicOuttaHere ? 22 : 14)) {
             self->applyJumpCap = false;
 
             if (self->direction == FLIP_X)

@@ -11,7 +11,7 @@ ModConfig config;
 void DimTimerCustomizerHook(void *data)
 {
     UNUSED(data);
-    
+
     ObjectReplayRecorder *recorder = Mod.FindObject("ReplayRecorder");
     EntityReplayRecorder *manager  = recorder->playbackManager;
 

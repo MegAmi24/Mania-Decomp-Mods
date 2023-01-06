@@ -9,9 +9,10 @@ void Player_Update(void)
     RSDK_THIS(Player);
 
     // Handle Invincibility Toggle
-    if (MegAmiMenu->playerInv && self->blinkTimer >= 0 && self->blinkTimer <= 2)
+    if (MegAmiMenu->playerInv[self->playerID] && self->blinkTimer >= 0 && self->blinkTimer <= 2)
         self->blinkTimer = 2;
 
+    // Fix a possible crash when changing sidekick
     if (self->outerbox && !self->innerbox)
         self->innerbox = RSDK.GetHitbox(&self->animator, 1);
 

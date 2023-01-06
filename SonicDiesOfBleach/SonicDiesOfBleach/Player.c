@@ -9,6 +9,6 @@ void Player_LateUpdate(void)
 
     if (self->animator.animationID == ANI_BORED_2 && self->animator.frameID == 2 && self->characterID == ID_SONIC)
         self->deathType = PLAYER_DEATH_DIE_USESFX;
-    
+
     Mod.Super(Player->classID, SUPER_LATEUPDATE, NULL);
 }

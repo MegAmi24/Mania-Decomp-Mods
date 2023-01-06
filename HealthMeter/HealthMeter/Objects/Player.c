@@ -73,7 +73,7 @@ void Player_Create(void *data)
     Mod.Super(self->classID, SUPER_CREATE, NULL);
 
     if (!SceneInfo->inEditor) {
-        self->health       = Mod_Player->health;
+        self->health = Mod_Player->health;
         if (self->health == 0)
             self->health = config.StartingHealth;
         Mod_Player->health = config.StartingHealth;

@@ -2,25 +2,33 @@
 #define OBJ_PLAYER_H
 
 #include "GameAPI/Game.h"
-#include "Misc.h"
 
-#define IMAGETRAIL_TRACK_COUNT (7)
-
-typedef enum {
-    SHIELD_NONE,
-    SHIELD_BLUE,
-    SHIELD_BUBBLE,
-    SHIELD_FIRE,
-    SHIELD_LIGHTNING,
-} ShieldTypes;
-
-typedef enum {
-    SUPERSTATE_NONE,
-    SUPERSTATE_FADEIN,
-    SUPERSTATE_SUPER,
-    SUPERSTATE_FADEOUT,
-    SUPERSTATE_DONE,
-} SuperStates;
+// Entity Class
+typedef struct {
+    RSDK_ENTITY
+    StateMachine(state);
+    Entity *target;
+    int32 screenID;
+    Vector2 center;
+    Vector2 targetMoveVel;
+    Vector2 lastPos;
+    Vector2 shakePos;
+    Vector2 lookPos;
+    Vector2 offset;
+    bool32 disableYOffset;
+    int32 centerY;
+    int32 adjustY;
+    int32 lerpPercent;
+    int32 lerpSpeed;
+    int32 lerpType;
+    Vector2 endLerpPos;
+    Vector2 startLerpPos;
+    Vector2 boundsOffset;
+    int32 boundsL;
+    int32 boundsR;
+    int32 boundsT;
+    int32 boundsB;
+} EntityCamera;
 
 // Object Class
 #if MANIA_USE_PLUS
@@ -329,60 +337,7 @@ typedef struct {
 #endif
 } EntityPlayer;
 
-typedef struct {
-    RSDK_ENTITY
-    EntityPlayer *player;
-    StateMachine(state);
-    int32 type;
-    int32 timer;
-    int32 frameFlags;
-    bool32 forceVisible;
-    Animator shieldAnimator;
-    Animator fxAnimator;
-} EntityShield;
-
-typedef struct {
-    RSDK_ENTITY
-    EntityPlayer *player;
-    int32 playerClassID;
-    Vector2 currentPos;
-    Vector2 statePos[IMAGETRAIL_TRACK_COUNT];
-    int32 currentRotation;
-    int32 stateRotation[IMAGETRAIL_TRACK_COUNT];
-    uint8 currentDirection;
-    uint8 stateDirection[IMAGETRAIL_TRACK_COUNT];
-    uint8 currentVisible;
-    uint8 stateVisible[IMAGETRAIL_TRACK_COUNT];
-    int32 currentScale;
-    int32 stateScale[IMAGETRAIL_TRACK_COUNT];
-    Animator currentAnimator;
-    Animator stateAnimator[IMAGETRAIL_TRACK_COUNT];
-    int32 baseAlpha;
-    int32 fadeoutTimer;
-} EntityImageTrail;
-
 // Object Struct
 extern ObjectPlayer *Player;
-
-void Player_Update(void);
-
-// Public Functions
-void (*Player_GiveRings)(EntityPlayer *player, int32 amount, bool32 playSfx);
-void (*Player_ChangeCharacter)(EntityPlayer *player, int32 character);
-bool32 (*Player_TryTransform)(EntityPlayer *player, uint8 emeraldMasks);
-void (*Player_ApplyShield)(EntityPlayer *player);
-
-void (*Player_State_FlyToPlayer)(void);
-void (*Player_State_ReturnToPlayer)(void);
-
-// Input States
-void (*Player_Input_P1)(void);
-void (*Player_Input_P2_Delay)(void);
-
-// State helpers
-void (*Player_UpdatePhysicsState)(EntityPlayer *entity);
-
-// Extra Entity Functions
-bool32 Player_Input_P1_Hook(bool32 skippedState);
 
 #endif //! OBJ_PLAYER_H

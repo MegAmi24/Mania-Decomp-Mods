@@ -121,7 +121,7 @@ void ItemBox_Break_New(EntityItemBox *itemBox, EntityPlayer *player)
     RSDK.SetSpriteAnimation(-1, 0, &itemBox->debrisAnimator, true, 0);
 
     ObjectDebris *Debris = Mod.FindObject("Debris");
-    ObjectZone *Zone = Mod.FindObject("Zone");
+    ObjectZone *Zone     = Mod.FindObject("Zone");
 
     for (int32 d = 0; d < 12; ++d) {
         EntityDebris *debris    = CREATE_ENTITY(Debris, NULL, itemBox->position.x + RSDK.Rand(-0x80000, 0x80000),

@@ -39,15 +39,15 @@ void MegAmiMenu_Draw(void)
 
     EntityPlayer *parentplayer = (EntityPlayer *)self->parent;
     EntityPlayer *camplayer    = RSDK_GET_ENTITY(SceneInfo->currentScreenID, Player);
-    
+
     if (RSDK.GetEntitySlot(parentplayer) == RSDK.GetEntitySlot(camplayer)) {
         RSDK.DrawRect(MAINBOX_XPOS, BOX_YPOS, MAINBOX_WIDTH, BOX_HEIGHT(MEGAMIMENU_EXIT + 1), 0xFF0000, 0xFF, INK_NONE, true);
 
         Vector2 drawPos;
 
         // Draw Selection Arrow
-        drawPos.x = TO_FIXED(MAINBOX_XPOS + 8);
-        drawPos.y = TO_FIXED(BOX_YPOS + 9 + (self->mainSelection * OPTION_SPACING));
+        drawPos.x              = TO_FIXED(MAINBOX_XPOS + 8);
+        drawPos.y              = TO_FIXED(BOX_YPOS + 9 + (self->mainSelection * OPTION_SPACING));
         self->animator.frameID = 30; // >
         RSDK.DrawSprite(&self->animator, &drawPos, true);
 
@@ -106,7 +106,7 @@ void MegAmiMenu_Create(void *data)
         RSDK.InitString(&self->hyperRing, !player->hyperRing ? "GIVE HYPER RING" : "REMOVE HYPER RING", false);
         RSDK.InitString(&self->setRings, "SET RING COUNT", false);
         RSDK.InitString(&self->super, player->superState != SUPERSTATE_SUPER ? "TURN SUPER" : "REVERT SUPER", false);
-        RSDK.InitString(&self->inv, !MegAmiMenu->playerInv ? "ENABLE INVINCIBILITY" : "DISABLE INVINCIBILITY", false);
+        RSDK.InitString(&self->inv, !MegAmiMenu->playerInv[player->playerID] ? "ENABLE INVINCIBILITY" : "DISABLE INVINCIBILITY", false);
         RSDK.InitString(&self->exit, "EXIT", false);
         RSDK.InitString(&self->sonic, "SONIC", false);
         RSDK.InitString(&self->tails, "TAILS", false);
@@ -147,6 +147,10 @@ void MegAmiMenu_Create(void *data)
         self->stateDraw = StateMachine_None;
 
         RSDK.SetEngineState(ENGINESTATE_PAUSED);
+    }
+    else {
+        RSDK.InitString(&self->p1char, "MEGAMI MENU", false);
+        RSDK.SetSpriteString(uiwidgets->fontFrames, 0, &self->p1char);
     }
 }
 
@@ -198,7 +202,7 @@ void MegAmiMenu_State_Main(void)
                 if (player->superState == SUPERSTATE_NONE) {
                     Music_PlayJingle(TRACK_SNEAKERS);
                     ObjectImageTrail *ImageTrail = Mod.FindObject("ImageTrail");
-                    EntityImageTrail *powerup = RSDK_GET_ENTITY(2 * Player->playerCount + RSDK.GetEntitySlot(player), ImageTrail);
+                    EntityImageTrail *powerup    = RSDK_GET_ENTITY(2 * Player->playerCount + RSDK.GetEntitySlot(player), ImageTrail);
                     RSDK.ResetEntity(powerup, ImageTrail->classID, player);
                 }
                 destroyEntity(self);
@@ -224,7 +228,7 @@ void MegAmiMenu_State_Main(void)
                 destroyEntity(self);
                 break;
             case MEGAMIMENU_INV:
-                MegAmiMenu->playerInv ^= true;
+                MegAmiMenu->playerInv[player->playerID] ^= true;
                 destroyEntity(self);
                 break;
             case MEGAMIMENU_EXIT: destroyEntity(self); break;
@@ -305,8 +309,8 @@ void MegAmiMenu_State_P2Char(void)
                 destroyEntity(sidekick);
 
                 // Handle new player count
-                ObjectShield *Shield = Mod.FindObject("Shield");
-                EntityShield *shield = RSDK_GET_ENTITY(RSDK.GetEntitySlot(player) + Player->playerCount, Shield);
+                ObjectShield *Shield         = Mod.FindObject("Shield");
+                EntityShield *shield         = RSDK_GET_ENTITY(RSDK.GetEntitySlot(player) + Player->playerCount, Shield);
                 ObjectImageTrail *ImageTrail = Mod.FindObject("ImageTrail");
                 EntityImageTrail *powerup    = RSDK_GET_ENTITY(2 * Player->playerCount + RSDK.GetEntitySlot(player), ImageTrail);
 #if MANIA_USE_PLUS
@@ -344,7 +348,7 @@ void MegAmiMenu_State_P2Char(void)
             dust->isPermanent = true;
             dust->position.y  = TO_FIXED(ScreenInfo->position.y - 128);
 
-            ObjectZone *Zone     = Mod.FindObject("Zone");
+            ObjectZone *Zone = Mod.FindObject("Zone");
             Player_ChangeCharacter(sidekick, 1 << (self->subSelection - 1));
             sidekick->velocity.x = 0;
             sidekick->velocity.y = 0;
@@ -492,8 +496,8 @@ void MegAmiMenu_State_DrawChar(void)
     Vector2 drawPos;
 
     // Draw Selection Arrow
-    drawPos.x = TO_FIXED(SUBBOX_XPOS + 8);
-    drawPos.y = TO_FIXED(BOX_YPOS + 9 + (self->subSelection * OPTION_SPACING));
+    drawPos.x              = TO_FIXED(SUBBOX_XPOS + 8);
+    drawPos.y              = TO_FIXED(BOX_YPOS + 9 + (self->subSelection * OPTION_SPACING));
     self->animator.frameID = 30; // >
     RSDK.DrawSprite(&self->animator, &drawPos, true);
 
@@ -530,8 +534,8 @@ void MegAmiMenu_State_DrawShield(void)
     Vector2 drawPos;
 
     // Draw Selection Arrow
-    drawPos.x = TO_FIXED(SUBBOX_XPOS + 8);
-    drawPos.y = TO_FIXED(BOX_YPOS + 9 + (self->subSelection * OPTION_SPACING));
+    drawPos.x              = TO_FIXED(SUBBOX_XPOS + 8);
+    drawPos.y              = TO_FIXED(BOX_YPOS + 9 + (self->subSelection * OPTION_SPACING));
     self->animator.frameID = 30; // >
     RSDK.DrawSprite(&self->animator, &drawPos, true);
 
@@ -560,8 +564,8 @@ void MegAmiMenu_State_DrawSetValue(void)
     Vector2 drawPos;
 
     // Draw Plus Sign
-    drawPos.x = TO_FIXED(SUBBOX_XPOS + 9 + (self->subSelection * 8));
-    drawPos.y = TO_FIXED(BOX_YPOS + 9);
+    drawPos.x              = TO_FIXED(SUBBOX_XPOS + 9 + (self->subSelection * 8));
+    drawPos.y              = TO_FIXED(BOX_YPOS + 9);
     self->animator.frameID = 11; // +
     RSDK.DrawSprite(&self->animator, &drawPos, true);
 
@@ -571,15 +575,17 @@ void MegAmiMenu_State_DrawSetValue(void)
 
     // Draw Number
     int32 digitCount = self->valueDigits;
-    int32 digit = 1;
+    int32 digit      = 1;
     while (digitCount--) {
         int32 digitNumber      = self->customValue / digit % 10;
         self->animator.frameID = 16 + digitNumber;
-        if (digitNumber == 6 || digitNumber == 7) drawPos.x -= TO_FIXED(1);
+        if (digitNumber == 6 || digitNumber == 7)
+            drawPos.x -= TO_FIXED(1);
         RSDK.DrawSprite(&self->animator, &drawPos, true);
         digit *= 10;
         drawPos.x -= TO_FIXED(8);
-        if (digitNumber == 6 || digitNumber == 7) drawPos.x += TO_FIXED(1);
+        if (digitNumber == 6 || digitNumber == 7)
+            drawPos.x += TO_FIXED(1);
     }
 
     // Draw Minus Sign
@@ -590,7 +596,14 @@ void MegAmiMenu_State_DrawSetValue(void)
 }
 
 #if RETRO_INCLUDE_EDITOR
-void MegAmiMenu_EditorDraw(void) {}
+void MegAmiMenu_EditorDraw(void)
+{
+    RSDK_THIS(MegAmiMenu);
+
+    RSDK.DrawRect(self->position.x - TO_FIXED(45), self->position.y - TO_FIXED(9), TO_FIXED(90), TO_FIXED(19), 0xFF0000, 0xFF, INK_NONE, false);
+
+    RSDK.DrawText(&self->animator, &self->position, &self->p1char, 0, self->p1char.length, ALIGN_CENTER, 0, 0, 0, false);
+}
 
 void MegAmiMenu_EditorLoad(void) {}
 #endif

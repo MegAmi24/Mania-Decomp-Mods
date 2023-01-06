@@ -28,7 +28,7 @@ void Player_State_RollingAir(void)
     Player_State_Air();
 
     if (((self->jumpAbilityState == 0 && abilityCheck) // If an ability besides the Drop Dash has been used (namely a Sonic shield ability)
-        || (shield && shield->inkEffect == INK_ADD && shield->alpha == 0x100)) // If the Instashield has been used
+         || (shield && shield->inkEffect == INK_ADD && shield->alpha == 0x100)) // If the Instashield has been used
         && self->state == Player_State_RollingAir)
         self->state = Player_State_Air;
     else if (self->state == Player_State_DropDash)

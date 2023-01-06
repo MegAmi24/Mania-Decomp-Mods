@@ -8,7 +8,7 @@ bool32 ItemBox_State_Break_Hook(bool32 skipped)
 {
     RSDK_THIS(ItemBox);
 
-    EntityPlayer *player = (EntityPlayer *)self->storedEntity;
+    EntityPlayer *player           = (EntityPlayer *)self->storedEntity;
     ObjectLRZConvItem *LRZConvItem = Mod.FindObject("LRZConvItem");
 
     if (LRZConvItem && self->lrzConvPhys)

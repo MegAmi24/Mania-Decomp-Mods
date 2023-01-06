@@ -173,6 +173,7 @@
   <ItemGroup>
     <ClCompile Include="..\GameAPI\C\GameAPI\Game.c" />
     <ClCompile Include="dllmain.c" />
+    <ClCompile Include="Objects\DebugMode.c" />
     <ClCompile Include="Objects\MegAmiMenu.c" />
     <ClCompile Include="Objects\Player.c" />
   </ItemGroup>
@@ -181,6 +182,7 @@
     <ClInclude Include="..\GameAPI\C\GameAPI\GameLink.h" />
     <ClInclude Include="..\GameAPI\C\GameAPI\GameObjects.h" />
     <ClInclude Include="..\GameAPI\C\GameAPI\GameVariables.h" />
+    <ClInclude Include="Objects\DebugMode.h" />
     <ClInclude Include="Objects\MegAmiMenu.h" />
     <ClInclude Include="Objects\Misc.h" />
     <ClInclude Include="Objects\Player.h" />

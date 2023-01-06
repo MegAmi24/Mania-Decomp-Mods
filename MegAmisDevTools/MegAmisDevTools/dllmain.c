@@ -2,6 +2,7 @@
 
 #include "Objects/Player.h"
 #include "Objects/MegAmiMenu.h"
+#include "Objects/DebugMode.h"
 #include "Objects/Misc.h"
 
 #if RETRO_USE_MOD_LOADER
@@ -14,7 +15,7 @@ void StageLoadCallback(void *data)
 {
     UNUSED(data);
     globals->notifiedAutosave = true;
-    SceneInfo->debugMode = true;
+    SceneInfo->debugMode      = true;
 #if MANIA_USE_PLUS
     ObjectMusic *Music = Mod.FindObject("Music");
     if (Music && SKU->platform != PLATFORM_DEV)
@@ -57,7 +58,7 @@ void InitModAPI(void)
     MOD_REGISTER_OBJECT(MegAmiMenu, NULL, MegAmiMenu_Update, MegAmiMenu_LateUpdate, MegAmiMenu_StaticUpdate, MegAmiMenu_Draw, MegAmiMenu_Create,
                         MegAmiMenu_StageLoad, MegAmiMenu_EditorDraw, MegAmiMenu_EditorLoad, MegAmiMenu_Serialize);
     MOD_REGISTER_OBJ_OVERLOAD(Player, Player_Update, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
-
+    MOD_REGISTER_OBJ_OVERLOAD(DebugMode, DebugMode_Update, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
 }
 
 #if RETRO_USE_MOD_LOADER

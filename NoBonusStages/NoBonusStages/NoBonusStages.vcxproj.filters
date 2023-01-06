@@ -16,7 +16,7 @@
     <ClCompile Include="..\GameAPI\C\GameAPI\Game.c">
       <Filter>GameAPI</Filter>
     </ClCompile>
-    <ClCompile Include="Objects\StarPost.c">
+    <ClCompile Include="StarPost.c">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -33,7 +33,7 @@
     <ClInclude Include="..\GameAPI\C\GameAPI\GameVariables.h">
       <Filter>GameAPI</Filter>
     </ClInclude>
-    <ClInclude Include="Objects\StarPost.h">
+    <ClInclude Include="StarPost.h">
       <Filter>Source Files</Filter>
     </ClInclude>
   </ItemGroup>
