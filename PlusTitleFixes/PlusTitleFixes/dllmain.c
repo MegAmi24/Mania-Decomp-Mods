@@ -1,6 +1,6 @@
 #include "../GameAPI/C/GameAPI/Game.h"
-#include "Objects/TitleSetup.h"
-#include "Objects/TitleLogo.h"
+#include "TitleSetup.h"
+#include "TitleLogo.h"
 #include "ModConfig.h"
 
 ModConfig config;

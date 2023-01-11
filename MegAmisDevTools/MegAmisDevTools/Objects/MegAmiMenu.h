@@ -24,6 +24,7 @@ typedef enum {
     MEGAMIMENU_SUPER,
     MEGAMIMENU_INV,
     MEGAMIMENU_EXIT,
+    MEGAMIMENU_COUNT,
 } MegAmiMenuOptions;
 
 // Object Class

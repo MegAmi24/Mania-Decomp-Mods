@@ -41,7 +41,7 @@ void MegAmiMenu_Draw(void)
     EntityPlayer *camplayer    = RSDK_GET_ENTITY(SceneInfo->currentScreenID, Player);
 
     if (RSDK.GetEntitySlot(parentplayer) == RSDK.GetEntitySlot(camplayer)) {
-        RSDK.DrawRect(MAINBOX_XPOS, BOX_YPOS, MAINBOX_WIDTH, BOX_HEIGHT(MEGAMIMENU_EXIT + 1), 0xFF0000, 0xFF, INK_NONE, true);
+        RSDK.DrawRect(MAINBOX_XPOS, BOX_YPOS, MAINBOX_WIDTH, BOX_HEIGHT(MEGAMIMENU_COUNT), 0xFF0000, 0xFF, INK_NONE, true);
 
         Vector2 drawPos;
 
@@ -75,7 +75,7 @@ void MegAmiMenu_Draw(void)
         RSDK.DrawText(&self->animator, &drawPos, &self->exit, 0, self->exit.length, ALIGN_LEFT, 0, 0, 0, true);
 
         if (self->stateDraw) {
-            RSDK.DrawRect(MAINBOX_XPOS, BOX_YPOS, MAINBOX_WIDTH, BOX_HEIGHT(MEGAMIMENU_EXIT + 1), 0x000000, 0x80, INK_ALPHA, true);
+            RSDK.DrawRect(MAINBOX_XPOS, BOX_YPOS, MAINBOX_WIDTH, BOX_HEIGHT(MEGAMIMENU_COUNT), 0x000000, 0x80, INK_ALPHA, true);
             StateMachine_Run(self->stateDraw);
         }
     }

@@ -173,16 +173,16 @@
   <ItemGroup>
     <ClCompile Include="..\GameAPI\C\GameAPI\Game.c" />
     <ClCompile Include="dllmain.c" />
-    <ClCompile Include="Objects\ItemBox.c" />
+    <ClCompile Include="ItemBox.c" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\GameAPI\C\GameAPI\Game.h" />
     <ClInclude Include="..\GameAPI\C\GameAPI\GameLink.h" />
     <ClInclude Include="..\GameAPI\C\GameAPI\GameObjects.h" />
     <ClInclude Include="..\GameAPI\C\GameAPI\GameVariables.h" />
-    <ClInclude Include="Objects\ItemBox.h" />
-    <ClInclude Include="Objects\Misc.h" />
-    <ClInclude Include="Objects\Player.h" />
+    <ClInclude Include="ItemBox.h" />
+    <ClInclude Include="Misc.h" />
+    <ClInclude Include="Player.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

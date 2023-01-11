@@ -2,7 +2,7 @@
 #include "TitleSetup.h"
 #include "TitleLogo.h"
 #include "TitleEggman.h"
-#include "../ModConfig.h"
+#include "ModConfig.h"
 
 ObjectTitleSetup *TitleSetup;
 

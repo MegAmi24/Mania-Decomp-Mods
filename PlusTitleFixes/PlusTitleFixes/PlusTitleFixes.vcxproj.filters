@@ -8,9 +8,6 @@
     <Filter Include="GameAPI">
       <UniqueIdentifier>{c2e2d1aa-1805-487f-9beb-763e5b22492c}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source Files\Objects">
-      <UniqueIdentifier>{8eff5c04-2dfc-477f-b4c1-31aee4afbe34}</UniqueIdentifier>
-    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="dllmain.c">
@@ -19,8 +16,8 @@
     <ClCompile Include="..\GameAPI\C\GameAPI\Game.c">
       <Filter>GameAPI</Filter>
     </ClCompile>
-    <ClCompile Include="Objects\TitleSetup.c">
-      <Filter>Source Files\Objects</Filter>
+    <ClCompile Include="TitleSetup.c">
+      <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -36,17 +33,17 @@
     <ClInclude Include="..\GameAPI\C\GameAPI\GameVariables.h">
       <Filter>GameAPI</Filter>
     </ClInclude>
-    <ClInclude Include="Objects\TitleSetup.h">
-      <Filter>Source Files\Objects</Filter>
-    </ClInclude>
-    <ClInclude Include="Objects\TitleLogo.h">
-      <Filter>Source Files\Objects</Filter>
-    </ClInclude>
     <ClInclude Include="ModConfig.h">
       <Filter>Source Files</Filter>
     </ClInclude>
-    <ClInclude Include="Objects\TitleEggman.h">
-      <Filter>Source Files\Objects</Filter>
+    <ClInclude Include="TitleEggman.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="TitleLogo.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="TitleSetup.h">
+      <Filter>Source Files</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

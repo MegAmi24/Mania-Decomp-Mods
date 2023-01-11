@@ -1,7 +1,7 @@
 #include "../GameAPI/C/GameAPI/Game.h"
 
-#include "Objects/ItemBox.h"
-#include "Objects/Misc.h"
+#include "ItemBox.h"
+#include "Misc.h"
 
 #if RETRO_USE_MOD_LOADER
 #define ADD_PUBLIC_FUNC(func) Mod.AddPublicFunction(#func, (void *)(func))

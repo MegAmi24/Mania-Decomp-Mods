@@ -7,8 +7,8 @@
     <ClCompile Include="..\GameAPI\C\GameAPI\Game.c">
       <Filter>GameAPI</Filter>
     </ClCompile>
-    <ClCompile Include="Objects\ItemBox.c">
-      <Filter>Source Files\Objects</Filter>
+    <ClCompile Include="ItemBox.c">
+      <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -24,14 +24,14 @@
     <ClInclude Include="..\GameAPI\C\GameAPI\GameVariables.h">
       <Filter>GameAPI</Filter>
     </ClInclude>
-    <ClInclude Include="Objects\ItemBox.h">
-      <Filter>Source Files\Objects</Filter>
+    <ClInclude Include="ItemBox.h">
+      <Filter>Source Files</Filter>
     </ClInclude>
-    <ClInclude Include="Objects\Player.h">
-      <Filter>Source Files\Objects</Filter>
+    <ClInclude Include="Misc.h">
+      <Filter>Source Files</Filter>
     </ClInclude>
-    <ClInclude Include="Objects\Misc.h">
-      <Filter>Source Files\Objects</Filter>
+    <ClInclude Include="Player.h">
+      <Filter>Source Files</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -40,9 +40,6 @@
     </Filter>
     <Filter Include="Source Files">
       <UniqueIdentifier>{be88c774-2346-498e-821a-ac1bfeba31dc}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source Files\Objects">
-      <UniqueIdentifier>{e41cfef7-abe0-47c9-95fb-aaf57a2d2198}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>
