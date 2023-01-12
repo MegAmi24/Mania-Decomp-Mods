@@ -28,10 +28,21 @@ bool32 Player_Input_P1_Hook(bool32 skippedState)
     if (!announcer)
         return false;
 
+    bool32 touchMenu = false;
+    for (int32 t = 0; t < TouchInfo->count; ++t) {
+        if (TouchInfo->down[t]) {
+            int32 tx = (int32)(TouchInfo->x[t] * ScreenInfo->size.x);
+            int32 ty = (int32)(TouchInfo->y[t] * ScreenInfo->size.y);
+
+            if (tx <= 32 && ty >= (ScreenInfo->size.y - 32))
+                touchMenu = true;
+        }
+    }
+
     if (self->controllerID <= CONT_P4) {
         if (globals->gameMode != MODE_COMPETITION || announcer->finishedCountdown) {
             if (!lottoMachine || !((1 << self->playerID) & lottoMachine->activePlayers)) {
-                if (ControllerInfo[self->controllerID].keySelect.press) {
+                if (ControllerInfo[self->controllerID].keySelect.press || touchMenu) {
                     CREATE_ENTITY(MegAmiMenu, self, self->position.x, self->position.y);
                     ControllerInfo[self->controllerID].keySelect.press = false;
                 }

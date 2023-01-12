@@ -33,6 +33,12 @@ typedef struct {
     bool32 playerInv[PLAYER_COUNT];
     uint16 aniFrames;
     uint16 sfxFail;
+    uint8 touchUp;
+    uint8 touchDown;
+    uint8 touchLeft;
+    uint8 touchRight;
+    uint8 touchConfirm;
+    uint8 touchBack;
 } ObjectMegAmiMenu;
 
 // Entity Class
@@ -95,5 +101,7 @@ void MegAmiMenu_State_SetRings(void);
 void MegAmiMenu_State_DrawChar(void);
 void MegAmiMenu_State_DrawShield(void);
 void MegAmiMenu_State_DrawSetValue(void);
+
+bool32 MegAmiMenu_CheckTouchRect(int32 x1, int32 y1, int32 x2, int32 y2);
 
 #endif //! OBJ_MEGAMIMENU_H

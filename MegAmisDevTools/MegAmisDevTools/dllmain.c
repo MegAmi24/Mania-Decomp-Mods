@@ -48,6 +48,8 @@ void InitModAPI(void)
     ADD_PUBLIC_FUNC(MegAmiMenu_State_DrawShield);
     ADD_PUBLIC_FUNC(MegAmiMenu_State_DrawSetValue);
 
+    ADD_PUBLIC_FUNC(MegAmiMenu_CheckTouchRect);
+
     // Add Mod Callbacks
     Mod.AddModCallback(MODCB_ONSTAGELOAD, StageLoadCallback);
 
