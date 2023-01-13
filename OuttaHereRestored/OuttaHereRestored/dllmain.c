@@ -1,11 +1,8 @@
 #include "../GameAPI/C/GameAPI/Game.h"
-#include "ModVersion.h"
 #include "Player.h"
-#if MOD_VERSION != MODVER_100
 #include "ModConfig.h"
 
 ModConfig config;
-#endif
 
 #if RETRO_USE_MOD_LOADER
 DLLExport bool32 LinkModLogic(EngineInfo *info, const char *id);
@@ -13,7 +10,6 @@ DLLExport bool32 LinkModLogic(EngineInfo *info, const char *id);
 
 void InitModAPI(void)
 {
-#if MOD_VERSION != MODVER_100
     // Setup Config
     config.superSonicOuttaHere = Mod.GetSettingsBool("", "Config:superSonicOuttaHere", true);
     config.tailsOuttaHere      = Mod.GetSettingsBool("", "Config:tailsOuttaHere", true);
@@ -42,21 +38,14 @@ void InitModAPI(void)
         Mod.ExcludeFile("", "Data/Sprites/Players/Mighty.bin");
     if (!config.rayOuttaHere)
         Mod.ExcludeFile("", "Data/Sprites/Players/Ray.bin");
-#endif
 
     Player_State_OuttaHere = Mod.GetPublicFunction(NULL, "Player_State_OuttaHere");
-#if MOD_VERSION != MODVER_100
     Player_HandleAirMovement = Mod.GetPublicFunction(NULL, "Player_HandleAirMovement");
-#endif
 
     Mod.RegisterStateHook(Mod.GetPublicFunction(NULL, "Player_State_Ground"), Player_SetOuttaHere, false);
-#if MOD_VERSION != MODVER_100
     Mod.RegisterStateHook(Mod.GetPublicFunction(NULL, "Player_State_OuttaHere"), Player_State_OuttaHere_Hook, true);
-#endif
     MOD_REGISTER_OBJECT_HOOK(Player);
-#if MOD_VERSION != MODVER_100
     MOD_REGISTER_OBJ_OVERLOAD_MSV(Player, Mod_Player, NULL, NULL, NULL, NULL, NULL, Player_StageLoad, NULL, NULL, NULL);
-#endif
 }
 
 #if RETRO_USE_MOD_LOADER

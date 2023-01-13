@@ -12,6 +12,10 @@
 
 ObjectMegAmiMenu *MegAmiMenu;
 
+#if RETRO_USE_MOD_LOADER
+bool32 amyEnabled = false;
+#endif
+
 void MegAmiMenu_Update(void)
 {
     RSDK_THIS(MegAmiMenu);
@@ -194,6 +198,10 @@ void MegAmiMenu_Create(void *data)
         self->parent         = (Entity *)data;
         EntityPlayer *player = (EntityPlayer *)self->parent;
 
+#if RETRO_USE_MOD_LOADER
+        Mod.LoadModInfo("Extra Slot Amy", NULL, NULL, NULL, &amyEnabled);
+#endif
+
         // Initialize Strings
         RSDK.InitString(&self->p1char, "CHANGE CHARACTER", false);
         RSDK.InitString(&self->p2char, "CHANGE SIDEKICK", false);
@@ -210,6 +218,9 @@ void MegAmiMenu_Create(void *data)
 #if MANIA_USE_PLUS
         RSDK.InitString(&self->mighty, "MIGHTY", false);
         RSDK.InitString(&self->ray, "RAY", false);
+#if RETRO_USE_MOD_LOADER
+        RSDK.InitString(&self->amy, "AMY", false);
+#endif
 #endif
         RSDK.InitString(&self->none, "NONE", false);
         RSDK.InitString(&self->blue, "BLUE SHIELD", false);
@@ -232,6 +243,9 @@ void MegAmiMenu_Create(void *data)
 #if MANIA_USE_PLUS
         RSDK.SetSpriteString(uiwidgets->fontFrames, 0, &self->mighty);
         RSDK.SetSpriteString(uiwidgets->fontFrames, 0, &self->ray);
+#if RETRO_USE_MOD_LOADER
+        RSDK.SetSpriteString(uiwidgets->fontFrames, 0, &self->amy);
+#endif
 #endif
         RSDK.SetSpriteString(uiwidgets->fontFrames, 0, &self->none);
         RSDK.SetSpriteString(uiwidgets->fontFrames, 0, &self->blue);
@@ -351,21 +365,23 @@ void MegAmiMenu_State_P1Char(void)
         || (API_GetConfirmButtonFlip() ? ControllerInfo[player->controllerID].keyB.press : ControllerInfo[player->controllerID].keyA.press);
     bool32 backPress = API_GetConfirmButtonFlip() ? ControllerInfo[player->controllerID].keyA.press : ControllerInfo[player->controllerID].keyB.press;
 
-    if (ControllerInfo[player->controllerID].keyDown.press) {
+    int8 optionCount = 2;
 #if MANIA_USE_PLUS
-        if (++self->subSelection > (API.CheckDLC(DLC_PLUS) ? 4 : 2))
-#else
-        if (++self->subSelection > 2)
+    if (API.CheckDLC(DLC_PLUS)) {
+        optionCount += 2;
+#if RETRO_USE_MOD_LOADER
+        optionCount += amyEnabled;
 #endif
+    }
+#endif
+
+    if (ControllerInfo[player->controllerID].keyDown.press) {
+        if (++self->subSelection > optionCount)
             self->subSelection = 0;
     }
     else if (ControllerInfo[player->controllerID].keyUp.press) {
         if (--self->subSelection < 0)
-#if MANIA_USE_PLUS
-            self->subSelection = (API.CheckDLC(DLC_PLUS) ? 4 : 2);
-#else
-            self->subSelection = 2;
-#endif
+            self->subSelection = optionCount;
     }
     else if (confirmPress) {
         Player_ChangeCharacter(player, 1 << self->subSelection);
@@ -387,21 +403,23 @@ void MegAmiMenu_State_P2Char(void)
         || (API_GetConfirmButtonFlip() ? ControllerInfo[player->controllerID].keyB.press : ControllerInfo[player->controllerID].keyA.press);
     bool32 backPress = API_GetConfirmButtonFlip() ? ControllerInfo[player->controllerID].keyA.press : ControllerInfo[player->controllerID].keyB.press;
 
-    if (ControllerInfo[player->controllerID].keyDown.press) {
+    int8 optionCount = 3;
 #if MANIA_USE_PLUS
-        if (++self->subSelection > (API.CheckDLC(DLC_PLUS) ? 5 : 3))
-#else
-        if (++self->subSelection > 3)
+    if (API.CheckDLC(DLC_PLUS)) {
+        optionCount += 2;
+#if RETRO_USE_MOD_LOADER
+        optionCount += amyEnabled;
 #endif
+    }
+#endif
+
+    if (ControllerInfo[player->controllerID].keyDown.press) {
+        if (++self->subSelection > optionCount)
             self->subSelection = 0;
     }
     else if (ControllerInfo[player->controllerID].keyUp.press) {
         if (--self->subSelection < 0)
-#if MANIA_USE_PLUS
-            self->subSelection = (API.CheckDLC(DLC_PLUS) ? 5 : 3);
-#else
-            self->subSelection = 3;
-#endif
+            self->subSelection = optionCount;
     }
     else if (confirmPress) {
         EntityPlayer *sidekick = RSDK_GET_ENTITY(RSDK.GetEntitySlot(player) + 1, Player);
@@ -588,10 +606,14 @@ void MegAmiMenu_State_DrawChar(void)
 {
     RSDK_THIS(MegAmiMenu);
 
+    int8 optionCount = 3 + (self->mainSelection == MEGAMIMENU_P2CHAR);
 #if MANIA_USE_PLUS
-    uint8 optionCount = (API.CheckDLC(DLC_PLUS) ? 5 : 3) + (self->mainSelection == MEGAMIMENU_P2CHAR);
-#else
-    uint8 optionCount = 3 + (self->mainSelection == MEGAMIMENU_P2CHAR);
+    if (API.CheckDLC(DLC_PLUS)) {
+        optionCount += 2;
+#if RETRO_USE_MOD_LOADER
+        optionCount += amyEnabled;
+#endif
+    }
 #endif
 
     RSDK.DrawRect(SUBBOX_XPOS, BOX_YPOS, 80, BOX_HEIGHT(optionCount), 0xFF0000, 0xFF, INK_NONE, true);
@@ -624,6 +646,12 @@ void MegAmiMenu_State_DrawChar(void)
         RSDK.DrawText(&self->animator, &drawPos, &self->mighty, 0, self->mighty.length, ALIGN_LEFT, 0, 0, 0, true);
         drawPos.y += TO_FIXED(OPTION_SPACING);
         RSDK.DrawText(&self->animator, &drawPos, &self->ray, 0, self->ray.length, ALIGN_LEFT, 0, 0, 0, true);
+#if RETRO_USE_MOD_LOADER
+        if (amyEnabled) {
+            drawPos.y += TO_FIXED(OPTION_SPACING);
+            RSDK.DrawText(&self->animator, &drawPos, &self->amy, 0, self->amy.length, ALIGN_LEFT, 0, 0, 0, true);
+        }
+#endif
     }
 #endif
 }

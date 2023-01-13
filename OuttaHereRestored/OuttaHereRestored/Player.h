@@ -2,7 +2,6 @@
 #define OBJ_PLAYER_H
 
 #include "GameAPI/Game.h"
-#include "ModVersion.h"
 
 typedef enum {
     ANI_IDLE,
@@ -383,7 +382,6 @@ typedef struct {
 } ObjectPlayer;
 #endif
 
-#if MOD_VERSION != MODVER_100
 typedef struct {
     uint16 sfxOuttahereT;
     uint16 sfxOuttahereK;
@@ -392,7 +390,6 @@ typedef struct {
     uint16 sfxOuttahereR;
 #endif
 } ModObjectPlayer;
-#endif
 
 // Entity Class
 typedef struct {
@@ -496,16 +493,12 @@ typedef struct {
 
 // Object Struct
 extern ObjectPlayer *Player;
-#if MOD_VERSION != MODVER_100
 extern ModObjectPlayer *Mod_Player;
 
 void Player_StageLoad(void);
-#endif
 void (*Player_State_OuttaHere)(void);
-#if MOD_VERSION != MODVER_100
 void (*Player_HandleAirMovement)(void);
 bool32 Player_State_OuttaHere_Hook(bool32 skipped);
-#endif
 void Player_SetOuttaHere(void);
 
 #endif //! OBJ_PLAYER_H

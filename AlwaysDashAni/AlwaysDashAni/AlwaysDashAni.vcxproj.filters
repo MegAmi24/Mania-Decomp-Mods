@@ -27,9 +27,6 @@
     <ClInclude Include="..\AlwaysDashAni\ModConfig.h">
       <Filter>Source Files</Filter>
     </ClInclude>
-    <ClInclude Include="ModVersion.h">
-      <Filter>Source Files</Filter>
-    </ClInclude>
     <ClInclude Include="Player.h">
       <Filter>Source Files</Filter>
     </ClInclude>

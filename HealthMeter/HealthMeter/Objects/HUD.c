@@ -2,6 +2,7 @@
 #include "HUD.h"
 
 ObjectHUD *HUD;
+ModObjectHUD *Mod_HUD;
 
 void HUD_Update(void)
 {
@@ -38,11 +39,9 @@ void HUD_Draw(void)
 
     ObjectZone *Zone = Mod.FindObject("Zone");
 
-    self->ringFlashFrame = player->health > 1 ? 0 : ((Zone->persistentTimer >> 3) & 1);
-
     // Draw "Health"
-    self->hudElementsAnimator.frameID = self->ringFlashFrame + 20;
-    RSDK.DrawSprite(&self->hudElementsAnimator, &healthPos, true);
+    self->healthTextAnimator.frameID = player->health > 1 ? 0 : ((Zone->persistentTimer >> 3) & 1);
+    RSDK.DrawSprite(&self->healthTextAnimator, &healthPos, true);
 
     // Draw Health
     drawPos.x = healthPos.x + TO_FIXED(93);
@@ -64,6 +63,8 @@ void HUD_Draw(void)
         if (i == 6)
             drawPos.x = healthPos.x + TO_FIXED(93);
     }
+
+    player->hyperRing = false;
 
     Mod.Super(HUD->classID, SUPER_DRAW, NULL);
 
@@ -87,10 +88,20 @@ void HUD_Create(void *data)
         }
 #endif
 
-        RSDK.SetSpriteAnimation(HUD->aniFrames, 14, &self->healthIconAnimator, true, 0);
+        RSDK.SetSpriteAnimation(Mod_HUD->healthFrames, 0, &self->healthTextAnimator, true, 0);
+        RSDK.SetSpriteAnimation(Mod_HUD->healthFrames, 1, &self->healthIconAnimator, true, 0);
     }
 
-    Mod.Super(self->classID, SUPER_CREATE, NULL);
+    Mod.Super(HUD->classID, SUPER_CREATE, NULL);
+}
+
+void HUD_StageLoad(void)
+{
+    RSDK_THIS(HUD);
+
+    Mod.Super(HUD->classID, SUPER_STAGELOAD, NULL);
+
+    Mod_HUD->healthFrames = RSDK.LoadSpriteAnimation("Global/HealthMeter.bin", SCOPE_STAGE);
 }
 
 void HUD_State_MoveIn_Hook(void)
@@ -118,89 +129,38 @@ void HUD_State_MoveIn_Hook(void)
 #endif
 }
 
-bool32 HUD_State_MoveOut_Hook(bool32 skipped)
+void HUD_State_MoveOut_Hook(void)
 {
     RSDK_THIS(HUD);
 
 #if MANIA_USE_PLUS
-    Vector2 *scorePos = NULL, *timePos = NULL, *ringsPos = NULL, *healthPos = NULL, *lifePos = NULL;
-    StateMachine(*state) = NULL;
+    Vector2 *ringsPos = NULL, *healthPos = NULL, *lifePos = NULL;
 
     if (globals->gameMode == MODE_COMPETITION) {
-        state     = &self->vsStates[self->screenID];
-        scorePos  = &self->vsScorePos[self->screenID];
-        timePos   = &self->vsTimePos[self->screenID];
         ringsPos  = &self->vsRingsPos[self->screenID];
         healthPos = &self->vsHealthPos[self->screenID];
         lifePos   = &self->vsLifePos[self->screenID];
     }
     else {
-        state     = &self->state;
-        scorePos  = &self->scorePos;
-        timePos   = &self->timePos;
         ringsPos  = &self->ringsPos;
         healthPos = &self->healthPos;
         lifePos   = &self->lifePos;
     }
 
-    scorePos->x -= TO_FIXED(8);
-
-    if (timePos->x - scorePos->x > TO_FIXED(16))
-        timePos->x -= TO_FIXED(8);
-
-    if (ringsPos->x - timePos->x > TO_FIXED(16))
-        ringsPos->x -= TO_FIXED(8);
-
-    if (healthPos->x - ringsPos->x > TO_FIXED(16))
+    if (healthPos->x - ringsPos->x > TO_FIXED(16)) {
         healthPos->x -= TO_FIXED(8);
+        lifePos->x += TO_FIXED(8);
+    }
 
     if (lifePos->x - healthPos->x > TO_FIXED(16))
         lifePos->x -= TO_FIXED(8);
-
-    if (healthPos->x < -TO_FIXED(80)) {
-        if (globals->gameMode == MODE_COMPETITION) {
-            *state = StateMachine_None;
-            CompSession_DeriveWinner(self->screenID, FINISHTYPE_GAMEOVER);
-
-            ObjectGameOver *GameOver       = Mod.FindObject("GameOver");
-            ObjectCompetition *Competition = Mod.FindObject("Competition");
-
-            EntityGameOver *gameOver   = RSDK_GET_ENTITY(self->screenID + Player->playerCount, GameOver);
-            EntityCompetition *manager = Competition->sessionManager;
-
-            if (!manager || manager->timer) {
-                RSDK.ResetEntity(gameOver, GameOver->classID, INT_TO_VOID(false));
-                gameOver->playerID = self->screenID;
-            }
-            else {
-                RSDK.ResetEntity(gameOver, GameOver->classID, INT_TO_VOID(true));
-                RSDK.SetEngineState(ENGINESTATE_FROZEN);
-                SceneInfo->timeEnabled = false;
-                gameOver->playerID     = self->screenID;
-            }
-        }
-        else {
-            destroyEntity(self);
-        }
-    }
 #else
-    self->scorePos.x -= TO_FIXED(8);
-
-    if (self->timePos.x - self->scorePos.x > TO_FIXED(16))
-        self->timePos.x -= TO_FIXED(8);
-
-    if (self->ringsPos.x - self->timePos.x > TO_FIXED(16))
-        self->ringsPos.x -= TO_FIXED(8);
-
-    if (self->healthPos.x - self->ringsPos.x > TO_FIXED(16))
+    if (self->healthPos.x - self->ringsPos.x > TO_FIXED(16)) {
         self->healthPos.x -= TO_FIXED(8);
+        self->lifePos.x += TO_FIXED(8);
+    }
 
     if (self->lifePos.x - self->healthPos.x > TO_FIXED(16))
         self->lifePos.x -= TO_FIXED(8);
-
-    if (self->healthPos.x < -TO_FIXED(64))
-        destroyEntity(self);
 #endif
-
-    return true;
 }

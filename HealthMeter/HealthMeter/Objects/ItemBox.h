@@ -73,11 +73,9 @@ typedef struct {
 extern ObjectItemBox *ItemBox;
 
 // Entity States
-void (*ItemBox_GivePowerup)(void);
-bool32 (*ItemBox_HandleFallingCollision)(void);
+void ItemBox_StageLoad(void);
 
 void (*ItemBox_State_Break)(void);
-void (*ItemBox_State_IconFinish)(void);
 
 bool32 ItemBox_State_Break_Hook(bool32 skipped);
 

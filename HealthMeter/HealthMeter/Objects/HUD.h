@@ -23,6 +23,10 @@ typedef struct {
 #endif
 } ObjectHUD;
 
+typedef struct {
+    uint16 healthFrames;
+} ModObjectHUD;
+
 // Entity Class
 typedef struct {
     RSDK_ENTITY
@@ -73,23 +77,26 @@ typedef struct {
 #if MANIA_USE_PLUS
     Vector2 vsHealthPos[PLAYER_COUNT];
 #endif
+    Animator healthTextAnimator;
     Animator healthIconAnimator;
 } EntityHUD;
 
 // Object Struct
 extern ObjectHUD *HUD;
+extern ModObjectHUD *Mod_HUD;
 
 // Standard Entity Events
 void HUD_Update(void);
 void HUD_Draw(void);
 void HUD_Create(void *data);
+void HUD_StageLoad(void);
 
 void (*HUD_State_MoveIn)(void);
 void (*HUD_State_MoveOut)(void);
 
 // Hook Functions
 void HUD_State_MoveIn_Hook(void);
-bool32 HUD_State_MoveOut_Hook(bool32 skipped);
+void HUD_State_MoveOut_Hook(void);
 
 int32 (*HUD_CharacterIndexFromID)(int32 characterID);
 

@@ -66,6 +66,9 @@ typedef struct {
 #if MANIA_USE_PLUS
     String mighty;
     String ray;
+#if RETRO_USE_MOD_LOADER
+    String amy;
+#endif
 #endif
     String none;
     String blue;

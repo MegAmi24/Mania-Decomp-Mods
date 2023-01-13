@@ -41,21 +41,18 @@ void InitModAPI(void)
 
     Mod.SaveSettings();
 
-    Player_State_Hurt              = Mod.GetPublicFunction(NULL, "Player_State_Hurt");
-    Player_State_Death             = Mod.GetPublicFunction(NULL, "Player_State_Death");
-    HUD_State_MoveIn               = Mod.GetPublicFunction(NULL, "HUD_State_MoveIn");
-    HUD_State_MoveOut              = Mod.GetPublicFunction(NULL, "HUD_State_MoveOut");
-    HUD_CharacterIndexFromID       = Mod.GetPublicFunction(NULL, "HUD_CharacterIndexFromID");
-    Ring_State_Lost                = Mod.GetPublicFunction(NULL, "Ring_State_Lost");
-    Ring_State_LostFX              = Mod.GetPublicFunction(NULL, "Ring_State_LostFX");
-    Ring_State_Big                 = Mod.GetPublicFunction(NULL, "Ring_State_Big");
-    Zone_State_ReloadScene         = Mod.GetPublicFunction(NULL, "Zone_State_ReloadScene");
-    Zone_TitleCard_SupressCB       = Mod.GetPublicFunction(NULL, "Zone_TitleCard_SupressCB");
-    ItemBox_State_Break            = Mod.GetPublicFunction(NULL, "ItemBox_State_Break");
-    ItemBox_State_IconFinish       = Mod.GetPublicFunction(NULL, "ItemBox_State_IconFinish");
-    ItemBox_GivePowerup            = Mod.GetPublicFunction(NULL, "ItemBox_GivePowerup");
-    ItemBox_HandleFallingCollision = Mod.GetPublicFunction(NULL, "ItemBox_HandleFallingCollision");
-    LRZConvItem_HandleLRZConvPhys  = Mod.GetPublicFunction(NULL, "LRZConvItem_HandleLRZConvPhys");
+    Player_State_Hurt             = Mod.GetPublicFunction(NULL, "Player_State_Hurt");
+    Player_State_Death            = Mod.GetPublicFunction(NULL, "Player_State_Death");
+    HUD_State_MoveIn              = Mod.GetPublicFunction(NULL, "HUD_State_MoveIn");
+    HUD_State_MoveOut             = Mod.GetPublicFunction(NULL, "HUD_State_MoveOut");
+    HUD_CharacterIndexFromID      = Mod.GetPublicFunction(NULL, "HUD_CharacterIndexFromID");
+    Ring_State_Lost               = Mod.GetPublicFunction(NULL, "Ring_State_Lost");
+    Ring_State_LostFX             = Mod.GetPublicFunction(NULL, "Ring_State_LostFX");
+    Ring_State_Big                = Mod.GetPublicFunction(NULL, "Ring_State_Big");
+    Zone_State_ReloadScene        = Mod.GetPublicFunction(NULL, "Zone_State_ReloadScene");
+    Zone_TitleCard_SupressCB      = Mod.GetPublicFunction(NULL, "Zone_TitleCard_SupressCB");
+    ItemBox_State_Break           = Mod.GetPublicFunction(NULL, "ItemBox_State_Break");
+    LRZConvItem_HandleLRZConvPhys = Mod.GetPublicFunction(NULL, "LRZConvItem_HandleLRZConvPhys");
 #if !MANIA_USE_PLUS
     CompSession_DeriveWinner = Mod.GetPublicFunction(NULL, "CompetitionSession_DeriveWinner");
 #else
@@ -64,7 +61,7 @@ void InitModAPI(void)
 
     // Register State Hooks
     Mod.RegisterStateHook(HUD_State_MoveIn, HUD_State_MoveIn_Hook, false);
-    Mod.RegisterStateHook(HUD_State_MoveOut, HUD_State_MoveOut_Hook, true);
+    Mod.RegisterStateHook(HUD_State_MoveOut, HUD_State_MoveOut_Hook, false);
     Mod.RegisterStateHook(Zone_State_ReloadScene, Zone_State_ReloadScene_Hook, false);
     Mod.RegisterStateHook(Zone_TitleCard_SupressCB, Zone_TitleCard_SupressCB_Hook, false);
     Mod.RegisterStateHook(ItemBox_State_Break, ItemBox_State_Break_Hook, true);
@@ -76,10 +73,9 @@ void InitModAPI(void)
     MOD_REGISTER_OBJECT_HOOK(TitleCard);
 
     MOD_REGISTER_OBJ_OVERLOAD_MSV(Player, Mod_Player, Player_Update, Player_LateUpdate, NULL, NULL, Player_Create, NULL, NULL, NULL, NULL);
-    MOD_REGISTER_OBJ_OVERLOAD(HUD, HUD_Update, NULL, NULL, HUD_Draw, HUD_Create, NULL, NULL, NULL, NULL);
+    MOD_REGISTER_OBJ_OVERLOAD_MSV(HUD, Mod_HUD, HUD_Update, NULL, NULL, HUD_Draw, HUD_Create, HUD_StageLoad, NULL, NULL, NULL);
+    MOD_REGISTER_OBJ_OVERLOAD(ItemBox, NULL, NULL, NULL, NULL, NULL, ItemBox_StageLoad, NULL, NULL, NULL);
     MOD_REGISTER_OBJ_OVERLOAD(Ring, NULL, Ring_LateUpdate, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
-
-    printf("Hello From Health Meter Initialization!\n");
 }
 
 #if RETRO_USE_MOD_LOADER
