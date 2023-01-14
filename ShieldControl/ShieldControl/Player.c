@@ -43,7 +43,7 @@ void Player_JumpAbility_SonicShieldControl()
         else if (self->down)
             self->shield = SHIELD_BUBBLE;
 
-        Player_JumpAbility_Sonic();
+        StateMachine_Run(Player_JumpAbility_Sonic);
 
         self->invincibleTimer = invincibleStore;
         if (shieldStore != self->shield) {
@@ -59,7 +59,7 @@ void Player_JumpAbility_SonicShieldControl()
             self->state = Player_State_NoShieldBounce;
     }
     else
-        Player_JumpAbility_Sonic();
+        StateMachine_Run(Player_JumpAbility_Sonic);
 }
 
 void Player_State_NoShieldBounce()
@@ -79,7 +79,7 @@ void Player_State_NoShieldBounce()
     self->invincibleTimer = 0;
     self->superState      = SUPERSTATE_NONE;
 
-    Player_State_BubbleBounce();
+    StateMachine_Run(Player_State_BubbleBounce);
 
     self->invincibleTimer = invincibleStore;
     self->superState      = superStore;
