@@ -436,6 +436,6 @@ typedef struct {
 extern ObjectPlayer *Player;
 
 // Standard Entity Events
-void Player_Create(void);
+void Player_StageLoad(void);
 
 #endif //! OBJ_PLAYER_H

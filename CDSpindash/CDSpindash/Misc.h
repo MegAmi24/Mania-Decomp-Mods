@@ -70,6 +70,20 @@ typedef struct {
 #endif
 } ObjectZone;
 
+typedef struct {
+    RSDK_OBJECT
+    uint16 sfxPulley;
+} ObjectDashLift;
+
+typedef struct {
+    RSDK_OBJECT
+    uint16 aniFrames;
+    Hitbox hitboxWheel;
+    TABLE(int32 heightTable[33], { 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 2, 2, 2, 3, 3, 4, 4, 5, 6, 6, 7, 8, 9, 10, 11, 12, 14, 15, 17, 19, 22, 26 });
+    uint16 sfxBumper;
+    uint16 unused;
+} ObjectSDashWheel;
+
 // Entity Class
 typedef struct {
     RSDK_ENTITY
@@ -105,8 +119,54 @@ typedef struct {
     int32 boundsB;
 } EntityCamera;
 
+typedef struct {
+    RSDK_ENTITY
+    // Platform Base
+    StateMachine(state);
+    StateMachine(stateCollide);
+    int32 type;
+    Vector2 amplitude;
+    int32 length;
+    bool32 hasTension;
+    int8 frameID;
+    uint8 collision;
+    Vector2 tileOrigin;
+    Vector2 centerPos;
+    Vector2 drawPos;
+    Vector2 collisionOffset;
+    int32 stood;
+    int32 timer;
+    int32 stoodAngle;
+    uint8 stoodPlayers;
+    uint8 pushPlayersL;
+    uint8 pushPlayersR;
+    Hitbox hitbox;
+    Animator animator;
+    int32 childCount;
+    // Dash Lift
+    int32 startOff;
+    uint8 activePlayers;
+} EntityDashLift;
+
+typedef struct {
+    MANIA_BUTTON_BASE
+
+    Animator mainAnimator;
+    Animator knobAnimator;
+    Animator shineAnimator;
+    int32 cooldown;
+    uint8 rotateOffset;
+} EntitySDashWheel;
+
+// Object Struct
+extern ObjectDashLift *DashLift;
+extern ObjectSDashWheel *SDashWheel;
+
 // Extra Entity Functions
-void (*Dust_State_SpinDash)(void);
+void SDashWheel_Update(void);
+
+// Extra Entity Functions
 void (*Camera_State_FollowY)(void);
+bool32 DashLift_State_HandleDash_Hook(bool32 skipped);
 
 #endif //! OBJ_DUST_H

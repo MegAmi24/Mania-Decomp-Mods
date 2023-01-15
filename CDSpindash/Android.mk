@@ -14,7 +14,8 @@ LOCAL_C_INCLUDES := \
 LOCAL_SRC_FILES := \
     $(MOD_PATH)/GameAPI/C/GameAPI/Game.c \
     $(MOD_PATH)/$(MOD_NAME)/dllmain.c \
-    $(MOD_PATH)/$(MOD_NAME)/Player.c
+    $(MOD_PATH)/$(MOD_NAME)/Player.c \
+    $(MOD_PATH)/$(MOD_NAME)/Misc.c
 
 LOCAL_LDLIBS := -llog
 

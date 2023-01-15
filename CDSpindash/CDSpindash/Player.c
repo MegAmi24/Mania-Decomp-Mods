@@ -9,7 +9,7 @@ void Player_LateUpdate(void)
 
     Mod.Super(Player->classID, SUPER_LATEUPDATE, NULL);
 
-    if (self->tailFrames != (uint16)-1 && self->state == Player_State_Spindash)
+    if (self->tailFrames != (uint16)-1 && self->state == Player_State_CDSpindash)
         self->tailDirection = self->direction;
 }
 
@@ -18,10 +18,12 @@ void Player_Action_CDSpindash(void)
     RSDK_THIS(Player);
 
     if (self->state == Player_State_Spindash) {
+        self->state = Player_State_CDSpindash;
+
         ObjectDust *Dust = Mod.FindObject("Dust");
-        foreach_all(Dust, dust)
+        foreach_active(Dust, dust)
         {
-            if (dust->parent == self && dust->state == Dust_State_SpinDash)
+            if (dust->parent == (Entity *)self)
                 destroyEntity(dust);
         }
 
@@ -34,7 +36,7 @@ void Player_Action_CDSpindash(void)
     }
 }
 
-bool32 Player_State_CDSpindash(bool32 skipped)
+void Player_State_CDSpindash(void)
 {
     RSDK_THIS(Player);
 
@@ -85,6 +87,4 @@ bool32 Player_State_CDSpindash(bool32 skipped)
             RSDK.PlaySfx(Player->sfxPeelRelease, false, 0xFF);
         }
     }
-
-    return true;
 }

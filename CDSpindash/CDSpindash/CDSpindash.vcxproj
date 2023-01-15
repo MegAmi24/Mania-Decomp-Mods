@@ -172,6 +172,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="..\GameAPI\C\GameAPI\Game.c" />
+    <ClCompile Include="Misc.c" />
     <ClCompile Include="dllmain.c" />
     <ClCompile Include="Player.c" />
   </ItemGroup>

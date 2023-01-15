@@ -9,6 +9,7 @@ add_library(CDSpindash SHARED
     GameAPI/C/GameAPI/Game.c
     ${MOD_NAME}/dllmain.c
     ${MOD_NAME}/Player.c
+    ${MOD_NAME}/Misc.c
 )
 
 target_include_directories(CDSpindash PRIVATE

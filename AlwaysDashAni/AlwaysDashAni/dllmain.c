@@ -15,9 +15,7 @@ void InitModAPI(void)
     Mod.SetSettingsBool("Config:PeeloutAnim", config.PeeloutAnim);
     Mod.SaveSettings();
 
-    MOD_REGISTER_OBJ_OVERLOAD(Player, NULL, NULL, NULL, NULL, Player_Create, NULL, NULL, NULL, NULL);
-
-    printf("Hello From Always Dash Ani Initialization!\n");
+    MOD_REGISTER_OBJ_OVERLOAD(Player, NULL, NULL, NULL, NULL, NULL, Player_StageLoad, NULL, NULL, NULL);
 }
 
 #if RETRO_USE_MOD_LOADER

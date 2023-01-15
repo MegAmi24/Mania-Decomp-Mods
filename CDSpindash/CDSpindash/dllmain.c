@@ -9,17 +9,21 @@ DLLExport bool32 LinkModLogic(EngineInfo *info, const char *id);
 
 void InitModAPI(void)
 {
-    Player_State_Ground   = Mod.GetPublicFunction(NULL, "Player_State_Ground");
-    Player_State_Roll     = Mod.GetPublicFunction(NULL, "Player_State_Roll");
-    Player_State_Spindash = Mod.GetPublicFunction(NULL, "Player_State_Spindash");
-    Dust_State_SpinDash   = Mod.GetPublicFunction(NULL, "Dust_State_SpinDash");
-    Camera_State_FollowY  = Mod.GetPublicFunction(NULL, "Camera_State_FollowY");
+    Player_CheckCollisionTouch = Mod.GetPublicFunction(NULL, "Player_CheckCollisionTouch");
+    Player_State_Ground        = Mod.GetPublicFunction(NULL, "Player_State_Ground");
+    Player_State_Roll          = Mod.GetPublicFunction(NULL, "Player_State_Roll");
+    Player_State_Spindash      = Mod.GetPublicFunction(NULL, "Player_State_Spindash");
+    Camera_State_FollowY       = Mod.GetPublicFunction(NULL, "Camera_State_FollowY");
 
     Mod.RegisterStateHook(Mod.GetPublicFunction(NULL, "Player_State_Crouch"), Player_Action_CDSpindash, false);
-    Mod.RegisterStateHook(Player_State_Spindash, Player_State_CDSpindash, true);
+    Mod.RegisterStateHook(Mod.GetPublicFunction(NULL, "DashLift_State_HandleDash"), DashLift_State_HandleDash_Hook, true);
+
+    ADD_PUBLIC_FUNC(Player_State_CDSpindash);
 
     MOD_REGISTER_OBJECT_HOOK(Player);
+    MOD_REGISTER_OBJECT_HOOK(DashLift);
     MOD_REGISTER_OBJ_OVERLOAD(Player, NULL, Player_LateUpdate, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+    MOD_REGISTER_OBJ_OVERLOAD(SDashWheel, SDashWheel_Update, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
 }
 
 #if RETRO_USE_MOD_LOADER

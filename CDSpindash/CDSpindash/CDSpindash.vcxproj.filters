@@ -19,6 +19,9 @@
     <ClCompile Include="Player.c">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="Misc.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\GameAPI\C\GameAPI\Game.h">
