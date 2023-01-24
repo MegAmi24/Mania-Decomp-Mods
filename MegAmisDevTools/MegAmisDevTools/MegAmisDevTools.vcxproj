@@ -182,6 +182,7 @@
     <ClInclude Include="..\GameAPI\C\GameAPI\GameLink.h" />
     <ClInclude Include="..\GameAPI\C\GameAPI\GameObjects.h" />
     <ClInclude Include="..\GameAPI\C\GameAPI\GameVariables.h" />
+    <ClInclude Include="ModConfig.h" />
     <ClInclude Include="Objects\DebugMode.h" />
     <ClInclude Include="Objects\MegAmiMenu.h" />
     <ClInclude Include="Objects\Misc.h" />

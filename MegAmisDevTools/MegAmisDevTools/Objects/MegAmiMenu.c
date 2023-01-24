@@ -198,10 +198,6 @@ void MegAmiMenu_Create(void *data)
         self->parent         = (Entity *)data;
         EntityPlayer *player = (EntityPlayer *)self->parent;
 
-#if RETRO_USE_MOD_LOADER
-        Mod.LoadModInfo("Extra Slot Amy", NULL, NULL, NULL, &amyEnabled);
-#endif
-
         // Initialize Strings
         RSDK.InitString(&self->p1char, "CHANGE CHARACTER", false);
         RSDK.InitString(&self->p2char, "CHANGE SIDEKICK", false);
@@ -271,7 +267,13 @@ void MegAmiMenu_Create(void *data)
     }
 }
 
-void MegAmiMenu_StageLoad(void) { MegAmiMenu->sfxFail = RSDK.GetSfx("Stage/Fail.wav"); }
+void MegAmiMenu_StageLoad(void)
+{
+    MegAmiMenu->sfxFail = RSDK.GetSfx("Stage/Fail.wav");
+#if RETRO_USE_MOD_LOADER
+    Mod.LoadModInfo("Extra Slot Amy", NULL, NULL, NULL, &amyEnabled);
+#endif
+}
 
 void MegAmiMenu_State_Main(void)
 {
