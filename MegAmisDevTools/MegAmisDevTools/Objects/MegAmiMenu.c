@@ -12,7 +12,7 @@
 
 ObjectMegAmiMenu *MegAmiMenu;
 
-#if RETRO_USE_MOD_LOADER
+#if MANIA_USE_PLUS && RETRO_USE_MOD_LOADER
 bool32 amyEnabled = false;
 #endif
 
@@ -270,7 +270,7 @@ void MegAmiMenu_Create(void *data)
 void MegAmiMenu_StageLoad(void)
 {
     MegAmiMenu->sfxFail = RSDK.GetSfx("Stage/Fail.wav");
-#if RETRO_USE_MOD_LOADER
+#if MANIA_USE_PLUS && RETRO_USE_MOD_LOADER
     Mod.LoadModInfo("Extra Slot Amy", NULL, NULL, NULL, &amyEnabled);
 #endif
 }

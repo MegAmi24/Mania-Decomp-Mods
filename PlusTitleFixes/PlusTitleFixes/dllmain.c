@@ -48,9 +48,6 @@ bool32 LinkModLogic(EngineInfo *info, const char *id)
 {
 #if MANIA_USE_PLUS
     LinkGameLogicDLL(info);
-#else
-    LinkGameLogicDLL(*info);
-#endif
 
     globals = Mod.GetGlobals();
 
@@ -59,5 +56,8 @@ bool32 LinkModLogic(EngineInfo *info, const char *id)
     InitModAPI();
 
     return true;
+#else
+    return false;
+#endif
 }
 #endif
