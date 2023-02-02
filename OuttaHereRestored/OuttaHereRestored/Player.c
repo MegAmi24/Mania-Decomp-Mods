@@ -84,8 +84,8 @@ bool32 Player_State_OuttaHere_Hook(bool32 skipped)
     else {
         Player_HandleAirMovement();
         if (self->velocity.y > 0x100000) {
-            ObjectGameOver *gameover = Mod.FindObject("GameOver");
-            RSDK.ResetEntitySlot(SLOT_GAMEOVER, gameover->classID, INT_TO_VOID(false));
+            ObjectGameOver *GameOver = Mod.FindObject("GameOver");
+            RSDK.ResetEntitySlot(SLOT_GAMEOVER, GameOver->classID, INT_TO_VOID(false));
             destroyEntity(self);
         }
     }

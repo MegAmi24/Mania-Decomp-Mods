@@ -141,7 +141,6 @@ typedef enum {
 
 typedef struct {
     RSDK_ENTITY
-#if !MODVER_100
     StateMachine(state);
     Entity *target;
     int32 screenID;
@@ -164,16 +163,13 @@ typedef struct {
     int32 boundsR;
     int32 boundsT;
     int32 boundsB;
-#endif
 } EntityCamera;
 
-#if MOD_VERSION != MODVER_100
 typedef struct {
     RSDK_OBJECT
     int32 activeScreens;
     uint16 aniFrames;
 } ObjectGameOver;
-#endif
 
 // Object Class
 #if MANIA_USE_PLUS
