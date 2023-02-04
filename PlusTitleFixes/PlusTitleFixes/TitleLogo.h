@@ -43,7 +43,7 @@ typedef struct {
     Animator ribbonCenterAnimator;
 } EntityTitleLogo;
 
-void (*TitleLogo_SetupPressStart)(void);
-void (*TitleLogo_State_HandleSetup)(void);
+extern void (*TitleLogo_SetupPressStart)(void);
+extern StateMachine(TitleLogo_State_HandleSetup);
 
 #endif //! OBJ_TITLELOGO_H

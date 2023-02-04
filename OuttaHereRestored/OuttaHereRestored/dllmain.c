@@ -4,6 +4,10 @@
 
 ModConfig config;
 
+// Resolve externals
+StateMachine(Player_State_OuttaHere);
+StateMachine(Player_HandleAirMovement);
+
 #if RETRO_USE_MOD_LOADER
 DLLExport bool32 LinkModLogic(EngineInfo *info, const char *id);
 #endif

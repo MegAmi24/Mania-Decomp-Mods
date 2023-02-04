@@ -32,14 +32,14 @@ extern ObjectTitleSetup *TitleSetup;
 
 // Extra Entity Functions
 #if MANIA_USE_PLUS
-void (*TitleSetup_CheckCheatCode)(void);
+extern void (*TitleSetup_CheckCheatCode)(void);
 #endif
 
-void (*TitleSetup_State_WaitForSonic)(void);
-void (*TitleSetup_State_SetupLogo)(void);
+extern StateMachine(TitleSetup_State_WaitForSonic);
+extern StateMachine(TitleSetup_State_SetupLogo);
 #if MANIA_USE_PLUS
-void (*TitleSetup_State_SetupPlusLogo)(void);
-void (*TitleSetup_State_WaitForEnter)(void);
+extern StateMachine(TitleSetup_State_SetupPlusLogo);
+extern StateMachine(TitleSetup_State_WaitForEnter);
 #endif
 
 #if MANIA_USE_PLUS

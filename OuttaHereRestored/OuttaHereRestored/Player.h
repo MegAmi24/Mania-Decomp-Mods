@@ -492,8 +492,10 @@ extern ObjectPlayer *Player;
 extern ModObjectPlayer *Mod_Player;
 
 void Player_StageLoad(void);
-void (*Player_State_OuttaHere)(void);
-void (*Player_HandleAirMovement)(void);
+
+extern StateMachine(Player_State_OuttaHere);
+extern StateMachine(Player_HandleAirMovement);
+
 bool32 Player_State_OuttaHere_Hook(bool32 skipped);
 void Player_SetOuttaHere(void);
 

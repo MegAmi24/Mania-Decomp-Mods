@@ -54,8 +54,8 @@ extern ObjectRing *Ring;
 // Standard Entity Events
 void Ring_LateUpdate(void);
 
-void (*Ring_State_Lost)(void);
-void (*Ring_State_LostFX)(void);
-void (*Ring_State_Big)(void);
+extern StateMachine(Ring_State_Lost);
+extern StateMachine(Ring_State_LostFX);
+extern StateMachine(Ring_State_Big);
 
 #endif //! OBJ_RING_H

@@ -2,6 +2,10 @@
 #include "Player.h"
 #include "Shield.h"
 
+// Resolve externals
+StateMachine(Player_State_Air);
+StateMachine(Player_State_DropDash);
+
 #if RETRO_USE_MOD_LOADER
 DLLExport bool32 LinkModLogic(EngineInfo *info, const char *id);
 

@@ -453,8 +453,8 @@ typedef struct {
 // Object Struct
 extern ObjectPlayer *Player;
 
-void (*Player_State_Air)(void);
-void (*Player_State_DropDash)(void);
+extern StateMachine(Player_State_Air);
+extern StateMachine(Player_State_DropDash);
 
 void Player_SetRollJumpLock(void);
 void Player_State_RollingAir(void);

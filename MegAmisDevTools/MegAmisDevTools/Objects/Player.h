@@ -367,20 +367,21 @@ extern ObjectPlayer *Player;
 void Player_Update(void);
 
 // Public Functions
-void (*Player_GiveRings)(EntityPlayer *player, int32 amount, bool32 playSfx);
-void (*Player_ChangeCharacter)(EntityPlayer *player, int32 character);
-bool32 (*Player_TryTransform)(EntityPlayer *player, uint8 emeraldMasks);
-void (*Player_ApplyShield)(EntityPlayer *player);
+extern void (*Player_GiveRings)(EntityPlayer *player, int32 amount, bool32 playSfx);
+extern void (*Player_ChangeCharacter)(EntityPlayer *player, int32 character);
+extern bool32 (*Player_TryTransform)(EntityPlayer *player, uint8 emeraldMasks);
+extern void (*Player_ApplyShield)(EntityPlayer *player);
 
-void (*Player_State_FlyToPlayer)(void);
-void (*Player_State_ReturnToPlayer)(void);
+// Player States
+extern StateMachine(Player_State_FlyToPlayer);
+extern StateMachine(Player_State_ReturnToPlayer);
 
 // Input States
-void (*Player_Input_P1)(void);
-void (*Player_Input_P2_Delay)(void);
+extern StateMachine(Player_Input_P1);
+extern StateMachine(Player_Input_P2_Delay);
 
 // State helpers
-void (*Player_UpdatePhysicsState)(EntityPlayer *entity);
+extern void (*Player_UpdatePhysicsState)(EntityPlayer *entity);
 
 // Extra Entity Functions
 bool32 Player_Input_P1_Hook(bool32 skippedState);

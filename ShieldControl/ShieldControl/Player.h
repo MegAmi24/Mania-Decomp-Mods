@@ -335,10 +335,10 @@ extern ObjectPlayer *Player;
 
 void Player_Update(void);
 
-void (*Player_ApplyShield)(EntityPlayer *player);
-void (*Player_State_Air)(void);
-void (*Player_State_BubbleBounce)(void);
-void (*Player_JumpAbility_Sonic)(void);
+extern void (*Player_ApplyShield)(EntityPlayer *player);
+extern StateMachine(Player_State_Air);
+extern StateMachine(Player_State_BubbleBounce);
+extern StateMachine(Player_JumpAbility_Sonic);
 
 void Player_JumpAbility_SonicShieldControl(void);
 void Player_State_NoShieldBounce(void);

@@ -252,6 +252,6 @@ typedef struct {
     int32 boundsB;
 } EntityCamera;
 
-void (*Music_PlayJingle)(uint8 trackID);
+extern void (*Music_PlayJingle)(uint8 trackID);
 
 #endif

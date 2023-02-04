@@ -477,6 +477,6 @@ typedef struct {
 extern ObjectPlayer *Player;
 
 // performs an all-solid box collision with the player, this handles setting the appropriate collision-related player variabes automatically
-bool32 (*Player_CheckCollisionTouch)(EntityPlayer *player, void *entity, Hitbox *entityHitbox);
+extern bool32 (*Player_CheckCollisionTouch)(EntityPlayer *player, void *entity, Hitbox *entityHitbox);
 
 #endif //! OBJ_PLAYER_H

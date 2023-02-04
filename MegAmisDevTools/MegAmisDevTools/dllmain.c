@@ -8,6 +8,18 @@
 
 ModConfig config;
 
+// Resolve externals
+void (*Player_GiveRings)(EntityPlayer *player, int32 amount, bool32 playSfx);
+void (*Player_ChangeCharacter)(EntityPlayer *player, int32 character);
+bool32 (*Player_TryTransform)(EntityPlayer *player, uint8 emeraldMasks);
+void (*Player_ApplyShield)(EntityPlayer *player);
+StateMachine(Player_State_FlyToPlayer);
+StateMachine(Player_State_ReturnToPlayer);
+StateMachine(Player_Input_P1);
+StateMachine(Player_Input_P2_Delay);
+void (*Player_UpdatePhysicsState)(EntityPlayer *entity);
+void (*Music_PlayJingle)(uint8 trackID);
+
 #if RETRO_USE_MOD_LOADER
 DLLExport bool32 LinkModLogic(EngineInfo *info, const char *id);
 

@@ -9,6 +9,11 @@
 
 ModConfig config;
 
+// Resolve externals
+StateMachine(Ring_State_Lost);
+StateMachine(Ring_State_LostFX);
+StateMachine(Ring_State_Big);
+
 #if RETRO_USE_MOD_LOADER
 DLLExport bool32 LinkModLogic(EngineInfo *info, const char *id);
 #endif

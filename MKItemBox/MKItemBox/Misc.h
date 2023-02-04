@@ -138,8 +138,8 @@ typedef struct {
     Animator animator;
 } EntityDebris;
 
-Vector2 (*LRZConvItem_HandleLRZConvPhys)(void *e);
+extern Vector2 (*LRZConvItem_HandleLRZConvPhys)(void *e);
 
-void (*Debris_State_Fall)(void);
+extern StateMachine(Debris_State_Fall);
 
 #endif //! OBJ_MISC_H

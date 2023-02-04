@@ -1,6 +1,9 @@
 #include "../GameAPI/C/GameAPI/Game.h"
 #include "DebugMode.h"
 
+// Resolve externals
+void (*Zone_StartFadeOut_MusicFade)(int32 fadeSpeed, int32 fadeColor);
+
 #if RETRO_USE_MOD_LOADER
 DLLExport bool32 LinkModLogic(EngineInfo *info, const char *id);
 #endif

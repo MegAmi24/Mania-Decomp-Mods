@@ -92,32 +92,33 @@ void ItemBox_Draw(void);
 void ItemBox_StageLoad(void);
 
 // Extra Entity Functions
-void (*ItemBox_DebugDraw)(void);
-void (*ItemBox_DebugSpawn)(void);
-void (*ItemBox_CheckHit)(void);
-void (*ItemBox_GivePowerup)(void);
-void (*ItemBox_Break)(EntityItemBox *itemBox, EntityPlayer *player);
-bool32 (*ItemBox_HandleFallingCollision)(void);
-bool32 (*ItemBox_HandlePlatformCollision)(void *platform);
-void (*ItemBox_HandleObjectCollisions)(void);
+extern StateMachine(ItemBox_DebugDraw);
+extern StateMachine(ItemBox_DebugSpawn);
+
+extern void (*ItemBox_CheckHit)(void);
+extern void (*ItemBox_GivePowerup)(void);
+extern void (*ItemBox_Break)(EntityItemBox *itemBox, EntityPlayer *player);
+extern bool32 (*ItemBox_HandleFallingCollision)(void);
+extern bool32 (*ItemBox_HandlePlatformCollision)(void *platform);
+extern void (*ItemBox_HandleObjectCollisions)(void);
 
 void ItemBox_CheckHit_New(void);
 void ItemBox_Break_New(EntityItemBox *itemBox, EntityPlayer *player);
 void ItemBox_HandleBox(void);
 
 // Entity States
-void (*ItemBox_State_Broken)(void);
-void (*ItemBox_State_Break)(void);
-void (*ItemBox_State_IconFinish)(void);
-void (*ItemBox_State_Idle)(void);
-void (*ItemBox_State_Falling)(void);
-void (*ItemBox_State_Conveyor)(void);
+extern StateMachine(ItemBox_State_Broken);
+extern StateMachine(ItemBox_State_Break);
+extern StateMachine(ItemBox_State_IconFinish);
+extern StateMachine(ItemBox_State_Idle);
+extern StateMachine(ItemBox_State_Falling);
+extern StateMachine(ItemBox_State_Conveyor);
 
 bool32 ItemBox_State_IconFinish_Hook(bool32 skipped);
 bool32 ItemBox_State_Idle_Hook(bool32 skipped);
 bool32 ItemBox_State_Falling_Hook(bool32 skipped);
 bool32 ItemBox_State_Conveyor_Hook(bool32 skipped);
 
-int32 (*BadnikHelpers_Oscillate)(int32 origin, int32 speed, int32 amplitude);
+extern int32 (*BadnikHelpers_Oscillate)(int32 origin, int32 speed, int32 amplitude);
 
 #endif //! OBJ_ITEMBOX_H

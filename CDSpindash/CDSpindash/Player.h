@@ -452,11 +452,11 @@ extern ObjectPlayer *Player;
 
 void Player_LateUpdate(void);
 
-bool32 (*Player_CheckCollisionTouch)(EntityPlayer *player, void *e, Hitbox *entityHitbox);
+extern bool32 (*Player_CheckCollisionTouch)(EntityPlayer *player, void *e, Hitbox *entityHitbox);
 
-void (*Player_State_Ground)(void);
-void (*Player_State_Roll)(void);
-void (*Player_State_Spindash)(void);
+extern StateMachine(Player_State_Ground);
+extern StateMachine(Player_State_Roll);
+extern StateMachine(Player_State_Spindash);
 
 void Player_Action_CDSpindash(void);
 void Player_State_CDSpindash(void);

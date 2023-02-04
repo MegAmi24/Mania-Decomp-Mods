@@ -166,7 +166,7 @@ extern ObjectSDashWheel *SDashWheel;
 void SDashWheel_Update(void);
 
 // Extra Entity Functions
-void (*Camera_State_FollowY)(void);
+extern StateMachine(Camera_State_FollowY);
 bool32 DashLift_State_HandleDash_Hook(bool32 skipped);
 
 #endif //! OBJ_DUST_H

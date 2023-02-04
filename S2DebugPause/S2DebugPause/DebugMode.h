@@ -32,6 +32,6 @@ extern ObjectDebugMode *DebugMode;
 
 void DebugMode_Update(void);
 
-void (*Zone_StartFadeOut_MusicFade)(int32 fadeSpeed, int32 fadeColor);
+extern void (*Zone_StartFadeOut_MusicFade)(int32 fadeSpeed, int32 fadeColor);
 
 #endif //! OBJ_DEBUGMODE_H

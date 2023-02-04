@@ -1,6 +1,12 @@
 #include "../GameAPI/C/GameAPI/Game.h"
 #include "Player.h"
 
+// Resolve externals
+void (*Player_ApplyShield)(EntityPlayer *player);
+StateMachine(Player_State_Air);
+StateMachine(Player_State_BubbleBounce);
+StateMachine(Player_JumpAbility_Sonic);
+
 #if RETRO_USE_MOD_LOADER
 DLLExport bool32 LinkModLogic(EngineInfo *info, const char *id);
 
