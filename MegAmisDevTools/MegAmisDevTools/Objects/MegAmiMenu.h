@@ -7,12 +7,14 @@
 
 #define API_GetConfirmButtonFlip API.GetConfirmButtonFlip
 
-#define MAINBOX_XPOS   16
-#define MAINBOX_WIDTH  150
-#define SUBBOX_XPOS    MAINBOX_XPOS + MAINBOX_WIDTH + 3
-#define BOX_YPOS       12
-#define OPTION_SPACING 14
-#define BOX_HEIGHT(x)  ((x)*OPTION_SPACING) + 5 // x = Option Count
+#define MAINBOX_XPOS   (16)
+#define MAINBOX_WIDTH  (150)
+#define SUBBOX_XPOS    (MAINBOX_XPOS + MAINBOX_WIDTH + 3)
+#define BOX_YPOS       (12)
+#define OPTION_SPACING (14)
+#define BOX_HEIGHT(x)  ((x)*OPTION_SPACING + 5) // x = Option Count
+
+#define Y_THIRD (ScreenInfo->size.y / 3)
 
 typedef enum {
     MEGAMIMENU_P1CHAR,

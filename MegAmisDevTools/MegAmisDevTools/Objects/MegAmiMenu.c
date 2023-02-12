@@ -30,31 +30,29 @@ void MegAmiMenu_Update(void)
         // Handle Touch Controls
         RSDKControllerState *controller = &ControllerInfo[player->controllerID];
 
-        int32 yThird = ScreenInfo->size.y / 3;
-
         bool32 touchedUp = false;
-        if (MegAmiMenu_CheckTouchRect(0, 0, ScreenInfo->center.x, yThird)) {
+        if (MegAmiMenu_CheckTouchRect(0, 0, ScreenInfo->center.x, Y_THIRD)) {
             ControllerInfo->keyUp.down |= true;
             controller->keyUp.down = true;
             touchedUp              = true;
         }
 
         bool32 touchedDown = false;
-        if (MegAmiMenu_CheckTouchRect(0, yThird * 2, ScreenInfo->center.x, ScreenInfo->size.y)) {
+        if (MegAmiMenu_CheckTouchRect(0, Y_THIRD * 2, ScreenInfo->center.x, ScreenInfo->size.y)) {
             ControllerInfo->keyDown.down |= true;
             controller->keyDown.down = true;
             touchedDown              = true;
         }
 
         bool32 touchedLeft = false;
-        if (MegAmiMenu_CheckTouchRect(0, yThird, ScreenInfo->center.x / 2, yThird * 2)) {
+        if (MegAmiMenu_CheckTouchRect(0, Y_THIRD, ScreenInfo->center.x / 2, Y_THIRD * 2)) {
             ControllerInfo->keyLeft.down |= true;
             controller->keyLeft.down = true;
             touchedLeft              = true;
         }
 
         bool32 touchedRight = false;
-        if (MegAmiMenu_CheckTouchRect(ScreenInfo->center.x / 2, yThird, ScreenInfo->center.x, yThird * 2)) {
+        if (MegAmiMenu_CheckTouchRect(ScreenInfo->center.x / 2, Y_THIRD, ScreenInfo->center.x, Y_THIRD * 2)) {
             ControllerInfo->keyRight.down |= true;
             controller->keyRight.down = true;
             touchedRight              = true;
