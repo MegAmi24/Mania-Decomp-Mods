@@ -144,8 +144,9 @@ void MegAmiMenu_Draw(void)
         Vector2 drawPos;
 
         // Draw Selection Arrow
-        drawPos.x              = TO_FIXED(MAINBOX_XPOS + 8);
-        drawPos.y              = TO_FIXED(BOX_YPOS + 9 + (self->mainSelection * OPTION_SPACING));
+        drawPos.x = TO_FIXED(MAINBOX_XPOS + 8);
+        drawPos.y = TO_FIXED(BOX_YPOS + 9 + (self->mainSelection * OPTION_SPACING));
+
         self->animator.frameID = 30; // >
         RSDK.DrawSprite(&self->animator, &drawPos, true);
 
@@ -621,8 +622,9 @@ void MegAmiMenu_State_DrawChar(void)
     Vector2 drawPos;
 
     // Draw Selection Arrow
-    drawPos.x              = TO_FIXED(SUBBOX_XPOS + 8);
-    drawPos.y              = TO_FIXED(BOX_YPOS + 9 + (self->subSelection * OPTION_SPACING));
+    drawPos.x = TO_FIXED(SUBBOX_XPOS + 8);
+    drawPos.y = TO_FIXED(BOX_YPOS + 9 + (self->subSelection * OPTION_SPACING));
+
     self->animator.frameID = 30; // >
     RSDK.DrawSprite(&self->animator, &drawPos, true);
 
@@ -665,8 +667,9 @@ void MegAmiMenu_State_DrawShield(void)
     Vector2 drawPos;
 
     // Draw Selection Arrow
-    drawPos.x              = TO_FIXED(SUBBOX_XPOS + 8);
-    drawPos.y              = TO_FIXED(BOX_YPOS + 9 + (self->subSelection * OPTION_SPACING));
+    drawPos.x = TO_FIXED(SUBBOX_XPOS + 8);
+    drawPos.y = TO_FIXED(BOX_YPOS + 9 + (self->subSelection * OPTION_SPACING));
+
     self->animator.frameID = 30; // >
     RSDK.DrawSprite(&self->animator, &drawPos, true);
 
@@ -695,8 +698,9 @@ void MegAmiMenu_State_DrawSetValue(void)
     Vector2 drawPos;
 
     // Draw Plus Sign
-    drawPos.x              = TO_FIXED(SUBBOX_XPOS + 9 + (self->subSelection * 8));
-    drawPos.y              = TO_FIXED(BOX_YPOS + 9);
+    drawPos.x = TO_FIXED(SUBBOX_XPOS + 9 + (self->subSelection * 8));
+    drawPos.y = TO_FIXED(BOX_YPOS + 9);
+
     self->animator.frameID = 11; // +
     RSDK.DrawSprite(&self->animator, &drawPos, true);
 
@@ -722,6 +726,7 @@ void MegAmiMenu_State_DrawSetValue(void)
     // Draw Minus Sign
     drawPos.x = TO_FIXED(SUBBOX_XPOS + 9 + (self->subSelection * 8));
     drawPos.y += TO_FIXED(OPTION_SPACING);
+
     self->animator.frameID = 13; // -
     RSDK.DrawSprite(&self->animator, &drawPos, true);
 }
@@ -746,9 +751,7 @@ bool32 MegAmiMenu_CheckTouchRect(int32 x1, int32 y1, int32 x2, int32 y2)
 void MegAmiMenu_EditorDraw(void)
 {
     RSDK_THIS(MegAmiMenu);
-
     RSDK.DrawRect(self->position.x - TO_FIXED(45), self->position.y - TO_FIXED(9), TO_FIXED(90), TO_FIXED(19), 0xFF0000, 0xFF, INK_NONE, false);
-
     RSDK.DrawText(&self->animator, &self->position, &self->p1char, 0, self->p1char.length, ALIGN_CENTER, 0, 0, 0, false);
 }
 

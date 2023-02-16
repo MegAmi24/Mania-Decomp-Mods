@@ -5,6 +5,7 @@
 // Resolve externals
 StateMachine(Player_State_Air);
 StateMachine(Player_State_DropDash);
+StateMachine(Shield_State_Insta);
 
 #if RETRO_USE_MOD_LOADER
 DLLExport bool32 LinkModLogic(EngineInfo *info, const char *id);
@@ -16,6 +17,7 @@ void InitModAPI(void)
 {
     Player_State_Air      = Mod.GetPublicFunction(NULL, "Player_State_Air");
     Player_State_DropDash = Mod.GetPublicFunction(NULL, "Player_State_DropDash");
+    Shield_State_Insta    = Mod.GetPublicFunction(NULL, "Shield_State_Insta");
 
     Mod.RegisterStateHook(Mod.GetPublicFunction(NULL, "Player_State_Roll"), Player_SetRollJumpLock, false);
 

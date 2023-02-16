@@ -75,7 +75,7 @@ extern ObjectItemBox *ItemBox;
 // Entity States
 void ItemBox_StageLoad(void);
 
-void (*ItemBox_State_Break)(void);
+extern StateMachine(ItemBox_State_Break);
 
 bool32 ItemBox_State_Break_Hook(bool32 skipped);
 

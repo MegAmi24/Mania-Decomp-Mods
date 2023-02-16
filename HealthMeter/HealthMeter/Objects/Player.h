@@ -429,7 +429,7 @@ void Player_Update(void);
 void Player_LateUpdate(void);
 void Player_Create(void *data);
 
-void (*Player_State_Hurt)(void);
-void (*Player_State_Death)(void);
+extern StateMachine(Player_State_Hurt);
+extern StateMachine(Player_State_Death);
 
 #endif //! OBJ_PLAYER_H

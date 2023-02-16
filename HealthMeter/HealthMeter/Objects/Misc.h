@@ -201,14 +201,14 @@ typedef struct {
 extern ObjectTitleCard *TitleCard;
 extern ObjectZone *Zone;
 
-void (*CompSession_DeriveWinner)(int32 playerID, int32 finishType);
+extern void (*CompSession_DeriveWinner)(int32 playerID, int32 finishType);
 
-Vector2 (*LRZConvItem_HandleLRZConvPhys)(void *e);
+extern Vector2 (*LRZConvItem_HandleLRZConvPhys)(void *e);
 
-void (*Zone_TitleCard_SupressCB)(void);
+extern StateMachine(Zone_TitleCard_SupressCB);
 void Zone_TitleCard_SupressCB_Hook(void);
 
-void (*Zone_State_ReloadScene)(void);
+extern StateMachine(Zone_State_ReloadScene);
 void Zone_State_ReloadScene_Hook(void);
 
 #endif //! OBJ_MISC_H

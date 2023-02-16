@@ -91,13 +91,13 @@ void HUD_Draw(void);
 void HUD_Create(void *data);
 void HUD_StageLoad(void);
 
-void (*HUD_State_MoveIn)(void);
-void (*HUD_State_MoveOut)(void);
+extern StateMachine(HUD_State_MoveIn);
+extern StateMachine(HUD_State_MoveOut);
 
 // Hook Functions
 void HUD_State_MoveIn_Hook(void);
 void HUD_State_MoveOut_Hook(void);
 
-int32 (*HUD_CharacterIndexFromID)(int32 characterID);
+extern int32 (*HUD_CharacterIndexFromID)(int32 characterID);
 
 #endif //! OBJ_HUD_H

@@ -45,4 +45,6 @@ typedef struct {
     Animator fxAnimator;
 } EntityShield;
 
+extern StateMachine(Shield_State_Insta);
+
 #endif //! OBJ_SHIELD_H
