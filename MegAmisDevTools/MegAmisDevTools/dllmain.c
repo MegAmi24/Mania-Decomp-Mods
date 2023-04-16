@@ -97,20 +97,8 @@ void InitModAPI(void)
     }
 #endif
 
-    if (config.defaultLeader < 0)
-        Mod.SetSettingsInteger("Config:defaultLeader", 0);
-    else if (config.defaultLeader > characterCount)
-        Mod.SetSettingsInteger("Config:defaultLeader", characterCount);
-    else
-        Mod.SetSettingsInteger("Config:defaultLeader", config.defaultLeader);
-
-    if (config.defaultSidekick < -1)
-        Mod.SetSettingsInteger("Config:defaultSidekick", -1);
-    else if (config.defaultSidekick > characterCount)
-        Mod.SetSettingsInteger("Config:defaultSidekick", characterCount);
-    else
-        Mod.SetSettingsInteger("Config:defaultSidekick", config.defaultSidekick);
-
+    Mod.SetSettingsInteger("Config:defaultLeader", CLAMP(config.defaultLeader, 0, characterCount));
+    Mod.SetSettingsInteger("Config:defaultSidekick", CLAMP(config.defaultSidekick, -1, characterCount));
     Mod.SaveSettings();
 
     // Get Public Functions

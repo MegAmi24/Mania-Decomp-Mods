@@ -34,20 +34,8 @@ void InitModAPI(void)
     config.MaxHealth      = Mod.GetSettingsInteger("", "Config:MaxHealth", 3);
     config.StartingHealth = Mod.GetSettingsInteger("", "Config:StartingHealth", 3);
 
-    if (config.MaxHealth > 10)
-        Mod.SetSettingsInteger("Config:MaxHealth", 10);
-    else if (config.MaxHealth < 1)
-        Mod.SetSettingsInteger("Config:MaxHealth", 1);
-    else
-        Mod.SetSettingsInteger("Config:MaxHealth", config.MaxHealth);
-
-    if (config.StartingHealth > config.MaxHealth)
-        Mod.SetSettingsInteger("Config:StartingHealth", config.MaxHealth);
-    else if (config.StartingHealth < 1)
-        Mod.SetSettingsInteger("Config:StartingHealth", 1);
-    else
-        Mod.SetSettingsInteger("Config:StartingHealth", config.StartingHealth);
-
+    Mod.SetSettingsInteger("Config:MaxHealth", CLAMP(config.MaxHealth, 1, 10));
+    Mod.SetSettingsInteger("Config:StartingHealth", CLAMP(config.StartingHealth, 1, config.MaxHealth));
     Mod.SaveSettings();
 
     Player_State_Hurt             = Mod.GetPublicFunction(NULL, "Player_State_Hurt");

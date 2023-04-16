@@ -18,15 +18,19 @@ void InitModAPI(void)
     config.superSonicOuttaHere = Mod.GetSettingsBool("", "Config:superSonicOuttaHere", true);
     config.tailsOuttaHere      = Mod.GetSettingsBool("", "Config:tailsOuttaHere", true);
     config.knuxOuttaHere       = Mod.GetSettingsBool("", "Config:knuxOuttaHere", true);
+#if MANIA_USE_PLUS
     config.mightyOuttaHere     = Mod.GetSettingsBool("", "Config:mightyOuttaHere", true);
     config.rayOuttaHere        = Mod.GetSettingsBool("", "Config:rayOuttaHere", true);
+#endif
     config.uniqueCharSfx       = Mod.GetSettingsBool("", "Config:uniqueCharSfx", true);
 
     Mod.SetSettingsBool("Config:superSonicOuttaHere", config.superSonicOuttaHere);
     Mod.SetSettingsBool("Config:tailsOuttaHere", config.tailsOuttaHere);
     Mod.SetSettingsBool("Config:knuxOuttaHere", config.knuxOuttaHere);
+#if MANIA_USE_PLUS
     Mod.SetSettingsBool("Config:mightyOuttaHere", config.mightyOuttaHere);
     Mod.SetSettingsBool("Config:rayOuttaHere", config.rayOuttaHere);
+#endif
     Mod.SetSettingsBool("Config:uniqueCharSfx", config.uniqueCharSfx);
 
     Mod.SaveSettings();
@@ -38,10 +42,12 @@ void InitModAPI(void)
         Mod.ExcludeFile("", "Data/Sprites/Players/Tails.bin");
     if (!config.knuxOuttaHere)
         Mod.ExcludeFile("", "Data/Sprites/Players/Knux.bin");
+#if MANIA_USE_PLUS
     if (!config.mightyOuttaHere)
         Mod.ExcludeFile("", "Data/Sprites/Players/Mighty.bin");
     if (!config.rayOuttaHere)
         Mod.ExcludeFile("", "Data/Sprites/Players/Ray.bin");
+#endif
 
     Player_State_OuttaHere = Mod.GetPublicFunction(NULL, "Player_State_OuttaHere");
     Player_HandleAirMovement = Mod.GetPublicFunction(NULL, "Player_HandleAirMovement");
