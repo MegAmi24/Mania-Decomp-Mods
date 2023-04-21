@@ -19,7 +19,11 @@ bool32 Player_SuperCancel(bool32 skipped)
 #else
             if (self->stateInput != Player_Input_P2_AI || (self->up && self->characterID != ID_SONIC)) {
 #endif
-                if (ControllerInfo[self->controllerID].keyY.press) { // Just do this regardless of if it's 1.00 or not idc
+#if GAME_VERSION != VER_100
+                if (ControllerInfo[self->controllerID].keyY.press) {
+#else
+                if (ControllerInfo[self->controllerID].keyX.press) { // Debug Mode uses the Y button in 1.00
+#endif
                     self->superState = SUPERSTATE_FADEOUT;
                     self->jumpAbilityState = 0;
                 }
