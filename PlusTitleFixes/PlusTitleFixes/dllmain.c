@@ -42,10 +42,10 @@ void InitModAPI(void)
     TitleSetup_State_SetupLogo    = Mod.GetPublicFunction(NULL, "TitleSetup_State_SetupLogo");
 #if MANIA_USE_PLUS
     TitleSetup_State_SetupPlusLogo = Mod.GetPublicFunction(NULL, "TitleSetup_State_SetupPlusLogo");
+    TitleSetup_State_WaitForEnter  = Mod.GetPublicFunction(NULL, "TitleSetup_State_WaitForEnter");
 #endif
-    TitleSetup_State_WaitForEnter = Mod.GetPublicFunction(NULL, "TitleSetup_State_WaitForEnter");
-    TitleLogo_SetupPressStart     = Mod.GetPublicFunction(NULL, "TitleLogo_SetupPressStart");
-    TitleLogo_State_HandleSetup   = Mod.GetPublicFunction(NULL, "TitleLogo_State_HandleSetup");
+    TitleLogo_SetupPressStart   = Mod.GetPublicFunction(NULL, "TitleLogo_SetupPressStart");
+    TitleLogo_State_HandleSetup = Mod.GetPublicFunction(NULL, "TitleLogo_State_HandleSetup");
 
 #if MANIA_USE_PLUS
     Mod.RegisterStateHook(TitleSetup_State_SetupPlusLogo, TitleSetup_State_SetupPlusLogo_Hook, true);
