@@ -4,12 +4,26 @@
 #include "GameAPI/Game.h"
 
 typedef struct {
-    bool32 superSonicOuttaHere;
-    bool32 tailsOuttaHere;
-    bool32 knuxOuttaHere;
-    bool32 mightyOuttaHere;
-    bool32 rayOuttaHere;
-    bool32 uniqueCharSfx;
+    bool32 sonicCanOuttaHere;
+    bool32 tailsCanOuttaHere;
+    bool32 knuxCanOuttaHere;
+#if MANIA_USE_PLUS
+    bool32 mightyCanOuttaHere;
+    bool32 rayCanOuttaHere;
+#endif
+    int8 sidekickCanOuttaHere;
+    int32 sonicAnimID;
+    int32 superSonicAnimID;
+    int32 tailsAnimID;
+    int32 knuxAnimID;
+#if MANIA_USE_PLUS
+    int32 mightyAnimID;
+    int32 rayAnimID;
+#endif
+    int32 sidekickAnimID;
+    bool32 useBinAnim;
+    bool32 useVoiceLines;
+    bool32 useFrameID;
 } ModConfig;
 
 extern ModConfig config;

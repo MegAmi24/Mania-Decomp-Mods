@@ -494,7 +494,7 @@ extern ModObjectPlayer *Mod_Player;
 void Player_StageLoad(void);
 
 extern StateMachine(Player_State_OuttaHere);
-extern StateMachine(Player_HandleAirMovement);
+extern int32 (*HUD_CharacterIndexFromID)(int32 characterID);
 
 bool32 Player_State_OuttaHere_Hook(bool32 skipped);
 void Player_SetOuttaHere(void);
