@@ -3,6 +3,35 @@
 
 #include "GameAPI/Game.h"
 
+typedef enum {
+    TRACK_NONE       = -1,
+    TRACK_STAGE      = 0,
+    TRACK_INVINCIBLE = 1,
+    TRACK_SNEAKERS   = 2,
+    TRACK_MINIBOSS   = 3,
+    TRACK_HBHBOSS    = 4,
+    TRACK_EGGMAN1    = 5,
+    TRACK_EGGMAN2    = 6,
+    TRACK_ACTCLEAR   = 7,
+    TRACK_DROWNING   = 8,
+    TRACK_GAMEOVER   = 9,
+    TRACK_SUPER      = 10,
+#if MANIA_USE_PLUS
+    TRACK_HBHMISCHIEF = 11,
+    TRACK_SOUNDTEST   = 12,
+#else
+    TRACK_SOUNDTEST   = 11,
+    TRACK_HBHMISCHIEF = 12,
+#endif
+    TRACK_1UP = 13,
+
+    // Aliases/Reused slots
+    TRACK_METALSONIC   = TRACK_EGGMAN1,
+    TRACK_RUBYPRESENCE = TRACK_EGGMAN1,
+    TRACK_BUDDYBEAT    = TRACK_EGGMAN2,
+    TRACK_ERZBOSS      = TRACK_SUPER,
+} MusicTracks;
+
 // Macro to reduce ifdefs needed when calling RandSeeded with Zone->randSeed, ensures easy pre-plus compatibility
 #if MANIA_USE_PLUS
 #define ZONE_RAND(min, max) RSDK.RandSeeded(min, max, &Zone->randSeed)
@@ -88,5 +117,8 @@ extern ObjectZone *Zone;
 
 // Standard Entity Events
 void Zone_StaticUpdate(void);
+
+// Extra Entity Functions
+extern void (*Music_SetMusicTrack)(const char *path, uint8 track, uint32 loopPoint);
 
 #endif //! OBJ_ZONE_H

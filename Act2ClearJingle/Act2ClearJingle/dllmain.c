@@ -1,5 +1,4 @@
 #include "../GameAPI/C/GameAPI/Game.h"
-#include "Music.h"
 #include "Zone.h"
 
 void (*Music_SetMusicTrack)(const char *path, uint8 track, uint32 loopPoint);
