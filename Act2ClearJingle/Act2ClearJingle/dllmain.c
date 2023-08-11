@@ -1,7 +1,8 @@
 #include "../GameAPI/C/GameAPI/Game.h"
-#include "Zone.h"
+#include "Music.h"
 
 void (*Music_SetMusicTrack)(const char *path, uint8 track, uint32 loopPoint);
+bool32 (*Zone_IsZoneLastAct)(void);
 
 #if RETRO_USE_MOD_LOADER
 DLLExport bool32 LinkModLogic(EngineInfo *info, const char *id);
@@ -12,8 +13,10 @@ DLLExport bool32 LinkModLogic(EngineInfo *info, const char *id);
 void InitModAPI(void)
 {
     Music_SetMusicTrack = Mod.GetPublicFunction(NULL, "Music_SetMusicTrack");
-    MOD_REGISTER_OBJECT_HOOK(Zone);
-    MOD_REGISTER_OBJ_OVERLOAD(Zone, NULL, NULL, Zone_StaticUpdate, NULL, NULL, NULL, NULL, NULL, NULL);
+    Zone_IsZoneLastAct  = Mod.GetPublicFunction(NULL, "Zone_IsZoneLastAct");
+
+    MOD_REGISTER_OBJECT_HOOK(Music);
+    MOD_REGISTER_OBJ_OVERLOAD(Music, NULL, NULL, NULL, NULL, NULL, Music_StageLoad, NULL, NULL, NULL);
 }
 
 #if RETRO_USE_MOD_LOADER
