@@ -367,6 +367,7 @@ extern ObjectPlayer *Player;
 void Player_Update(void);
 
 // Public Functions
+extern Hitbox *(*Player_GetAltHitbox)(EntityPlayer *player);
 extern void (*Player_GiveRings)(EntityPlayer *player, int32 amount, bool32 playSfx);
 extern void (*Player_ChangeCharacter)(EntityPlayer *player, int32 character);
 extern bool32 (*Player_TryTransform)(EntityPlayer *player, uint8 emeraldMasks);

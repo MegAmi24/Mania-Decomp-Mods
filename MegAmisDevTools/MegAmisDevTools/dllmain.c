@@ -9,6 +9,7 @@
 ModConfig config;
 
 // Resolve externals
+Hitbox *(*Player_GetAltHitbox)(EntityPlayer *player);
 void (*Player_GiveRings)(EntityPlayer *player, int32 amount, bool32 playSfx);
 void (*Player_ChangeCharacter)(EntityPlayer *player, int32 character);
 bool32 (*Player_TryTransform)(EntityPlayer *player, uint8 emeraldMasks);
@@ -53,9 +54,7 @@ void DefaultCharacterCallback(void *data)
 #if MANIA_USE_PLUS
         case 3: leader = API.CheckDLC(DLC_PLUS) ? ID_MIGHTY : ID_SONIC; break;
         case 4: leader = API.CheckDLC(DLC_PLUS) ? ID_RAY : ID_SONIC; break;
-#if RETRO_USE_MOD_LOADER
         case 5: leader = API.CheckDLC(DLC_PLUS) ? 1 << 5 : ID_SONIC; break;
-#endif
 #endif
     }
 
@@ -68,9 +67,7 @@ void DefaultCharacterCallback(void *data)
 #if MANIA_USE_PLUS
         case 3: sidekick = API.CheckDLC(DLC_PLUS) ? ID_MIGHTY : ID_SONIC; break;
         case 4: sidekick = API.CheckDLC(DLC_PLUS) ? ID_RAY : ID_SONIC; break;
-#if RETRO_USE_MOD_LOADER
         case 5: sidekick = API.CheckDLC(DLC_PLUS) ? 1 << 5 : ID_SONIC; break;
-#endif
 #endif
     }
 
@@ -85,15 +82,10 @@ void InitModAPI(void)
 
     uint8 characterCount = 2;
 #if MANIA_USE_PLUS
-#if RETRO_USE_MOD_LOADER
-    bool32 amyEnabled = false;
-#endif
     if (API.CheckDLC(DLC_PLUS)) {
-        characterCount += 2;
-#if RETRO_USE_MOD_LOADER
+        bool32 amyEnabled = false;
         Mod.LoadModInfo("Extra Slot Amy", NULL, NULL, NULL, &amyEnabled);
-        characterCount += amyEnabled;
-#endif
+        characterCount += 2 + amyEnabled;
     }
 #endif
 
@@ -103,6 +95,7 @@ void InitModAPI(void)
 
     // Get Public Functions
     Player_Input_P1             = Mod.GetPublicFunction(NULL, "Player_Input_P1");
+    Player_GetAltHitbox         = Mod.GetPublicFunction(NULL, "Player_GetAltHitbox");
     Player_GiveRings            = Mod.GetPublicFunction(NULL, "Player_GiveRings");
     Player_ChangeCharacter      = Mod.GetPublicFunction(NULL, "Player_ChangeCharacter");
     Player_TryTransform         = Mod.GetPublicFunction(NULL, "Player_TryTransform");
@@ -124,6 +117,7 @@ void InitModAPI(void)
     ADD_PUBLIC_FUNC(MegAmiMenu_State_DrawShield);
     ADD_PUBLIC_FUNC(MegAmiMenu_State_DrawSetValue);
 
+    ADD_PUBLIC_FUNC(MegAmiMenu_HandleTouchControls);
     ADD_PUBLIC_FUNC(MegAmiMenu_CheckTouchRect);
 
     // Add Mod Callbacks

@@ -14,7 +14,7 @@ void Player_Update(void)
 
     // Fix a possible crash when changing sidekick
     if (self->outerbox && !self->innerbox)
-        self->innerbox = RSDK.GetHitbox(&self->animator, 1);
+        self->innerbox = Player_GetAltHitbox(self);
 
     Mod.Super(Player->classID, SUPER_UPDATE, NULL);
 }

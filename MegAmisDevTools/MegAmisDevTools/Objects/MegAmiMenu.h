@@ -13,6 +13,16 @@
 #define BOX_YPOS       (12)
 #define OPTION_SPACING (14)
 #define BOX_HEIGHT(x)  ((x)*OPTION_SPACING + 5) // x = Option Count
+#define BOX_COLOR      (0xFF0000)
+
+#define DrawOptionText(string)                                                                                                                       \
+    RSDK.DrawText(&self->animator, &drawPos, string, 0, string.length, ALIGN_LEFT, 0, 0, 0, true);                                                   \
+    drawPos.y += TO_FIXED(OPTION_SPACING);
+
+#define confirmPress                                                                                                                                 \
+    (ControllerInfo[player->controllerID].keyStart.press                                                                                             \
+     || (API_GetConfirmButtonFlip() ? ControllerInfo[player->controllerID].keyB.press : ControllerInfo[player->controllerID].keyA.press))
+#define backPress (API_GetConfirmButtonFlip() ? ControllerInfo[player->controllerID].keyA.press : ControllerInfo[player->controllerID].keyB.press)
 
 #define Y_THIRD (ScreenInfo->size.y / 3)
 
@@ -24,10 +34,36 @@ typedef enum {
     MEGAMIMENU_HYPERRING,
     MEGAMIMENU_SETRINGS,
     MEGAMIMENU_SUPER,
-    MEGAMIMENU_INV,
+    MEGAMIMENU_INVINCIBILITY,
     MEGAMIMENU_EXIT,
     MEGAMIMENU_COUNT,
 } MegAmiMenuOptions;
+
+typedef enum {
+    MENUSTRING_P1CHAR,
+    MENUSTRING_P2CHAR,
+    MENUSTRING_SHIELD,
+    MENUSTRING_SHOES,
+    MENUSTRING_HYPERRING,
+    MENUSTRING_SETRINGS,
+    MENUSTRING_SUPER,
+    MENUSTRING_INVINCIBILITY,
+    MENUSTRING_EXIT,
+    MENUSTRING_SONIC,
+    MENUSTRING_TAILS,
+    MENUSTRING_KNUCKLES,
+#if MANIA_USE_PLUS
+    MENUSTRING_MIGHTY,
+    MENUSTRING_RAY,
+    MENUSTRING_AMY,
+#endif
+    MENUSTRING_NONE,
+    MENUSTRING_BLUE,
+    MENUSTRING_BUBBLE,
+    MENUSTRING_FIRE,
+    MENUSTRING_LIGHTNING,
+    MENUSTRING_COUNT,
+} MegAmiMenuStrings;
 
 // Object Class
 typedef struct {
@@ -53,30 +89,7 @@ typedef struct {
     int32 customValue;
     uint8 valueDigits;
     Entity *parent;
-    String p1char;
-    String p2char;
-    String shield;
-    String shoes;
-    String hyperRing;
-    String setRings;
-    String super;
-    String inv;
-    String exit;
-    String sonic;
-    String tails;
-    String knux;
-#if MANIA_USE_PLUS
-    String mighty;
-    String ray;
-#if RETRO_USE_MOD_LOADER
-    String amy;
-#endif
-#endif
-    String none;
-    String blue;
-    String bubble;
-    String fire;
-    String lightning;
+    String strings[MENUSTRING_COUNT];
     Animator animator;
 } EntityMegAmiMenu;
 
@@ -107,6 +120,7 @@ void MegAmiMenu_State_DrawChar(void);
 void MegAmiMenu_State_DrawShield(void);
 void MegAmiMenu_State_DrawSetValue(void);
 
+void MegAmiMenu_HandleTouchControls(void);
 bool32 MegAmiMenu_CheckTouchRect(int32 x1, int32 y1, int32 x2, int32 y2);
 
 #endif //! OBJ_MEGAMIMENU_H
