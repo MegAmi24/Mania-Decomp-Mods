@@ -198,27 +198,6 @@ typedef struct {
 } ObjectImageTrail;
 
 typedef struct {
-    RSDK_OBJECT
-    char trackNames[16][32];
-    uint32 trackLoops[16];
-    int32 trackStartPos;
-    int32 channelID;
-    int32 activeTrack;
-#if MANIA_USE_PLUS
-    int32 nextTrack;
-    int32 restartTrackID;
-#else
-    int32 prevTrack;
-    int32 queuedTrack;
-    int32 nextTrack;
-    bool32 playingRegularTrack;
-    bool32 playingDrownTrack;
-    bool32 playing1UPTrack;
-#endif
-    uint16 aniFrames;
-} ObjectMusic;
-
-typedef struct {
     RSDK_ENTITY
     StateMachine(state);
     int32 timer;

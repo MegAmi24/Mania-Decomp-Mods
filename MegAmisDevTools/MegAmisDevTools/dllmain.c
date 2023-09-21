@@ -8,10 +8,6 @@
 
 ModConfig config;
 
-#if MANIA_USE_PLUS
-bool32 amyEnabled = false;
-#endif
-
 // Resolve externals
 Hitbox *(*Player_GetAltHitbox)(EntityPlayer *player);
 void (*Player_GiveRings)(EntityPlayer *player, int32 amount, bool32 playSfx);
@@ -37,8 +33,7 @@ void StageLoadCallback(void *data)
     globals->notifiedAutosave = true;
     SceneInfo->debugMode      = true;
 #if MANIA_USE_PLUS
-    ObjectMusic *Music = Mod.FindObject("Music");
-    if (Music && SKU->platform != PLATFORM_DEV)
+    if (Mod.FindObject("Music") && SKU->platform != PLATFORM_DEV)
         RSDK.AddViewableVariable("Vape Mode", &globals->vapeMode, VIEWVAR_BOOL, false, true);
 #endif
 }
@@ -84,20 +79,15 @@ void InitModAPI(void)
     config.defaultLeader   = Mod.GetSettingsInteger("", "Config:defaultLeader", 0);
     config.defaultSidekick = Mod.GetSettingsInteger("", "Config:defaultSidekick", 1);
 
+    uint8 characterCount = 2;
 #if MANIA_USE_PLUS
-    amyEnabled = false;
     if (API.CheckDLC(DLC_PLUS)) {
-        bool32 modActive = false;
+        bool32 amyEnabled = false;
+        bool32 modActive  = false;
         Mod.LoadModInfo("Extra Slot Amy", NULL, NULL, NULL, &modActive);
         amyEnabled |= modActive;
         Mod.LoadModInfo("Sonic Mania Addendum", NULL, NULL, NULL, &modActive);
         amyEnabled |= modActive;
-    }
-#endif
-
-    uint8 characterCount = 2;
-#if MANIA_USE_PLUS
-    if (API.CheckDLC(DLC_PLUS)) {
         characterCount += 2 + amyEnabled;
     }
 #endif

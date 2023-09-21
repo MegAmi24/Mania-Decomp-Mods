@@ -12,6 +12,10 @@
 
 ObjectMegAmiMenu *MegAmiMenu;
 
+#if MANIA_USE_PLUS
+bool32 amyEnabled = false;
+#endif
+
 void MegAmiMenu_Update(void)
 {
     RSDK_THIS(MegAmiMenu);
@@ -132,7 +136,20 @@ void MegAmiMenu_Create(void *data)
     }
 }
 
-void MegAmiMenu_StageLoad(void) { MegAmiMenu->sfxFail = RSDK.GetSfx("Stage/Fail.wav"); }
+void MegAmiMenu_StageLoad(void)
+{
+    MegAmiMenu->sfxFail = RSDK.GetSfx("Stage/Fail.wav");
+#if MANIA_USE_PLUS
+    if (API.CheckDLC(DLC_PLUS)) {
+        amyEnabled        = false;
+        bool32 modActive  = false;
+        Mod.LoadModInfo("Extra Slot Amy", NULL, NULL, NULL, &modActive);
+        amyEnabled |= modActive;
+        Mod.LoadModInfo("Sonic Mania Addendum", NULL, NULL, NULL, &modActive);
+        amyEnabled |= modActive;
+    }
+#endif
+}
 
 void MegAmiMenu_State_Main(void)
 {
