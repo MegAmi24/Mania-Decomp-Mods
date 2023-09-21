@@ -109,18 +109,22 @@ void MegAmiMenu_EditorLoad(void);
 #endif
 void MegAmiMenu_Serialize(void);
 
-// Extra Entity Functions
+// States
 void MegAmiMenu_State_Main(void);
 void MegAmiMenu_State_P1Char(void);
 void MegAmiMenu_State_P2Char(void);
 void MegAmiMenu_State_Shield(void);
 void MegAmiMenu_State_SetRings(void);
 
+// Draw States
 void MegAmiMenu_State_DrawChar(void);
 void MegAmiMenu_State_DrawShield(void);
 void MegAmiMenu_State_DrawSetValue(void);
 
+// Extra Entity Functions
 void MegAmiMenu_HandleTouchControls(void);
 bool32 MegAmiMenu_CheckTouchRect(int32 x1, int32 y1, int32 x2, int32 y2);
+void MegAmiMenu_HandleUpDown(RSDKControllerState controller, int8 maxCount);
+void MegAmiMenu_HandleSetValue(RSDKControllerState controller, int32 minValue, int32 maxValue);
 
 #endif //! OBJ_MEGAMIMENU_H

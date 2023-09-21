@@ -12,10 +12,6 @@
 
 ObjectMegAmiMenu *MegAmiMenu;
 
-#if MANIA_USE_PLUS
-bool32 amyEnabled = false;
-#endif
-
 void MegAmiMenu_Update(void)
 {
     RSDK_THIS(MegAmiMenu);
@@ -64,15 +60,9 @@ void MegAmiMenu_Draw(void)
         drawPos.y = TO_FIXED(BOX_YPOS + 9);
 
         // Draw Option Text
-        DrawOptionText(&self->strings[MENUSTRING_P1CHAR]);
-        DrawOptionText(&self->strings[MENUSTRING_P2CHAR]);
-        DrawOptionText(&self->strings[MENUSTRING_SHIELD]);
-        DrawOptionText(&self->strings[MENUSTRING_SHOES]);
-        DrawOptionText(&self->strings[MENUSTRING_HYPERRING]);
-        DrawOptionText(&self->strings[MENUSTRING_SETRINGS]);
-        DrawOptionText(&self->strings[MENUSTRING_SUPER]);
-        DrawOptionText(&self->strings[MENUSTRING_INVINCIBILITY]);
-        DrawOptionText(&self->strings[MENUSTRING_EXIT]);
+        for (uint8 s = MENUSTRING_P1CHAR; s <= MENUSTRING_EXIT; s++) {
+            DrawOptionText(&self->strings[s]);
+        }
 
         if (self->stateDraw) {
             RSDK.DrawRect(MAINBOX_XPOS, BOX_YPOS, MAINBOX_WIDTH, BOX_HEIGHT(MEGAMIMENU_COUNT), 0x000000, 0x80, INK_ALPHA, true);
@@ -134,7 +124,7 @@ void MegAmiMenu_Create(void *data)
         MegAmiMenu->touchConfirm = false;
         MegAmiMenu->touchBack    = false;
 
-        RSDK.SetEngineState(ENGINESTATE_PAUSED);
+        RSDK.SetEngineState(ENGINESTATE_FROZEN);
     }
     else {
         RSDK.InitString(&self->strings[MENUSTRING_P1CHAR], "MEGAMI MENU", false);
@@ -142,113 +132,7 @@ void MegAmiMenu_Create(void *data)
     }
 }
 
-void MegAmiMenu_StageLoad(void)
-{
-    MegAmiMenu->sfxFail = RSDK.GetSfx("Stage/Fail.wav");
-#if MANIA_USE_PLUS
-    amyEnabled = false;
-    if (API.CheckDLC(DLC_PLUS))
-        Mod.LoadModInfo("Extra Slot Amy", NULL, NULL, NULL, &amyEnabled);
-#endif
-}
-
-void MegAmiMenu_HandleTouchControls(void)
-{
-    RSDK_THIS(MegAmiMenu);
-
-    EntityPlayer *player            = (EntityPlayer *)self->parent;
-    RSDKControllerState *controller = &ControllerInfo[player->controllerID];
-
-    bool32 touchedUp = false;
-    if (MegAmiMenu_CheckTouchRect(0, 0, ScreenInfo->center.x, Y_THIRD)) {
-        ControllerInfo->keyUp.down |= true;
-        controller->keyUp.down = true;
-        touchedUp              = true;
-    }
-
-    bool32 touchedDown = false;
-    if (MegAmiMenu_CheckTouchRect(0, Y_THIRD * 2, ScreenInfo->center.x, ScreenInfo->size.y)) {
-        ControllerInfo->keyDown.down |= true;
-        controller->keyDown.down = true;
-        touchedDown              = true;
-    }
-
-    bool32 touchedLeft = false;
-    if (MegAmiMenu_CheckTouchRect(0, Y_THIRD, ScreenInfo->center.x / 2, Y_THIRD * 2)) {
-        ControllerInfo->keyLeft.down |= true;
-        controller->keyLeft.down = true;
-        touchedLeft              = true;
-    }
-
-    bool32 touchedRight = false;
-    if (MegAmiMenu_CheckTouchRect(ScreenInfo->center.x / 2, Y_THIRD, ScreenInfo->center.x, Y_THIRD * 2)) {
-        ControllerInfo->keyRight.down |= true;
-        controller->keyRight.down = true;
-        touchedRight              = true;
-    }
-
-    bool32 touchedConfirm = false;
-    if (MegAmiMenu_CheckTouchRect(ScreenInfo->center.x, ScreenInfo->center.y, ScreenInfo->size.x, ScreenInfo->size.y)) {
-        ControllerInfo->keyStart.down |= true;
-        controller->keyStart.down = true;
-        touchedConfirm            = true;
-    }
-
-    bool32 touchedBack = false;
-    if (MegAmiMenu_CheckTouchRect(ScreenInfo->center.x, 0, ScreenInfo->size.x, ScreenInfo->center.y)) {
-        if (API_GetConfirmButtonFlip()) {
-            ControllerInfo->keyA.down |= true;
-            controller->keyA.down = true;
-        }
-        else {
-            ControllerInfo->keyB.down |= true;
-            controller->keyB.down = true;
-        }
-        touchedBack = true;
-    }
-
-    if (!MegAmiMenu->touchUp && touchedUp) {
-        ControllerInfo->keyUp.press |= ControllerInfo->keyUp.down;
-        controller->keyUp.press |= controller->keyUp.down;
-    }
-    MegAmiMenu->touchUp = controller->keyUp.down;
-
-    if (!MegAmiMenu->touchDown && touchedDown) {
-        ControllerInfo->keyDown.press |= ControllerInfo->keyDown.down;
-        controller->keyDown.press |= controller->keyDown.down;
-    }
-    MegAmiMenu->touchDown = controller->keyDown.down;
-
-    if (!MegAmiMenu->touchLeft && touchedLeft) {
-        ControllerInfo->keyLeft.press |= ControllerInfo->keyLeft.down;
-        controller->keyLeft.press |= controller->keyLeft.down;
-    }
-    MegAmiMenu->touchLeft = controller->keyLeft.down;
-
-    if (!MegAmiMenu->touchRight && touchedRight) {
-        ControllerInfo->keyRight.press |= ControllerInfo->keyRight.down;
-        controller->keyRight.press |= controller->keyRight.down;
-    }
-    MegAmiMenu->touchRight = controller->keyRight.down;
-
-    if (!MegAmiMenu->touchConfirm && touchedConfirm) {
-        ControllerInfo->keyStart.press |= ControllerInfo->keyStart.down;
-        controller->keyStart.press |= controller->keyStart.down;
-    }
-    MegAmiMenu->touchConfirm = controller->keyStart.down;
-
-    if (!MegAmiMenu->touchBack && touchedBack) {
-        if (API_GetConfirmButtonFlip()) {
-            ControllerInfo->keyA.press |= ControllerInfo->keyA.down;
-            controller->keyA.press |= controller->keyA.down;
-        }
-        else {
-            ControllerInfo->keyB.press |= ControllerInfo->keyB.down;
-            controller->keyB.press |= controller->keyB.down;
-        }
-    }
-    MegAmiMenu->touchBack = API_GetConfirmButtonFlip() ? controller->keyA.down : controller->keyB.down;
-}
+void MegAmiMenu_StageLoad(void) { MegAmiMenu->sfxFail = RSDK.GetSfx("Stage/Fail.wav"); }
 
 void MegAmiMenu_State_Main(void)
 {
@@ -256,15 +140,9 @@ void MegAmiMenu_State_Main(void)
 
     EntityPlayer *player = (EntityPlayer *)self->parent;
 
-    if (ControllerInfo[player->controllerID].keyDown.press) {
-        if (++self->mainSelection > MEGAMIMENU_EXIT)
-            self->mainSelection = MEGAMIMENU_P1CHAR;
-    }
-    else if (ControllerInfo[player->controllerID].keyUp.press) {
-        if (--self->mainSelection < MEGAMIMENU_P1CHAR)
-            self->mainSelection = MEGAMIMENU_EXIT;
-    }
-    else if (confirmPress) {
+    MegAmiMenu_HandleUpDown(ControllerInfo[player->controllerID], MEGAMIMENU_EXIT);
+
+    if (confirmPress) {
         switch (self->mainSelection) {
             default: break;
             case MEGAMIMENU_P1CHAR:
@@ -340,15 +218,9 @@ void MegAmiMenu_State_P1Char(void)
         optionCount += 2 + amyEnabled;
 #endif
 
-    if (ControllerInfo[player->controllerID].keyDown.press) {
-        if (++self->subSelection > optionCount)
-            self->subSelection = 0;
-    }
-    else if (ControllerInfo[player->controllerID].keyUp.press) {
-        if (--self->subSelection < 0)
-            self->subSelection = optionCount;
-    }
-    else if (confirmPress) {
+    MegAmiMenu_HandleUpDown(ControllerInfo[player->controllerID], optionCount);
+
+    if (confirmPress) {
         Player_ChangeCharacter(player, 1 << self->subSelection);
         destroyEntity(self);
     }
@@ -370,15 +242,9 @@ void MegAmiMenu_State_P2Char(void)
         optionCount += 2 + amyEnabled;
 #endif
 
-    if (ControllerInfo[player->controllerID].keyDown.press) {
-        if (++self->subSelection > optionCount)
-            self->subSelection = 0;
-    }
-    else if (ControllerInfo[player->controllerID].keyUp.press) {
-        if (--self->subSelection < 0)
-            self->subSelection = optionCount;
-    }
-    else if (confirmPress) {
+    MegAmiMenu_HandleUpDown(ControllerInfo[player->controllerID], optionCount);
+
+    if (confirmPress) {
         EntityPlayer *sidekick = RSDK_GET_ENTITY(RSDK.GetEntitySlot(player) + 1, Player);
         if (sidekick->classID == Player->classID) {
             if (self->subSelection == 0) {
@@ -483,15 +349,9 @@ void MegAmiMenu_State_Shield(void)
 
     EntityPlayer *player = (EntityPlayer *)self->parent;
 
-    if (ControllerInfo[player->controllerID].keyDown.press) {
-        if (++self->subSelection > SHIELD_LIGHTNING)
-            self->subSelection = SHIELD_NONE;
-    }
-    else if (ControllerInfo[player->controllerID].keyUp.press) {
-        if (--self->subSelection < SHIELD_NONE)
-            self->subSelection = SHIELD_LIGHTNING;
-    }
-    else if (confirmPress) {
+    MegAmiMenu_HandleUpDown(ControllerInfo[player->controllerID], SHIELD_LIGHTNING);
+
+    if (confirmPress) {
         player->shield = self->subSelection;
         Player_ApplyShield(player);
         if (player->shield == SHIELD_NONE) {
@@ -512,33 +372,9 @@ void MegAmiMenu_State_SetRings(void)
 
     EntityPlayer *player = (EntityPlayer *)self->parent;
 
-    if (ControllerInfo[player->controllerID].keyRight.press) {
-        if (++self->subSelection > 2)
-            self->subSelection = 0;
-    }
-    else if (ControllerInfo[player->controllerID].keyLeft.press) {
-        if (--self->subSelection < 0)
-            self->subSelection = 2;
-    }
-    else if (ControllerInfo[player->controllerID].keyDown.press) {
-        switch (self->subSelection) {
-            case 0: self->customValue -= 100; break;
-            case 1: self->customValue -= 10; break;
-            case 2: self->customValue--; break;
-        }
-        if (self->customValue < 0)
-            self->customValue += 1000;
-    }
-    else if (ControllerInfo[player->controllerID].keyUp.press) {
-        switch (self->subSelection) {
-            case 0: self->customValue += 100; break;
-            case 1: self->customValue += 10; break;
-            case 2: self->customValue++; break;
-        }
-        if (self->customValue > 999)
-            self->customValue -= 1000;
-    }
-    else if (confirmPress) {
+    MegAmiMenu_HandleSetValue(ControllerInfo[player->controllerID], 0, 999);
+
+    if (confirmPress) {
         if (self->customValue > player->rings)
             Player_GiveRings(player, self->customValue - player->rings, false);
         else
@@ -555,13 +391,14 @@ void MegAmiMenu_State_DrawChar(void)
 {
     RSDK_THIS(MegAmiMenu);
 
-    int8 optionCount = 3 + (self->mainSelection == MEGAMIMENU_P2CHAR);
+    int8 characterCount = 3;
 #if MANIA_USE_PLUS
     if (API.CheckDLC(DLC_PLUS))
-        optionCount += 2 + amyEnabled;
+        characterCount += 2 + amyEnabled;
 #endif
 
-    RSDK.DrawRect(SUBBOX_XPOS, BOX_YPOS, 80, BOX_HEIGHT(optionCount), BOX_COLOR, 0xFF, INK_NONE, true);
+    RSDK.DrawRect(SUBBOX_XPOS, BOX_YPOS, 80, BOX_HEIGHT(characterCount + (self->mainSelection == MEGAMIMENU_P2CHAR)), BOX_COLOR, 0xFF, INK_NONE,
+                  true);
 
     Vector2 drawPos;
 
@@ -580,18 +417,9 @@ void MegAmiMenu_State_DrawChar(void)
     if (self->mainSelection == MEGAMIMENU_P2CHAR) {
         DrawOptionText(&self->strings[MENUSTRING_NONE]);
     }
-    DrawOptionText(&self->strings[MENUSTRING_SONIC]);
-    DrawOptionText(&self->strings[MENUSTRING_TAILS]);
-    DrawOptionText(&self->strings[MENUSTRING_KNUCKLES]);
-#if MANIA_USE_PLUS
-    if (API.CheckDLC(DLC_PLUS)) {
-        DrawOptionText(&self->strings[MENUSTRING_MIGHTY]);
-        DrawOptionText(&self->strings[MENUSTRING_RAY]);
-        if (amyEnabled) {
-            DrawOptionText(&self->strings[MENUSTRING_AMY]);
-        }
+    for (uint8 s = MENUSTRING_SONIC; s < MENUSTRING_SONIC + characterCount; s++) {
+        DrawOptionText(&self->strings[s]);
     }
-#endif
 }
 
 void MegAmiMenu_State_DrawShield(void)
@@ -615,10 +443,9 @@ void MegAmiMenu_State_DrawShield(void)
 
     // Draw Option Text
     DrawOptionText(&self->strings[MENUSTRING_NONE]);
-    DrawOptionText(&self->strings[MENUSTRING_BLUE]);
-    DrawOptionText(&self->strings[MENUSTRING_BUBBLE]);
-    DrawOptionText(&self->strings[MENUSTRING_FIRE]);
-    DrawOptionText(&self->strings[MENUSTRING_LIGHTNING]);
+    for (uint8 s = MENUSTRING_BLUE; s <= MENUSTRING_LIGHTNING; s++) {
+        DrawOptionText(&self->strings[s]);
+    }
 }
 
 void MegAmiMenu_State_DrawSetValue(void)
@@ -663,6 +490,104 @@ void MegAmiMenu_State_DrawSetValue(void)
     RSDK.DrawSprite(&self->animator, &drawPos, true);
 }
 
+void MegAmiMenu_HandleTouchControls(void)
+{
+    RSDK_THIS(MegAmiMenu);
+
+    EntityPlayer *player            = (EntityPlayer *)self->parent;
+    RSDKControllerState *controller = &ControllerInfo[player->controllerID];
+
+    bool32 touchedUp = false;
+    if (MegAmiMenu_CheckTouchRect(0, 0, ScreenInfo->center.x, Y_THIRD)) {
+        ControllerInfo->keyUp.down |= true;
+        controller->keyUp.down = true;
+        touchedUp              = true;
+    }
+
+    bool32 touchedDown = false;
+    if (MegAmiMenu_CheckTouchRect(0, Y_THIRD * 2, ScreenInfo->center.x, ScreenInfo->size.y)) {
+        ControllerInfo->keyDown.down |= true;
+        controller->keyDown.down = true;
+        touchedDown              = true;
+    }
+
+    bool32 touchedLeft = false;
+    if (MegAmiMenu_CheckTouchRect(0, Y_THIRD, ScreenInfo->center.x / 2, Y_THIRD * 2)) {
+        ControllerInfo->keyLeft.down |= true;
+        controller->keyLeft.down = true;
+        touchedLeft              = true;
+    }
+
+    bool32 touchedRight = false;
+    if (MegAmiMenu_CheckTouchRect(ScreenInfo->center.x / 2, Y_THIRD, ScreenInfo->center.x, Y_THIRD * 2)) {
+        ControllerInfo->keyRight.down |= true;
+        controller->keyRight.down = true;
+        touchedRight              = true;
+    }
+
+    bool32 touchedConfirm = false;
+    if (MegAmiMenu_CheckTouchRect(ScreenInfo->center.x, ScreenInfo->center.y, ScreenInfo->size.x, ScreenInfo->size.y)) {
+        ControllerInfo->keyStart.down |= true;
+        controller->keyStart.down = true;
+        touchedConfirm            = true;
+    }
+
+    bool32 touchedBack = false;
+    if (MegAmiMenu_CheckTouchRect(ScreenInfo->center.x, 0, ScreenInfo->size.x, ScreenInfo->center.y)) {
+        if (API_GetConfirmButtonFlip()) {
+            ControllerInfo->keyA.down |= true;
+            controller->keyA.down = true;
+        }
+        else {
+            ControllerInfo->keyB.down |= true;
+            controller->keyB.down = true;
+        }
+        touchedBack = true;
+    }
+
+    if (!MegAmiMenu->touchUp && touchedUp) {
+        ControllerInfo->keyUp.press |= ControllerInfo->keyUp.down;
+        controller->keyUp.press |= controller->keyUp.down;
+    }
+    MegAmiMenu->touchUp = controller->keyUp.down;
+
+    if (!MegAmiMenu->touchDown && touchedDown) {
+        ControllerInfo->keyDown.press |= ControllerInfo->keyDown.down;
+        controller->keyDown.press |= controller->keyDown.down;
+    }
+    MegAmiMenu->touchDown = controller->keyDown.down;
+
+    if (!MegAmiMenu->touchLeft && touchedLeft) {
+        ControllerInfo->keyLeft.press |= ControllerInfo->keyLeft.down;
+        controller->keyLeft.press |= controller->keyLeft.down;
+    }
+    MegAmiMenu->touchLeft = controller->keyLeft.down;
+
+    if (!MegAmiMenu->touchRight && touchedRight) {
+        ControllerInfo->keyRight.press |= ControllerInfo->keyRight.down;
+        controller->keyRight.press |= controller->keyRight.down;
+    }
+    MegAmiMenu->touchRight = controller->keyRight.down;
+
+    if (!MegAmiMenu->touchConfirm && touchedConfirm) {
+        ControllerInfo->keyStart.press |= ControllerInfo->keyStart.down;
+        controller->keyStart.press |= controller->keyStart.down;
+    }
+    MegAmiMenu->touchConfirm = controller->keyStart.down;
+
+    if (!MegAmiMenu->touchBack && touchedBack) {
+        if (API_GetConfirmButtonFlip()) {
+            ControllerInfo->keyA.press |= ControllerInfo->keyA.down;
+            controller->keyA.press |= controller->keyA.down;
+        }
+        else {
+            ControllerInfo->keyB.press |= ControllerInfo->keyB.down;
+            controller->keyB.press |= controller->keyB.down;
+        }
+    }
+    MegAmiMenu->touchBack = API_GetConfirmButtonFlip() ? controller->keyA.down : controller->keyB.down;
+}
+
 bool32 MegAmiMenu_CheckTouchRect(int32 x1, int32 y1, int32 x2, int32 y2)
 {
     for (int32 t = 0; t < TouchInfo->count; ++t) {
@@ -677,6 +602,62 @@ bool32 MegAmiMenu_CheckTouchRect(int32 x1, int32 y1, int32 x2, int32 y2)
     }
 
     return false;
+}
+
+void MegAmiMenu_HandleUpDown(RSDKControllerState controller, int8 maxCount)
+{
+    RSDK_THIS(MegAmiMenu);
+
+    if (self->state == MegAmiMenu_State_Main) {
+        if (controller.keyDown.press) {
+            if (++self->mainSelection > maxCount)
+                self->mainSelection = 0;
+        }
+        else if (controller.keyUp.press) {
+            if (--self->mainSelection < 0)
+                self->mainSelection = maxCount;
+        }
+    }
+    else {
+        if (controller.keyDown.press) {
+            if (++self->subSelection > maxCount)
+                self->subSelection = 0;
+        }
+        else if (controller.keyUp.press) {
+            if (--self->subSelection < 0)
+                self->subSelection = maxCount;
+        }
+    }
+}
+
+void MegAmiMenu_HandleSetValue(RSDKControllerState controller, int32 minValue, int32 maxValue)
+{
+    RSDK_THIS(MegAmiMenu);
+
+    if (controller.keyRight.press) {
+        if (++self->subSelection > self->valueDigits - 1)
+            self->subSelection = 0;
+    }
+    else if (controller.keyLeft.press) {
+        if (--self->subSelection < 0)
+            self->subSelection = self->valueDigits - 1;
+    }
+    else if (controller.keyUp.press) {
+        int32 digit    = self->valueDigits;
+        int32 decrease = 1;
+        while (--digit > self->subSelection) decrease *= 10;
+        self->customValue += decrease;
+        if (self->customValue > maxValue)
+            self->customValue -= maxValue - minValue + 1;
+    }
+    else if (controller.keyDown.press) {
+        int32 digit    = self->valueDigits;
+        int32 decrease = 1;
+        while (--digit > self->subSelection) decrease *= 10;
+        self->customValue -= decrease;
+        if (self->customValue < minValue)
+            self->customValue += maxValue - minValue + 1;
+    }
 }
 
 #if RETRO_INCLUDE_EDITOR

@@ -8,6 +8,10 @@
 
 ModConfig config;
 
+#if MANIA_USE_PLUS
+bool32 amyEnabled = false;
+#endif
+
 // Resolve externals
 Hitbox *(*Player_GetAltHitbox)(EntityPlayer *player);
 void (*Player_GiveRings)(EntityPlayer *player, int32 amount, bool32 playSfx);
@@ -80,11 +84,20 @@ void InitModAPI(void)
     config.defaultLeader   = Mod.GetSettingsInteger("", "Config:defaultLeader", 0);
     config.defaultSidekick = Mod.GetSettingsInteger("", "Config:defaultSidekick", 1);
 
+#if MANIA_USE_PLUS
+    amyEnabled = false;
+    if (API.CheckDLC(DLC_PLUS)) {
+        bool32 modActive = false;
+        Mod.LoadModInfo("Extra Slot Amy", NULL, NULL, NULL, &modActive);
+        amyEnabled |= modActive;
+        Mod.LoadModInfo("Sonic Mania Addendum", NULL, NULL, NULL, &modActive);
+        amyEnabled |= modActive;
+    }
+#endif
+
     uint8 characterCount = 2;
 #if MANIA_USE_PLUS
     if (API.CheckDLC(DLC_PLUS)) {
-        bool32 amyEnabled = false;
-        Mod.LoadModInfo("Extra Slot Amy", NULL, NULL, NULL, &amyEnabled);
         characterCount += 2 + amyEnabled;
     }
 #endif
@@ -119,6 +132,8 @@ void InitModAPI(void)
 
     ADD_PUBLIC_FUNC(MegAmiMenu_HandleTouchControls);
     ADD_PUBLIC_FUNC(MegAmiMenu_CheckTouchRect);
+    ADD_PUBLIC_FUNC(MegAmiMenu_HandleUpDown);
+    ADD_PUBLIC_FUNC(MegAmiMenu_HandleSetValue);
 
     // Add Mod Callbacks
     Mod.AddModCallback(MODCB_ONSTAGELOAD, StageLoadCallback);
