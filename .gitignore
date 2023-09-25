@@ -29,9 +29,9 @@ bin/
 [Bb]in/
 [Oo]bj/
 cmake/
-build/
-!/build/mod.ini
-!/build/Data/
+*/build/*.sln
+*/build/*.vcxproj
+*/build/*.vcxproj.filters
 
 .github/
 
@@ -236,8 +236,6 @@ FakesAssemblies/
 
 # Visual Studio 6 workspace options file
 *.opt
-
-make symlink.bat
 
 # LightSwitch generated files
 GeneratedArtifacts/
