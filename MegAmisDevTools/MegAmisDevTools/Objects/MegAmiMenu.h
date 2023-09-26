@@ -5,7 +5,11 @@
 #include "Player.h"
 #include "Misc.h"
 
+#if MANIA_USE_PLUS
 #define API_GetConfirmButtonFlip API.GetConfirmButtonFlip
+#else
+#define API_GetConfirmButtonFlip APICallback_GetConfirmButtonFlip
+#endif
 
 #define MAINBOX_XPOS   (16)
 #define MAINBOX_WIDTH  (150)
@@ -126,5 +130,9 @@ void MegAmiMenu_HandleTouchControls(void);
 bool32 MegAmiMenu_CheckTouchRect(int32 x1, int32 y1, int32 x2, int32 y2);
 void MegAmiMenu_HandleUpDown(RSDKControllerState controller, int8 maxCount);
 void MegAmiMenu_HandleSetValue(RSDKControllerState controller, int32 minValue, int32 maxValue);
+
+#if !MANIA_USE_PLUS
+extern bool32 (*APICallback_GetConfirmButtonFlip)(void);
+#endif
 
 #endif //! OBJ_MEGAMIMENU_H

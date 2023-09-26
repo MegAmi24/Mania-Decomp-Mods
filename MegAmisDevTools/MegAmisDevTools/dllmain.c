@@ -9,6 +9,9 @@
 ModConfig config;
 
 // Resolve externals
+#if !MANIA_USE_PLUS
+bool32 (*APICallback_GetConfirmButtonFlip)(void);
+#endif
 Hitbox *(*Player_GetAltHitbox)(EntityPlayer *player);
 void (*Player_GiveRings)(EntityPlayer *player, int32 amount, bool32 playSfx);
 void (*Player_ChangeCharacter)(EntityPlayer *player, int32 character);
@@ -97,6 +100,9 @@ void InitModAPI(void)
     Mod.SaveSettings();
 
     // Get Public Functions
+#if !MANIA_USE_PLUS
+    APICallback_GetConfirmButtonFlip = Mod.GetPublicFunction(NULL, "APICallback_GetConfirmButtonFlip");
+#endif
     Player_Input_P1             = Mod.GetPublicFunction(NULL, "Player_Input_P1");
     Player_GetAltHitbox         = Mod.GetPublicFunction(NULL, "Player_GetAltHitbox");
     Player_GiveRings            = Mod.GetPublicFunction(NULL, "Player_GiveRings");
