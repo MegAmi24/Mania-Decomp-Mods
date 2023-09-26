@@ -37,7 +37,7 @@ target_include_directories(OuttaHereRestored PRIVATE
 set_target_properties(OuttaHereRestored PROPERTIES OUTPUT_NAME ${OUTPUT_NAME})
 
 target_compile_definitions(OuttaHereRestored PRIVATE
-	RSDK_REVISION=${RETRO_REVISION}
+	RETRO_REVISION=${RETRO_REVISION}
 	RETRO_USE_MOD_LOADER=1
 	RETRO_MOD_LOADER_VER=${RETRO_MOD_LOADER_VER}
 	RETRO_INCLUDE_EDITOR=$<BOOL:${MOD_INCLUDE_EDITOR}>

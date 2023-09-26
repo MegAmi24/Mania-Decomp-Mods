@@ -11,14 +11,14 @@ set(RETRO_MOD_LOADER_VER 2 CACHE STRING "Sets the mod loader version. Defaults t
 option(MANIA_FIRST_RELEASE "Whether or not to build Mania's first release. Defaults to false" OFF)
 if(MANIA_FIRST_RELEASE)
     set(MANIA_PREPLUS ON)
+    set(GAME_VERSION 0 CACHE STRING "The game version to use. Defaults to 0 == Launch version")
 else()
     option(MANIA_PREPLUS "Whether or not to build Mania pre-plus. Defaults to false" OFF)
-endif()
-
-if(NOT MANIA_PREPLUS)
-    set(GAME_VERSION 6 CACHE STRING "The game version to use. Defaults to 6 == Last Steam release")
-else()
-    set(GAME_VERSION 3 CACHE STRING "The game version to use. Defaults to 3 == Last pre-plus release")
+    if(NOT MANIA_PREPLUS)
+        set(GAME_VERSION 6 CACHE STRING "The game version to use. Defaults to 6 == Last Steam release")
+    else()
+        set(GAME_VERSION 3 CACHE STRING "The game version to use. Defaults to 3 == Last pre-plus release")
+    endif()
 endif()
 
 option(MOD_INCLUDE_EDITOR "Whether or not to include editor functions. Defaults to true" ON)
@@ -36,7 +36,7 @@ target_include_directories(DimTimerCustomizer PRIVATE
 set_target_properties(DimTimerCustomizer PROPERTIES OUTPUT_NAME ${OUTPUT_NAME})
 
 target_compile_definitions(DimTimerCustomizer PRIVATE
-	RSDK_REVISION=${RETRO_REVISION}
+	RETRO_REVISION=${RETRO_REVISION}
 	RETRO_USE_MOD_LOADER=1
 	RETRO_MOD_LOADER_VER=${RETRO_MOD_LOADER_VER}
 	RETRO_INCLUDE_EDITOR=$<BOOL:${MOD_INCLUDE_EDITOR}>

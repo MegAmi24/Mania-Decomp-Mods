@@ -26,7 +26,7 @@ option(MOD_INCLUDE_EDITOR "Whether or not to include editor functions. Defaults 
 add_library(Act2ClearJingle SHARED
     GameAPI/C/GameAPI/Game.c
     ${MOD_NAME}/dllmain.c
-    ${MOD_NAME}/Zone.c
+    ${MOD_NAME}/Music.c
 )
 
 target_include_directories(Act2ClearJingle PRIVATE
@@ -37,7 +37,7 @@ target_include_directories(Act2ClearJingle PRIVATE
 set_target_properties(Act2ClearJingle PROPERTIES OUTPUT_NAME ${OUTPUT_NAME})
 
 target_compile_definitions(Act2ClearJingle PRIVATE
-	RSDK_REVISION=${RETRO_REVISION}
+	RETRO_REVISION=${RETRO_REVISION}
 	RETRO_USE_MOD_LOADER=1
 	RETRO_MOD_LOADER_VER=${RETRO_MOD_LOADER_VER}
 	RETRO_INCLUDE_EDITOR=$<BOOL:${MOD_INCLUDE_EDITOR}>

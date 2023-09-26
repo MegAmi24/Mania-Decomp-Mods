@@ -36,7 +36,7 @@ target_include_directories(DisableAutoSavePopup PRIVATE
 set_target_properties(DisableAutoSavePopup PROPERTIES OUTPUT_NAME ${OUTPUT_NAME})
 
 target_compile_definitions(DisableAutoSavePopup PRIVATE
-	RSDK_REVISION=${RETRO_REVISION}
+	RETRO_REVISION=${RETRO_REVISION}
 	RETRO_USE_MOD_LOADER=1
 	RETRO_MOD_LOADER_VER=${RETRO_MOD_LOADER_VER}
 	RETRO_INCLUDE_EDITOR=$<BOOL:${MOD_INCLUDE_EDITOR}>
