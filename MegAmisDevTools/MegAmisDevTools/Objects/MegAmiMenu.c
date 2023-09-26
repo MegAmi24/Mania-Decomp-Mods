@@ -79,10 +79,10 @@ void MegAmiMenu_Create(void *data)
 {
     RSDK_THIS(MegAmiMenu);
 
-    ObjectUIWidgets *UIWudgets = Mod.FindObject("UIWidgets");
+    ObjectUIWidgets *UIWidgets = Mod.FindObject("UIWidgets");
     ObjectZone *Zone           = Mod.FindObject("Zone");
 
-    RSDK.SetSpriteAnimation(UIWudgets->fontFrames, 0, &self->animator, true, 0);
+    RSDK.SetSpriteAnimation(UIWidgets->fontFrames, 0, &self->animator, true, 0);
 
     if (!SceneInfo->inEditor) {
         self->active    = ACTIVE_ALWAYS;
@@ -116,7 +116,7 @@ void MegAmiMenu_Create(void *data)
         RSDK.InitString(&self->strings[MENUSTRING_FIRE], "FIRE SHIELD", false);
         RSDK.InitString(&self->strings[MENUSTRING_LIGHTNING], "LIGHTNING SHIELD", false);
 
-        for (uint8 s = 0; s < MENUSTRING_COUNT; s++) RSDK.SetSpriteString(UIWudgets->fontFrames, 0, &self->strings[s]);
+        for (uint8 s = 0; s < MENUSTRING_COUNT; s++) RSDK.SetSpriteString(UIWidgets->fontFrames, 0, &self->strings[s]);
 
         self->state     = MegAmiMenu_State_Main;
         self->stateDraw = StateMachine_None;
@@ -132,7 +132,7 @@ void MegAmiMenu_Create(void *data)
     }
     else {
         RSDK.InitString(&self->strings[MENUSTRING_P1CHAR], "MEGAMI MENU", false);
-        RSDK.SetSpriteString(UIWudgets->fontFrames, 0, &self->strings[MENUSTRING_P1CHAR]);
+        RSDK.SetSpriteString(UIWidgets->fontFrames, 0, &self->strings[MENUSTRING_P1CHAR]);
     }
 }
 
