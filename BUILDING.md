@@ -44,4 +44,6 @@ To add a symbolic link for your mod, write the appropriate command in `[RSDKv5-d
   * Windows: `mklink /d "[mod-folder-name]" "[path-to-mod-root]"`
   * Linux: `ln -s "[path-to-mod-root]" "[mod-folder-name]"`
 
-After adding the symlink(s), build the decompilation in Android Studio.
+You will also need to symlink GameAPI. Simply enter the above appropriate command, with `[path-to-mod-root]` being the root GameAPI folder and `[mod-folder-name]` being `GameAPI`.
+
+After adding the symlinks, build the decompilation in Android Studio.
