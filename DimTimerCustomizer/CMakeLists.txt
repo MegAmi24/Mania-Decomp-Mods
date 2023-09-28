@@ -24,13 +24,13 @@ endif()
 option(MOD_INCLUDE_EDITOR "Whether or not to include editor functions. Defaults to true" ON)
 
 add_library(DimTimerCustomizer SHARED
-    GameAPI/C/GameAPI/Game.c
+    ../GameAPI/C/GameAPI/Game.c
     ${MOD_NAME}/dllmain.c
 )
 
 target_include_directories(DimTimerCustomizer PRIVATE
     ${MOD_NAME}/
-    GameAPI/C/
+    ../GameAPI/C/
 )
 
 set_target_properties(DimTimerCustomizer PROPERTIES OUTPUT_NAME ${OUTPUT_NAME})

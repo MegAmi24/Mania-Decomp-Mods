@@ -1,4 +1,4 @@
-#include "../GameAPI/C/GameAPI/Game.h"
+#include "GameAPI/Game.h"
 #include "TitleSetup.h"
 #include "TitleLogo.h"
 #include "ModConfig.h"

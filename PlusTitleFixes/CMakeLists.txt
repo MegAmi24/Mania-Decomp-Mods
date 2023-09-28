@@ -24,14 +24,14 @@ endif()
 option(MOD_INCLUDE_EDITOR "Whether or not to include editor functions. Defaults to true" ON)
 
 add_library(PlusTitleFixes SHARED
-    GameAPI/C/GameAPI/Game.c
+    ../GameAPI/C/GameAPI/Game.c
     ${MOD_NAME}/dllmain.c
     ${MOD_NAME}/TitleSetup.c
 )
 
 target_include_directories(PlusTitleFixes PRIVATE
     ${MOD_NAME}/
-    GameAPI/C/
+    ../GameAPI/C/
 )
 
 set_target_properties(PlusTitleFixes PROPERTIES OUTPUT_NAME ${OUTPUT_NAME})

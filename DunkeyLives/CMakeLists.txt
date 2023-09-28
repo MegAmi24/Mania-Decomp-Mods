@@ -24,14 +24,14 @@ endif()
 option(MOD_INCLUDE_EDITOR "Whether or not to include editor functions. Defaults to true" ON)
 
 add_library(DunkeyLives SHARED
-    GameAPI/C/GameAPI/Game.c
+    ../GameAPI/C/GameAPI/Game.c
     ${MOD_NAME}/dllmain.c
     ${MOD_NAME}/PullChain.c
 )
 
 target_include_directories(DunkeyLives PRIVATE
     ${MOD_NAME}/
-    GameAPI/C/
+    ../GameAPI/C/
 )
 
 set_target_properties(DunkeyLives PROPERTIES OUTPUT_NAME ${OUTPUT_NAME})

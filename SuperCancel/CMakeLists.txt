@@ -24,7 +24,7 @@ endif()
 option(MOD_INCLUDE_EDITOR "Whether or not to include editor functions. Defaults to true" ON)
 
 add_library(SuperCancel SHARED
-    GameAPI/C/GameAPI/Game.c
+    ../GameAPI/C/GameAPI/Game.c
     ${MOD_NAME}/dllmain.c
     ${MOD_NAME}/Player.c
     ${MOD_NAME}/HUD.c
@@ -32,7 +32,7 @@ add_library(SuperCancel SHARED
 
 target_include_directories(SuperCancel PRIVATE
     ${MOD_NAME}/
-    GameAPI/C/
+    ../GameAPI/C/
 )
 
 set_target_properties(SuperCancel PROPERTIES OUTPUT_NAME ${OUTPUT_NAME})

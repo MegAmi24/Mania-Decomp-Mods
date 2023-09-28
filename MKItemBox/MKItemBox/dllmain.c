@@ -1,4 +1,4 @@
-#include "../GameAPI/C/GameAPI/Game.h"
+#include "GameAPI/Game.h"
 
 #include "ItemBox.h"
 #include "Misc.h"

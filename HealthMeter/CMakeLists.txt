@@ -24,7 +24,7 @@ endif()
 option(MOD_INCLUDE_EDITOR "Whether or not to include editor functions. Defaults to true" ON)
 
 add_library(HealthMeter SHARED
-    GameAPI/C/GameAPI/Game.c
+    ../GameAPI/C/GameAPI/Game.c
     ${MOD_NAME}/dllmain.c
     ${MOD_NAME}/Objects/HUD.c
     ${MOD_NAME}/Objects/ItemBox.c
@@ -36,7 +36,7 @@ add_library(HealthMeter SHARED
 target_include_directories(HealthMeter PRIVATE
     ${MOD_NAME}/
     ${MOD_NAME}/Objects/
-    GameAPI/C/
+    ../GameAPI/C/
 )
 
 set_target_properties(HealthMeter PROPERTIES OUTPUT_NAME ${OUTPUT_NAME})

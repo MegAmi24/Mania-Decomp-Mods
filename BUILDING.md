@@ -11,8 +11,8 @@ If you've already cloned the repo, run this command inside of the repository:
 ```git submodule update --init```
 
 ## Set up GameAPI
-Mods require the [GameAPI](https://github.com/Rubberduckycooly/GameAPI) dependency to build. To set it up, simply clone it by running `git clone https://github.com/Rubberduckycooly/GameAPI --recursive` in the mod's root directory.
-If you plan to build multiple mods, using symlinks is recommended.
+Mods require the [GameAPI](https://github.com/Rubberduckycooly/GameAPI) dependency to build.
+Some repositories (such as this one) include GameAPI as a submodule, which is downloaded along with the repository when cloned with the above command. Others don't include it, in which case you can simply clone it by running `git clone https://github.com/Rubberduckycooly/GameAPI --recursive` (if you plan to build multiple mods, using symlinks is recommended). When doing this, keep in mind that the location GameAPI needs to be in may differ from repo to repo; most will have it in the mod's root directory, but others may have it elsewhere.
 
 ## Building
 
@@ -22,6 +22,8 @@ Besides GameAPI, no external dependencies are required; simply type the followin
 cmake -B build
 cmake --build build --config release
 ```
+
+The resulting build will be located somewhere in `build/` depending on your system.
 
 The following cmake arguments are available when compiling:
 - Use these on the `cmake -B build` step like so: `cmake -B build -DRETRO_REVISION=2`

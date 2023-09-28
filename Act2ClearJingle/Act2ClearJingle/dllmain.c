@@ -1,4 +1,4 @@
-#include "../GameAPI/C/GameAPI/Game.h"
+#include "GameAPI/Game.h"
 #include "Music.h"
 
 void (*Music_SetMusicTrack)(const char *path, uint8 track, uint32 loopPoint);

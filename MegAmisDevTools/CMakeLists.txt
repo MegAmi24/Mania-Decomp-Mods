@@ -24,7 +24,7 @@ endif()
 option(MOD_INCLUDE_EDITOR "Whether or not to include editor functions. Defaults to true" ON)
 
 add_library(MegAmisDevTools SHARED
-    GameAPI/C/GameAPI/Game.c
+    ../GameAPI/C/GameAPI/Game.c
     ${MOD_NAME}/dllmain.c
     ${MOD_NAME}/Objects/DebugMode.c
     ${MOD_NAME}/Objects/MegAmiMenu.c
@@ -34,7 +34,7 @@ add_library(MegAmisDevTools SHARED
 target_include_directories(MegAmisDevTools PRIVATE
     ${MOD_NAME}/
     ${MOD_NAME}/Objects/
-    GameAPI/C/
+    ../GameAPI/C/
 )
 
 set_target_properties(MegAmisDevTools PROPERTIES OUTPUT_NAME ${OUTPUT_NAME})

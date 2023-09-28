@@ -1,4 +1,4 @@
-#include "../GameAPI/C/GameAPI/Game.h"
+#include "GameAPI/Game.h"
 #include "PullChain.h"
 
 #if RETRO_USE_MOD_LOADER

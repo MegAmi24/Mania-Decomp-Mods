@@ -1,4 +1,4 @@
-#include "../GameAPI/C/GameAPI/Game.h"
+#include "GameAPI/Game.h"
 #include "Player.h"
 #if GAME_VERSION != VER_100
 #include "HUD.h"
