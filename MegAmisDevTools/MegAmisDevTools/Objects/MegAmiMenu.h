@@ -107,7 +107,7 @@ void MegAmiMenu_StaticUpdate(void);
 void MegAmiMenu_Draw(void);
 void MegAmiMenu_Create(void *data);
 void MegAmiMenu_StageLoad(void);
-#if RETRO_INCLUDE_EDITOR
+#if GAME_INCLUDE_EDITOR
 void MegAmiMenu_EditorDraw(void);
 void MegAmiMenu_EditorLoad(void);
 #endif

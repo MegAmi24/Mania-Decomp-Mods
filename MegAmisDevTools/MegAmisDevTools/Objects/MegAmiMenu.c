@@ -677,7 +677,7 @@ void MegAmiMenu_HandleSetValue(RSDKControllerState controller, int32 minValue, i
     }
 }
 
-#if RETRO_INCLUDE_EDITOR
+#if GAME_INCLUDE_EDITOR
 void MegAmiMenu_EditorDraw(void)
 {
     RSDK_THIS(MegAmiMenu);
