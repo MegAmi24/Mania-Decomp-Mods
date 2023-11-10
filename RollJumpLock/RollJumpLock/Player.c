@@ -24,6 +24,8 @@ void Player_State_RollingAir(void)
     ObjectShield *Shield = Mod.FindObject("Shield");
     EntityShield *shield = RSDK_GET_ENTITY(Player->playerCount + RSDK.GetEntitySlot(self), Shield);
     bool32 abilityCheck  = self->jumpAbilityState == 1; // Check if the player has yet to use an ability
+    if (globals->medalMods & MEDAL_NODROPDASH && (self->characterID != ID_SONIC || self->shield <= SHIELD_BLUE))
+        abilityCheck = false;
 
     StateMachine_Run(Player_State_Air);
 
