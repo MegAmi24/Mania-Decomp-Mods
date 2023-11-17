@@ -58,8 +58,17 @@ void Player_LateUpdate(void)
         ObjectZone *Zone = Mod.FindObject("Zone");
         int32 playerID   = RSDK.GetEntitySlot(self);
 
-        if (self->state != Player_State_Death && self->position.y > Zone->deathBoundary[playerID]) {
-            self->deathType = PLAYER_DEATH_DIE_USESFX;
+        if (self->state != Player_State_Death && !self->deathType) {
+            if (Zone->playerBoundsB[playerID] <= Zone->deathBoundary[playerID]) {
+                if (self->position.y > Zone->deathBoundary[playerID]) {
+                    self->deathType                    = PLAYER_DEATH_DIE_USESFX;
+                    Zone->playerBoundActiveB[playerID] = false;
+                }
+            }
+            else if (self->position.y > Zone->playerBoundsB[playerID]) {
+                self->deathType                    = PLAYER_DEATH_DIE_USESFX;
+                Zone->playerBoundActiveB[playerID] = false;
+            }
         }
     }
 
