@@ -5,7 +5,6 @@
 ModConfig config;
 
 // Resolve externals
-StateMachine(Player_State_OuttaHere);
 int32 (*HUD_CharacterIndexFromID)(int32 characterID);
 
 #if RETRO_USE_MOD_LOADER
@@ -23,16 +22,15 @@ void InitModAPI(void)
     config.rayCanOuttaHere    = Mod.GetSettingsBool("", "Config:rayCanOuttaHere", true);
 #endif
     config.sidekickCanOuttaHere = Mod.GetSettingsInteger("", "Config:sidekickCanOuttaHere", 0);
-    config.sonicAnimID          = Mod.GetSettingsInteger("", "Config:sonicAnimID", ANI_OUTTA_HERE);
-    config.superSonicAnimID     = Mod.GetSettingsInteger("", "Config:superSonicAnimID", ANI_OUTTA_HERE);
-    config.tailsAnimID          = Mod.GetSettingsInteger("", "Config:tailsAnimID", ANI_OUTTA_HERE);
-    config.knuxAnimID           = Mod.GetSettingsInteger("", "Config:knuxAnimID", ANI_OUTTA_HERE);
+    config.sonicAnimID          = Mod.GetSettingsInteger("", "Config:sonicAnimID", -1);
+    config.superSonicAnimID     = Mod.GetSettingsInteger("", "Config:superSonicAnimID", -1);
+    config.tailsAnimID          = Mod.GetSettingsInteger("", "Config:tailsAnimID", -1);
+    config.knuxAnimID           = Mod.GetSettingsInteger("", "Config:knuxAnimID", -1);
 #if MANIA_USE_PLUS
-    config.mightyAnimID = Mod.GetSettingsInteger("", "Config:mightyAnimID", ANI_OUTTA_HERE);
-    config.rayAnimID    = Mod.GetSettingsInteger("", "Config:rayAnimID", ANI_OUTTA_HERE);
+    config.mightyAnimID = Mod.GetSettingsInteger("", "Config:mightyAnimID", -1);
+    config.rayAnimID    = Mod.GetSettingsInteger("", "Config:rayAnimID", -1);
 #endif
-    config.sidekickAnimID = Mod.GetSettingsInteger("", "Config:sidekickAnimID", ANI_OUTTA_HERE);
-    config.useBinAnim     = Mod.GetSettingsBool("", "Config:useBinAnim", true);
+    config.sidekickAnimID = Mod.GetSettingsInteger("", "Config:sidekickAnimID", -1);
     config.useFrameID     = Mod.GetSettingsBool("", "Config:useFrameID", false);
     config.useVoiceLines  = Mod.GetSettingsInteger("", "Config:useVoiceLines", 2);
 
@@ -53,17 +51,15 @@ void InitModAPI(void)
     Mod.SetSettingsInteger("Config:rayAnimID", config.rayAnimID);
 #endif
     Mod.SetSettingsInteger("Config:sidekickAnimID", config.sidekickAnimID);
-    Mod.SetSettingsBool("Config:useBinAnim", config.useBinAnim);
     Mod.SetSettingsBool("Config:useFrameID", config.useFrameID);
     Mod.SetSettingsInteger("Config:useVoiceLines", CLAMP(config.useVoiceLines, 0, 2));
 
     Mod.SaveSettings();
 
-    Player_State_OuttaHere   = Mod.GetPublicFunction(NULL, "Player_State_OuttaHere");
     HUD_CharacterIndexFromID = Mod.GetPublicFunction(NULL, "HUD_CharacterIndexFromID");
 
     Mod.RegisterStateHook(Mod.GetPublicFunction(NULL, "Player_State_Ground"), Player_SetOuttaHere, false);
-    Mod.RegisterStateHook(Player_State_OuttaHere, Player_State_OuttaHere_Hook, true);
+    Mod.RegisterStateHook(Mod.GetPublicFunction(NULL, "Player_State_OuttaHere"), Player_State_OuttaHere_Hook, true);
     MOD_REGISTER_OBJECT_HOOK(Player);
     MOD_REGISTER_OBJ_OVERLOAD_MSV(Player, Mod_Player, NULL, NULL, NULL, NULL, NULL, Player_StageLoad, NULL, NULL, NULL);
 }

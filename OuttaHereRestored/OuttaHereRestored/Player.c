@@ -9,72 +9,74 @@ void Player_SetOuttaHere(void)
 {
     RSDK_THIS(Player);
 
-    // Check for character related things
-    bool32 canOuttaHere = false;
-    uint16 outtaHereSfx = Player->sfxOuttahere;
-    int16 outtaHereAnim = ANI_OUTTA_HERE;
-    switch (self->characterID) {
-        case ID_SONIC:
-            if (config.sonicCanOuttaHere)
-                canOuttaHere = true;
-            if (self->superState != SUPERSTATE_SUPER)
-                outtaHereAnim = config.sonicAnimID;
-            else
-                outtaHereAnim = config.superSonicAnimID;
-            break;
+    // Wait for ~3 minutes to do outta here
+    if (self->outtaHereTimer >= 10620) {
+        // Check for character related things
+        bool32 canOuttaHere = false;
+        uint16 outtaHereSfx = Player->sfxOuttahere;
+        int16 outtaHereAnim = ANI_OUTTA_HERE;
+        switch (self->characterID) {
+            case ID_SONIC:
+                if (config.sonicCanOuttaHere)
+                    canOuttaHere = true;
+                if (self->superState != SUPERSTATE_SUPER)
+                    outtaHereAnim = config.sonicAnimID;
+                else
+                    outtaHereAnim = config.superSonicAnimID;
+                break;
 
-        case ID_TAILS:
-            if (config.tailsCanOuttaHere)
-                canOuttaHere = true;
-            outtaHereAnim = config.tailsAnimID;
-            if (config.useVoiceLines == 2)
-                outtaHereSfx = Mod_Player->sfxOuttahereT;
-            break;
+            case ID_TAILS:
+                if (config.tailsCanOuttaHere)
+                    canOuttaHere = true;
+                outtaHereAnim = config.tailsAnimID;
+                if (config.useVoiceLines == 2)
+                    outtaHereSfx = Mod_Player->sfxOuttahereT;
+                break;
 
-        case ID_KNUCKLES:
-            if (config.knuxCanOuttaHere)
-                canOuttaHere = true;
-            outtaHereAnim = config.knuxAnimID;
-            if (config.useVoiceLines == 2)
-                outtaHereSfx = Mod_Player->sfxOuttahereK;
-            break;
+            case ID_KNUCKLES:
+                if (config.knuxCanOuttaHere)
+                    canOuttaHere = true;
+                outtaHereAnim = config.knuxAnimID;
+                if (config.useVoiceLines == 2)
+                    outtaHereSfx = Mod_Player->sfxOuttahereK;
+                break;
 
 #if MANIA_USE_PLUS
-        case ID_MIGHTY:
-            if (config.mightyCanOuttaHere)
-                canOuttaHere = true;
-            outtaHereAnim = config.mightyAnimID;
-            if (config.useVoiceLines == 2)
-                outtaHereSfx = Mod_Player->sfxOuttahereM;
-            break;
+            case ID_MIGHTY:
+                if (config.mightyCanOuttaHere)
+                    canOuttaHere = true;
+                outtaHereAnim = config.mightyAnimID;
+                if (config.useVoiceLines == 2)
+                    outtaHereSfx = Mod_Player->sfxOuttahereM;
+                break;
 
-        case ID_RAY:
-            if (config.rayCanOuttaHere)
-                canOuttaHere = true;
-            outtaHereAnim = config.rayAnimID;
-            if (config.useVoiceLines == 2)
-                outtaHereSfx = Mod_Player->sfxOuttahereR;
-            break;
+            case ID_RAY:
+                if (config.rayCanOuttaHere)
+                    canOuttaHere = true;
+                outtaHereAnim = config.rayAnimID;
+                if (config.useVoiceLines == 2)
+                    outtaHereSfx = Mod_Player->sfxOuttahereR;
+                break;
 #endif
-    }
+        }
 
-    if (canOuttaHere && self->sidekick) {
-        canOuttaHere = config.sidekickCanOuttaHere > 0;
-        if (config.sidekickCanOuttaHere == 2)
-            outtaHereAnim = config.sidekickAnimID;
-    }
+        if (canOuttaHere && self->sidekick) {
+            canOuttaHere = config.sidekickCanOuttaHere > 0;
+            if (config.sidekickCanOuttaHere == 2)
+                outtaHereAnim = config.sidekickAnimID;
+        }
 
-    // Wait for ~3 minutes to do outta here
-    if (canOuttaHere && (self->outtaHereTimer >= 10620 || (SKU->platform == PLATFORM_DEV && ControllerInfo[self->controllerID].keyZ.press))) {
-        if (config.useBinAnim) {
+        if (!canOuttaHere)
+            return;
+
+        if (outtaHereAnim < 0)
             RSDK.SetSpriteAnimation(
                 RSDK.LoadSpriteAnimation("Players/OuttaHere.bin", SCOPE_STAGE),
                 (self->characterID == ID_SONIC && self->superState == SUPERSTATE_SUPER) ? 0 : (HUD_CharacterIndexFromID(self->characterID) + 1),
                 &self->animator, false, 0);
-        }
         else
             RSDK.SetSpriteAnimation(self->aniFrames, outtaHereAnim, &self->animator, false, 0);
-        self->state           = Player_State_OuttaHere;
+        self->state           = Mod.GetPublicFunction(NULL, "Player_State_OuttaHere");
         self->tileCollisions  = TILECOLLISION_NONE;
         self->interaction     = false;
         self->nextAirState    = StateMachine_None;

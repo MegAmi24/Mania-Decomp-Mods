@@ -34,8 +34,8 @@ typedef enum {
     ANI_OUTTA_HERE,
     ANI_HANG,
     ANI_HANG_MOVE,
-    ANI_POLE_SWING_H,
     ANI_POLE_SWING_V,
+    ANI_POLE_SWING_H,
     ANI_SHAFT_SWING,
     ANI_TURNTABLE,
     ANI_TWISTER,
@@ -44,8 +44,8 @@ typedef enum {
     ANI_PULLEY_HOLD,
     ANI_SHIMMY_IDLE,
     ANI_SHIMMY_MOVE,
-    ANI_BREATHE,
     ANI_BUBBLE,
+    ANI_BREATHE,
     ANI_RIDE,
     ANI_CLING,
     ANI_BUNGEE,
@@ -493,7 +493,6 @@ extern ModObjectPlayer *Mod_Player;
 
 void Player_StageLoad(void);
 
-extern StateMachine(Player_State_OuttaHere);
 extern int32 (*HUD_CharacterIndexFromID)(int32 characterID);
 
 bool32 Player_State_OuttaHere_Hook(bool32 skipped);

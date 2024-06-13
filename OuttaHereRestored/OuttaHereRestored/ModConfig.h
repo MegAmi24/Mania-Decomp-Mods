@@ -21,7 +21,6 @@ typedef struct {
     int32 rayAnimID;
 #endif
     int32 sidekickAnimID;
-    bool32 useBinAnim;
     bool32 useVoiceLines;
     bool32 useFrameID;
 } ModConfig;
