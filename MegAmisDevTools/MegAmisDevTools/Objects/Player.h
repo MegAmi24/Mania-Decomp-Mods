@@ -373,14 +373,6 @@ extern void (*Player_ChangeCharacter)(EntityPlayer *player, int32 character);
 extern bool32 (*Player_TryTransform)(EntityPlayer *player, uint8 emeraldMasks);
 extern void (*Player_ApplyShield)(EntityPlayer *player);
 
-// Player States
-extern StateMachine(Player_State_FlyToPlayer);
-extern StateMachine(Player_State_ReturnToPlayer);
-
-// Input States
-extern StateMachine(Player_Input_P1);
-extern StateMachine(Player_Input_P2_Delay);
-
 // State helpers
 extern void (*Player_UpdatePhysicsState)(EntityPlayer *entity);
 

@@ -6,6 +6,9 @@
 #include "Objects/DebugMode.h"
 #include "Objects/Misc.h"
 
+#if MANIA_USE_PLUS
+bool32 amyEnabled = false;
+#endif
 ModConfig config;
 
 // Resolve externals
@@ -17,10 +20,6 @@ void (*Player_GiveRings)(EntityPlayer *player, int32 amount, bool32 playSfx);
 void (*Player_ChangeCharacter)(EntityPlayer *player, int32 character);
 bool32 (*Player_TryTransform)(EntityPlayer *player, uint8 emeraldMasks);
 void (*Player_ApplyShield)(EntityPlayer *player);
-StateMachine(Player_State_FlyToPlayer);
-StateMachine(Player_State_ReturnToPlayer);
-StateMachine(Player_Input_P1);
-StateMachine(Player_Input_P2_Delay);
 void (*Player_UpdatePhysicsState)(EntityPlayer *entity);
 void (*Music_PlayJingle)(uint8 trackID);
 
@@ -48,28 +47,25 @@ void DefaultCharacterCallback(void *data)
     uint8 leader  = ID_SONIC;
     uint8 sidekick = ID_TAILS;
 
-    switch (config.defaultLeader) {
-        default:
-        case 0: leader = ID_SONIC; break;
-        case 1: leader = ID_TAILS; break;
-        case 2: leader = ID_KNUCKLES; break;
 #if MANIA_USE_PLUS
-        case 3: leader = API.CheckDLC(DLC_PLUS) ? ID_MIGHTY : ID_SONIC; break;
-        case 4: leader = API.CheckDLC(DLC_PLUS) ? ID_RAY : ID_SONIC; break;
-        case 5: leader = API.CheckDLC(DLC_PLUS) ? 1 << 5 : ID_SONIC; break;
+    if (config.defaultLeader <= 2 || API.CheckDLC(DLC_PLUS))
+        leader = 1 << config.defaultLeader;
+    else
+        leader = ID_SONIC;
+#else
+    leader = 1 << config.defaultLeader;
 #endif
-    }
 
-    switch (config.defaultSidekick) {
-        default:
-        case -1: sidekick = ID_NONE; break;
-        case 0: sidekick = ID_SONIC; break;
-        case 1: sidekick = ID_TAILS; break;
-        case 2: sidekick = ID_KNUCKLES; break;
+    if (config.defaultSidekick == -1)
+        sidekick = ID_NONE;
+    else {
 #if MANIA_USE_PLUS
-        case 3: sidekick = API.CheckDLC(DLC_PLUS) ? ID_MIGHTY : ID_SONIC; break;
-        case 4: sidekick = API.CheckDLC(DLC_PLUS) ? ID_RAY : ID_SONIC; break;
-        case 5: sidekick = API.CheckDLC(DLC_PLUS) ? 1 << 5 : ID_SONIC; break;
+        if (config.defaultSidekick <= 2 || API.CheckDLC(DLC_PLUS))
+            sidekick = 1 << config.defaultSidekick;
+        else
+            sidekick = ID_SONIC;
+#else
+        sidekick = 1 << config.defaultSidekick;
 #endif
     }
 
@@ -82,17 +78,19 @@ void InitModAPI(void)
     config.defaultLeader   = Mod.GetSettingsInteger("", "Config:defaultLeader", 0);
     config.defaultSidekick = Mod.GetSettingsInteger("", "Config:defaultSidekick", 1);
 
+#if MANIA_USE_PLUS
+    // Initialize Amy variable
+    bool32 modActive = false;
+    Mod.LoadModInfo("Extra Slot Amy", NULL, NULL, NULL, &modActive);
+    amyEnabled = modActive;
+    Mod.LoadModInfo("Sonic Mania Addendum", NULL, NULL, NULL, &modActive);
+    amyEnabled |= modActive;
+#endif
+
     uint8 characterCount = 2;
 #if MANIA_USE_PLUS
-    if (API.CheckDLC(DLC_PLUS)) {
-        bool32 amyEnabled = false;
-        bool32 modActive  = false;
-        Mod.LoadModInfo("Extra Slot Amy", NULL, NULL, NULL, &modActive);
-        amyEnabled |= modActive;
-        Mod.LoadModInfo("Sonic Mania Addendum", NULL, NULL, NULL, &modActive);
-        amyEnabled |= modActive;
+    if (API.CheckDLC(DLC_PLUS))
         characterCount += 2 + amyEnabled;
-    }
 #endif
 
     Mod.SetSettingsInteger("Config:defaultLeader", CLAMP(config.defaultLeader, 0, characterCount));
@@ -103,15 +101,11 @@ void InitModAPI(void)
 #if !MANIA_USE_PLUS
     APICallback_GetConfirmButtonFlip = Mod.GetPublicFunction(NULL, "APICallback_GetConfirmButtonFlip");
 #endif
-    Player_Input_P1             = Mod.GetPublicFunction(NULL, "Player_Input_P1");
     Player_GetAltHitbox         = Mod.GetPublicFunction(NULL, "Player_GetAltHitbox");
     Player_GiveRings            = Mod.GetPublicFunction(NULL, "Player_GiveRings");
     Player_ChangeCharacter      = Mod.GetPublicFunction(NULL, "Player_ChangeCharacter");
     Player_TryTransform         = Mod.GetPublicFunction(NULL, "Player_TryTransform");
     Player_ApplyShield          = Mod.GetPublicFunction(NULL, "Player_ApplyShield");
-    Player_State_FlyToPlayer    = Mod.GetPublicFunction(NULL, "Player_State_FlyToPlayer");
-    Player_State_ReturnToPlayer = Mod.GetPublicFunction(NULL, "Player_State_ReturnToPlayer");
-    Player_Input_P2_Delay       = Mod.GetPublicFunction(NULL, "Player_Input_P2_Delay");
     Player_UpdatePhysicsState   = Mod.GetPublicFunction(NULL, "Player_UpdatePhysicsState");
     Music_PlayJingle            = Mod.GetPublicFunction(NULL, "Music_PlayJingle");
 
@@ -136,7 +130,7 @@ void InitModAPI(void)
     Mod.AddModCallback(MODCB_ONGAMESTARTUP, DefaultCharacterCallback);
 
     // Register State Hooks
-    Mod.RegisterStateHook(Player_Input_P1, Player_Input_P1_Hook, true);
+    Mod.RegisterStateHook(Mod.GetPublicFunction(NULL, "Player_Input_P1"), Player_Input_P1_Hook, true);
 
     // Register Modded Objects
     MOD_REGISTER_OBJECT(MegAmiMenu, NULL, MegAmiMenu_Update, MegAmiMenu_LateUpdate, MegAmiMenu_StaticUpdate, MegAmiMenu_Draw, MegAmiMenu_Create,

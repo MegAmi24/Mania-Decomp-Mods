@@ -12,10 +12,6 @@
 
 ObjectMegAmiMenu *MegAmiMenu;
 
-#if MANIA_USE_PLUS
-bool32 amyEnabled = false;
-#endif
-
 void MegAmiMenu_Update(void)
 {
     RSDK_THIS(MegAmiMenu);
@@ -136,20 +132,7 @@ void MegAmiMenu_Create(void *data)
     }
 }
 
-void MegAmiMenu_StageLoad(void)
-{
-    MegAmiMenu->sfxFail = RSDK.GetSfx("Stage/Fail.wav");
-#if MANIA_USE_PLUS
-    if (API.CheckDLC(DLC_PLUS)) {
-        amyEnabled        = false;
-        bool32 modActive  = false;
-        Mod.LoadModInfo("Extra Slot Amy", NULL, NULL, NULL, &modActive);
-        amyEnabled |= modActive;
-        Mod.LoadModInfo("Sonic Mania Addendum", NULL, NULL, NULL, &modActive);
-        amyEnabled |= modActive;
-    }
-#endif
-}
+void MegAmiMenu_StageLoad(void) { MegAmiMenu->sfxFail = RSDK.GetSfx("Stage/Fail.wav"); }
 
 void MegAmiMenu_State_Main(void)
 {
@@ -204,7 +187,7 @@ void MegAmiMenu_State_Main(void)
                 self->valueDigits  = 3;
                 break;
             case MEGAMIMENU_SUPER:
-                if (player->superState != SUPERSTATE_SUPER) {
+                if (player->superState == SUPERSTATE_NONE) {
                     Player_GiveRings(player, 50, false);
                     Player_TryTransform(player, 0x7F);
                 }
@@ -319,9 +302,9 @@ void MegAmiMenu_State_P2Char(void)
             sidekick->camera     = NULL;
             sidekick->angle      = 0x80;
             if (sidekick->characterID == ID_TAILS)
-                sidekick->state = Player_State_FlyToPlayer;
+                sidekick->state = Mod.GetPublicFunction(NULL, "Player_State_FlyToPlayer");
             else {
-                sidekick->state            = Player_State_ReturnToPlayer;
+                sidekick->state            = Mod.GetPublicFunction(NULL, "Player_State_ReturnToPlayer");
                 sidekick->abilityValues[0] = ((ScreenInfo->position.y + ScreenInfo->size.y + 16) << 16) - player->position.y;
                 sidekick->drawFX |= FX_SCALE;
                 sidekick->scale.x    = 0x400;
@@ -332,7 +315,7 @@ void MegAmiMenu_State_P2Char(void)
             sidekick->abilityValues[0] = 0;
             sidekick->nextAirState     = StateMachine_None;
             sidekick->nextGroundState  = StateMachine_None;
-            sidekick->stateInput       = Player_Input_P2_Delay;
+            sidekick->stateInput       = Mod.GetPublicFunction(NULL, "Player_Input_P2_Delay");
             sidekick->tileCollisions   = TILECOLLISION_NONE;
             sidekick->interaction      = false;
             sidekick->drawGroup        = Zone->playerDrawGroup[1];

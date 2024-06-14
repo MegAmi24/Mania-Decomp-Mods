@@ -233,4 +233,8 @@ typedef struct {
 
 extern void (*Music_PlayJingle)(uint8 trackID);
 
+#if MANIA_USE_PLUS
+extern bool32 amyEnabled;
+#endif
+
 #endif
