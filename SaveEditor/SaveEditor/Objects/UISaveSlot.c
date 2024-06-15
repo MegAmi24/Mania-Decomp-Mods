@@ -4,25 +4,6 @@
 ObjectUISaveSlot *UISaveSlot;
 ModObjectUISaveSlot *Mod_UISaveSlot;
 
-RSDKControllerState controllerStore;
-RSDKAnalogState analogStore;
-uint8 touchStore;
-
-void UISaveSlot_ModCB_OnStaticUpdate(void *data)
-{
-    UNUSED(data);
-
-    if (Mod_UISaveSlot && Mod_UISaveSlot->state != StateMachine_None) {
-        // Disable all inputs
-        // If you're wondering why I'm doing this, it's because trying to hook onto UISaveSlot_ProcessButtonCB doesn't work for some reason
-        controllerStore = ControllerInfo[CONT_P1];
-        analogStore     = AnalogStickInfoL[CONT_P1];
-        touchStore      = TouchInfo->count;
-        
-        UISaveSlot_ClearInputs();
-    }
-}
-
 bool32 UISaveSlot_State_Hook(bool32 skipped)
 {
     RSDK_THIS(UISaveSlot);
@@ -98,14 +79,16 @@ bool32 UISaveSlot_State_Hook(bool32 skipped)
             Mod_UISaveSlot->customValue   = 0;
             Mod_UISaveSlot->valueDigits   = 0;
 
+            Mod_UISaveSlot->processButtonCBStore = self->processButtonCB;
+            self->processButtonCB                = StateMachine_None;
+            Mod_UISaveSlot->backPressCBStore     = control->backPressCB;
+            control->backPressCB                 = UISaveSlot_Edit_BackCB;
+            Mod_UISaveSlot->yPressCBStore        = control->yPressCB;
+            control->yPressCB                    = StateMachine_None;
 #if MANIA_USE_PLUS
             Mod_UISaveSlot->stateInputStore = self->stateInput;
             self->stateInput                = StateMachine_None;
 #endif
-            Mod_UISaveSlot->backPressCBStore = control->backPressCB;
-            Mod_UISaveSlot->yPressCBStore    = control->yPressCB;
-            control->backPressCB             = StateMachine_None;
-            control->yPressCB                = StateMachine_None;
 
             Mod_UISaveSlot->touchUp      = false;
             Mod_UISaveSlot->touchDown    = false;
@@ -116,20 +99,15 @@ bool32 UISaveSlot_State_Hook(bool32 skipped)
 
             RSDK.SetSpriteAnimation(UISaveSlot->aniFrames, 4, &Mod_UISaveSlot->emeraldsAnimator, true, 0);
 
-            UISaveSlot_ClearInputs();
+            TouchInfo->count = 0;
 
             return true;
         }
     }
     else {
-        // Restore inputs
-        ControllerInfo[CONT_P1]   = controllerStore;
-        AnalogStickInfoL[CONT_P1] = analogStore;
-        TouchInfo->count          = touchStore;
-
         UISaveSlot_HandleTouchControls();
+        TouchInfo->count = 0;
         StateMachine_Run(Mod_UISaveSlot->state);
-        UISaveSlot_ClearInputs();
         return true;
     }
     return false;
@@ -471,14 +449,17 @@ void UISaveSlot_Edit_ExitCB(void)
     RSDK_THIS(UISaveSlot);
 
     UIWaitSpinner_FinishWait();
+    EntityUIControl *control = (EntityUIControl *)self->parent;
+    self->processButtonCB    = Mod_UISaveSlot->processButtonCBStore;
+    control->backPressCB     = Mod_UISaveSlot->backPressCBStore;
+    control->yPressCB        = Mod_UISaveSlot->yPressCBStore;
 #if MANIA_USE_PLUS
     self->stateInput = Mod_UISaveSlot->stateInputStore;
 #endif
-    EntityUIControl *control = (EntityUIControl *)self->parent;
-    control->backPressCB     = Mod_UISaveSlot->backPressCBStore;
-    control->yPressCB        = Mod_UISaveSlot->yPressCBStore;
     Mod_UISaveSlot->state    = StateMachine_None;
 }
+
+bool32 UISaveSlot_Edit_BackCB(void) { return false; }
 
 void UISaveSlot_EditState_DrawChar(void)
 {
@@ -818,61 +799,3 @@ void UISaveSlot_SetCharacterFlags(SaveRAM *saveRAM)
         saveRAM->characterFlags |= 1 << HUD_CharacterIndexFromID(saveRAM->stock >> 16 & 0xFF);
 }
 #endif
-
-void UISaveSlot_ClearInputs(void)
-{
-    for (int32 i = 0; i <= PLAYER_COUNT; ++i) {
-        RSDKControllerState *controller = &ControllerInfo[i];
-        RSDKAnalogState *stickL         = &AnalogStickInfoL[i];
-        RSDKAnalogState *stickR         = &AnalogStickInfoR[i];
-#if RETRO_REV02
-        RSDKTriggerState *triggerL = &TriggerInfoL[i];
-        RSDKTriggerState *triggerR = &TriggerInfoR[i];
-#endif
-
-        controller[i].keyUp.press     = false;
-        controller[i].keyDown.press   = false;
-        controller[i].keyLeft.press   = false;
-        controller[i].keyRight.press  = false;
-        controller[i].keyA.press      = false;
-        controller[i].keyB.press      = false;
-        controller[i].keyC.press      = false;
-        controller[i].keyX.press      = false;
-        controller[i].keyY.press      = false;
-        controller[i].keyZ.press      = false;
-        controller[i].keyStart.press  = false;
-        controller[i].keySelect.press = false;
-
-        stickL[i].keyUp.press    = false;
-        stickL[i].keyDown.press  = false;
-        stickL[i].keyLeft.press  = false;
-        stickL[i].keyRight.press = false;
-
-#if RETRO_REV02
-        stickL[i].keyStick.press = false;
-
-        stickR[i].keyUp.press    = false;
-        stickR[i].keyDown.press  = false;
-        stickR[i].keyLeft.press  = false;
-        stickR[i].keyRight.press = false;
-        stickR[i].keyStick.press = false;
-
-        triggerL[i].keyBumper.press  = false;
-        triggerL[i].keyTrigger.press = false;
-
-        triggerR[i].keyBumper.press  = false;
-        triggerR[i].keyTrigger.press = false;
-#else
-        controller[i].keyStickL.press = false;
-        controller[i].keyStickR.press = false;
-
-        controller[i].keyBumperL.press  = false;
-        controller[i].keyTriggerL.press = false;
-
-        controller[i].keyBumperR.press  = false;
-        controller[i].keyTriggerR.press = false;
-#endif
-    }
-
-    TouchInfo->count = 0;
-}

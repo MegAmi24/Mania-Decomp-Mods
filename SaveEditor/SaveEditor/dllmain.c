@@ -62,6 +62,7 @@ void InitModAPI(void)
 
     ADD_PUBLIC_FUNC(UISaveSlot_CloseEditor_CB);
     ADD_PUBLIC_FUNC(UISaveSlot_Edit_ExitCB);
+    ADD_PUBLIC_FUNC(UISaveSlot_Edit_BackCB);
 
     ADD_PUBLIC_FUNC(UISaveSlot_DrawMenu);
 
@@ -78,7 +79,6 @@ void InitModAPI(void)
 #if MANIA_USE_PLUS
     ADD_PUBLIC_FUNC(UISaveSlot_SetCharacterFlags);
 #endif
-    ADD_PUBLIC_FUNC(UISaveSlot_ClearInputs);
 
     // Register State Hooks
     Mod.RegisterStateHook(Mod.GetPublicFunction(NULL, "UISaveSlot_State_ActiveSave"), UISaveSlot_State_Hook, true);
@@ -88,7 +88,6 @@ void InitModAPI(void)
     MOD_REGISTER_OBJ_OVERLOAD_MSV(UISaveSlot, Mod_UISaveSlot, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
 
     // Register Mod Callbacks
-    Mod.AddModCallback(MODCB_ONSTATICUPDATE, UISaveSlot_ModCB_OnStaticUpdate);
     Mod.AddModCallback(MODCB_ONDRAW, UISaveSlot_ModCB_OnDraw);
 }
 

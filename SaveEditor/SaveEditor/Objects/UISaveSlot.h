@@ -116,11 +116,12 @@ typedef struct {
 typedef struct {
     StateMachine(state);
     StateMachine(stateDraw);
+    void (*processButtonCBStore)(void);
+    bool32 (*backPressCBStore)(void);
+    StateMachine(yPressCBStore);
 #if MANIA_USE_PLUS
     StateMachine(stateInputStore);
 #endif
-    bool32 (*backPressCBStore)(void);
-    StateMachine(yPressCBStore);
     int8 mainSelection;
     int8 subSelection;
     int32 customValue;
@@ -237,8 +238,7 @@ void UISaveSlot_Edit_ExitCB(bool32 success);
 #else
 void UISaveSlot_Edit_ExitCB(void);
 #endif
-
-void UISaveSlot_ModCB_OnStaticUpdate(void *data);
+bool32 UISaveSlot_Edit_BackCB(void);
 
 // Draw States
 void UISaveSlot_ModCB_OnDraw(void *data);
@@ -258,7 +258,6 @@ void UISaveSlot_HandleSetValue(int32 minValue, int32 maxValue);
 #if MANIA_USE_PLUS
 void UISaveSlot_SetCharacterFlags(SaveRAM *saveRAM);
 #endif
-void UISaveSlot_ClearInputs(void);
 
 #if !MANIA_USE_PLUS
 extern bool32 (*APICallback_GetConfirmButtonFlip)(void);
