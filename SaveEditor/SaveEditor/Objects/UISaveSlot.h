@@ -21,7 +21,7 @@
 #if MANIA_USE_PLUS
 #define GetSaveRAMPointer() SaveRAM *saveRAM = (SaveRAM *)SaveGame_GetDataPtr(self->slotID, self->encoreMode);
 #else
-#define GetSaveRAMPointer() (SaveRAM *)SaveGame_GetDataPtr(self->slotID);
+#define GetSaveRAMPointer() SaveRAM *saveRAM = (SaveRAM *)SaveGame_GetDataPtr(self->slotID);
 #endif
 
 #define AddMenuOption(option, string)                                                                                                                \
