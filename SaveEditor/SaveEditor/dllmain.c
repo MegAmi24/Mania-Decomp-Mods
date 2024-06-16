@@ -76,10 +76,6 @@ void InitModAPI(void)
     ADD_PUBLIC_FUNC(UISaveSlot_HandleUpDown);
     ADD_PUBLIC_FUNC(UISaveSlot_HandleSetValue);
 
-#if MANIA_USE_PLUS
-    ADD_PUBLIC_FUNC(UISaveSlot_SetCharacterFlags);
-#endif
-
     // Register State Hooks
     Mod.RegisterStateHook(Mod.GetPublicFunction(NULL, "UISaveSlot_State_ActiveSave"), UISaveSlot_State_Hook, true);
     Mod.RegisterStateHook(Mod.GetPublicFunction(NULL, "UISaveSlot_State_CompletedSave"), UISaveSlot_State_Hook, true);

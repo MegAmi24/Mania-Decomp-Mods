@@ -7,14 +7,14 @@ ModObjectUISaveSlot *Mod_UISaveSlot;
 bool32 UISaveSlot_State_Hook(bool32 skipped)
 {
     RSDK_THIS(UISaveSlot);
-    
+
     if (Mod_UISaveSlot->state == StateMachine_None) {
         EntityUIControl *control = (EntityUIControl *)self->parent;
-        LoadSaveRAM();
+        GetSaveRAMPointer();
 
         if (control->position.x != control->targetPos.x || saveRAM->saveState == SAVEGAME_BLANK || self->type != UISAVESLOT_REGULAR)
             return false;
-        
+
         if (ControllerInfo[CONT_P1].keySelect.press || UISaveSlot_CheckTouchRect(0, ScreenInfo->size.y - 32, 32, ScreenInfo->size.y)) {
             Mod_UISaveSlot->menuCount = -1;
 
@@ -118,13 +118,14 @@ void UISaveSlot_ModCB_OnDraw(void *data)
     int32 group = VOID_TO_INT(data);
 
     if (Mod_UISaveSlot && Mod_UISaveSlot->state != StateMachine_None && group == DRAWGROUP_COUNT - 1)
-        UISaveSlot_DrawMenu();
+        StateMachine_Run(UISaveSlot_DrawMenu);
 }
 
 void UISaveSlot_DrawMenu(void)
 {
     ObjectUIBackground *UIBackground = Mod.FindObject("UIBackground");
-    RSDK.DrawRect(MAINBOX_XPOS, BOX_YPOS, MAINBOX_WIDTH, BOX_HEIGHT(Mod_UISaveSlot->menuCount + 1), UIBackground->activeColors[1], 0xFF, INK_NONE, true);
+    RSDK.DrawRect(MAINBOX_XPOS, BOX_YPOS, MAINBOX_WIDTH, BOX_HEIGHT(Mod_UISaveSlot->menuCount + 1), UIBackground->activeColors[1], 0xFF, INK_NONE,
+                  true);
 
     Vector2 drawPos;
 
@@ -157,43 +158,51 @@ void UISaveSlot_EditState_Main(void)
     UISaveSlot_HandleUpDown(Mod_UISaveSlot->menuCount);
 
     if (confirmPress) {
-        LoadSaveRAM();
+        GetSaveRAMPointer();
         switch (Mod_UISaveSlot->menuOptions[Mod_UISaveSlot->mainSelection]) {
             default: break;
             case SAVEEDITOR_CHAR:
                 Mod_UISaveSlot->state        = UISaveSlot_EditState_ManiaChar;
                 Mod_UISaveSlot->stateDraw    = UISaveSlot_EditState_DrawChar;
-                Mod_UISaveSlot->subSelection = 0;
+                Mod_UISaveSlot->subSelection = saveRAM->characterID;
                 break;
 #if MANIA_USE_PLUS
             case SAVEEDITOR_LEADER:
                 Mod_UISaveSlot->state        = UISaveSlot_EditState_EncoreLeader;
                 Mod_UISaveSlot->stateDraw    = UISaveSlot_EditState_DrawChar;
-                Mod_UISaveSlot->subSelection = 0;
+                Mod_UISaveSlot->subSelection = HUD_CharacterIndexFromID(saveRAM->playerID & 0xFF);
                 break;
             case SAVEEDITOR_SIDEKICK:
                 Mod_UISaveSlot->state        = UISaveSlot_EditState_EncoreSidekick;
                 Mod_UISaveSlot->stateDraw    = UISaveSlot_EditState_DrawChar;
                 Mod_UISaveSlot->subSelection = 0;
+
+                int32 sidekickID = (saveRAM->playerID >> 8) & 0xFF;
+                if (sidekickID)
+                    Mod_UISaveSlot->subSelection = HUD_CharacterIndexFromID(sidekickID) + 1;
                 break;
             case SAVEEDITOR_STOCK1:
             case SAVEEDITOR_STOCK2:
             case SAVEEDITOR_STOCK3:
-                Mod_UISaveSlot->state     = UISaveSlot_EditState_EncoreStock;
-                Mod_UISaveSlot->stateDraw = UISaveSlot_EditState_DrawChar;
+                Mod_UISaveSlot->state        = UISaveSlot_EditState_EncoreStock;
+                Mod_UISaveSlot->stateDraw    = UISaveSlot_EditState_DrawChar;
                 Mod_UISaveSlot->subSelection = 0;
+
+                int32 stockID = (saveRAM->stock >> (8 * (Mod_UISaveSlot->menuOptions[Mod_UISaveSlot->mainSelection] - SAVEEDITOR_STOCK1))) & 0xFF;
+                if (stockID)
+                    Mod_UISaveSlot->subSelection = HUD_CharacterIndexFromID(stockID) + 1;
                 break;
 #endif
             case SAVEEDITOR_ZONE:
                 Mod_UISaveSlot->state        = UISaveSlot_EditState_Zone;
                 Mod_UISaveSlot->stateDraw    = UISaveSlot_EditState_DrawZone;
-                Mod_UISaveSlot->subSelection = 0;
+                Mod_UISaveSlot->subSelection = saveRAM->zoneID;
                 break;
             case SAVEEDITOR_LIVES:
                 Mod_UISaveSlot->state        = UISaveSlot_EditState_SetLives;
                 Mod_UISaveSlot->stateDraw    = UISaveSlot_EditState_DrawSetValue;
                 Mod_UISaveSlot->subSelection = 0;
-                Mod_UISaveSlot->customValue  = self->saveLives;
+                Mod_UISaveSlot->customValue  = saveRAM->lives;
                 Mod_UISaveSlot->valueDigits  = 2;
                 break;
 #if MANIA_USE_PLUS
@@ -201,22 +210,28 @@ void UISaveSlot_EditState_Main(void)
                 Mod_UISaveSlot->state        = UISaveSlot_EditState_SetContinues;
                 Mod_UISaveSlot->stateDraw    = UISaveSlot_EditState_DrawSetValue;
                 Mod_UISaveSlot->subSelection = 0;
-                Mod_UISaveSlot->customValue  = self->saveContinues;
+                Mod_UISaveSlot->customValue  = saveRAM->continues;
                 Mod_UISaveSlot->valueDigits  = 2;
                 break;
 #endif
             case SAVEEDITOR_SCORE:
-                Mod_UISaveSlot->state        = UISaveSlot_EditState_SetScore;
-                Mod_UISaveSlot->stateDraw    = UISaveSlot_EditState_DrawSetValue;
-                Mod_UISaveSlot->subSelection = 0;
-                Mod_UISaveSlot->customValue  = saveRAM->score;
-                Mod_UISaveSlot->valueDigits  = 7;
+                if (saveRAM->saveState != SAVEGAME_COMPLETE) {
+                    Mod_UISaveSlot->state        = UISaveSlot_EditState_SetScore;
+                    Mod_UISaveSlot->stateDraw    = UISaveSlot_EditState_DrawSetValue;
+                    Mod_UISaveSlot->subSelection = 0;
+                    Mod_UISaveSlot->customValue  = saveRAM->score;
+                    Mod_UISaveSlot->valueDigits  = 7;
+                }
+                else {
+                    ObjectUIWidgets *UIWidgets = Mod.FindObject("UIWidgets");
+                    RSDK.PlaySfx(UIWidgets->sfxFail, false, 255);
+                }
                 break;
             case SAVEEDITOR_EMERALDS:
                 Mod_UISaveSlot->state        = UISaveSlot_EditState_Emeralds;
                 Mod_UISaveSlot->stateDraw    = UISaveSlot_EditState_DrawEmeralds;
                 Mod_UISaveSlot->subSelection = 0;
-                Mod_UISaveSlot->customValue  = self->saveEmeralds;
+                Mod_UISaveSlot->customValue  = saveRAM->collectedEmeralds;
                 Mod_UISaveSlot->valueDigits  = 7;
                 break;
             case SAVEEDITOR_EXIT: UISaveSlot_CloseEditor_CB(); break;
@@ -239,7 +254,7 @@ void UISaveSlot_EditState_ManiaChar(void)
     UISaveSlot_HandleUpDown(optionCount);
 
     if (confirmPress) {
-        LoadSaveRAM();
+        GetSaveRAMPointer();
         saveRAM->characterID = Mod_UISaveSlot->subSelection;
         ExitSubMenu();
     }
@@ -260,10 +275,10 @@ void UISaveSlot_EditState_EncoreLeader(void)
     UISaveSlot_HandleUpDown(optionCount);
 
     if (confirmPress) {
-        LoadSaveRAM();
+        GetSaveRAMPointer();
         saveRAM->playerID &= ~(255);
         saveRAM->playerID |= 1 << Mod_UISaveSlot->subSelection;
-        UISaveSlot_SetCharacterFlags(saveRAM);
+        SetCharacterFlags();
         ExitSubMenu();
     }
     else if (backPress) {
@@ -282,11 +297,11 @@ void UISaveSlot_EditState_EncoreSidekick(void)
     UISaveSlot_HandleUpDown(optionCount);
 
     if (confirmPress) {
-        LoadSaveRAM();
+        GetSaveRAMPointer();
         saveRAM->playerID &= ~(255 << 8);
         if (Mod_UISaveSlot->subSelection)
             saveRAM->playerID |= (1 << (Mod_UISaveSlot->subSelection - 1)) << 8;
-        UISaveSlot_SetCharacterFlags(saveRAM);
+        SetCharacterFlags();
         ExitSubMenu();
     }
     else if (backPress) {
@@ -307,11 +322,11 @@ void UISaveSlot_EditState_EncoreStock(void)
     UISaveSlot_HandleUpDown(optionCount);
 
     if (confirmPress) {
-        LoadSaveRAM();
+        GetSaveRAMPointer();
         saveRAM->stock &= ~(255 << (8 * stock));
         if (Mod_UISaveSlot->subSelection)
             saveRAM->stock |= (1 << (Mod_UISaveSlot->subSelection - 1)) << (8 * stock);
-        UISaveSlot_SetCharacterFlags(saveRAM);
+        SetCharacterFlags();
         ExitSubMenu();
     }
     else if (backPress) {
@@ -327,7 +342,7 @@ void UISaveSlot_EditState_Zone(void)
     UISaveSlot_HandleUpDown(ZONE_COUNT_SAVEFILE - 1);
 
     if (confirmPress) {
-        LoadSaveRAM();
+        GetSaveRAMPointer();
         if (Mod_UISaveSlot->subSelection != saveRAM->zoneID) {
             saveRAM->zoneID = Mod_UISaveSlot->subSelection;
             if (saveRAM->zoneID >= ZONE_ERZ) {
@@ -352,7 +367,7 @@ void UISaveSlot_EditState_SetLives(void)
     UISaveSlot_HandleSetValue(1, 99);
 
     if (confirmPress) {
-        LoadSaveRAM();
+        GetSaveRAMPointer();
         saveRAM->lives = Mod_UISaveSlot->customValue;
         ExitSubMenu();
     }
@@ -369,7 +384,7 @@ void UISaveSlot_EditState_SetContinues(void)
     UISaveSlot_HandleSetValue(0, 99);
 
     if (confirmPress) {
-        LoadSaveRAM();
+        GetSaveRAMPointer();
         saveRAM->continues = Mod_UISaveSlot->customValue;
         ExitSubMenu();
     }
@@ -386,9 +401,11 @@ void UISaveSlot_EditState_SetScore(void)
     UISaveSlot_HandleSetValue(0, 9999999);
 
     if (confirmPress) {
-        LoadSaveRAM();
-        saveRAM->score = Mod_UISaveSlot->customValue;
-        saveRAM->score1UP = (Mod_UISaveSlot->customValue / 50000) * 50000 + 50000;
+        GetSaveRAMPointer();
+        if (Mod_UISaveSlot->customValue != saveRAM->score) {
+            saveRAM->score    = Mod_UISaveSlot->customValue;
+            saveRAM->score1UP = (Mod_UISaveSlot->customValue / 50000) * 50000 + 50000;
+        }
         ExitSubMenu();
     }
     else if (backPress) {
@@ -412,13 +429,15 @@ void UISaveSlot_EditState_Emeralds(void)
         SET_BIT(Mod_UISaveSlot->customValue, !GET_BIT(Mod_UISaveSlot->customValue, Mod_UISaveSlot->subSelection), Mod_UISaveSlot->subSelection);
 
     if (confirmPress) {
-        LoadSaveRAM();
-        saveRAM->collectedEmeralds = Mod_UISaveSlot->customValue;
-        saveRAM->nextSpecialStage  = 0;
-        for (int8 e = 0; e < 7; e++) {
-            if (!GET_BIT(saveRAM->collectedEmeralds, e)) {
-                saveRAM->nextSpecialStage = e;
-                break;
+        GetSaveRAMPointer();
+        if (Mod_UISaveSlot->customValue != saveRAM->collectedEmeralds) {
+            saveRAM->collectedEmeralds = Mod_UISaveSlot->customValue;
+            saveRAM->nextSpecialStage  = 0;
+            for (int8 e = 0; e < 7; e++) {
+                if (!GET_BIT(saveRAM->collectedEmeralds, e)) {
+                    saveRAM->nextSpecialStage = e;
+                    break;
+                }
             }
         }
         ExitSubMenu();
@@ -432,9 +451,6 @@ void UISaveSlot_EditState_Wait(void) {}
 
 void UISaveSlot_CloseEditor_CB(void)
 {
-    RSDK_THIS(UISaveSlot);
-
-    LoadSaveRAM();
     UIWaitSpinner_StartWait();
     SaveGame_SaveFile(UISaveSlot_Edit_ExitCB);
     Mod_UISaveSlot->state = UISaveSlot_EditState_Wait;
@@ -456,7 +472,7 @@ void UISaveSlot_Edit_ExitCB(void)
 #if MANIA_USE_PLUS
     self->stateInput = Mod_UISaveSlot->stateInputStore;
 #endif
-    Mod_UISaveSlot->state    = StateMachine_None;
+    Mod_UISaveSlot->state = StateMachine_None;
 }
 
 bool32 UISaveSlot_Edit_BackCB(void) { return false; }
@@ -468,17 +484,13 @@ void UISaveSlot_EditState_DrawChar(void)
     if (API.CheckDLC(DLC_PLUS))
         characterCount += 2;
 
-    int8 optionCount = characterCount
-                       + (Mod_UISaveSlot->state == UISaveSlot_EditState_ManiaChar || Mod_UISaveSlot->state == UISaveSlot_EditState_EncoreSidekick
-                          || Mod_UISaveSlot->state == UISaveSlot_EditState_EncoreStock);
+    int8 optionCount = characterCount + (Mod_UISaveSlot->state != UISaveSlot_EditState_EncoreLeader);
 #else
-    int8 optionCount = characterCount + Mod_UISaveSlot->state == UISaveSlot_EditState_ManiaChar;
+    int8 optionCount = characterCount + 1;
 #endif
 
     ObjectUIBackground *UIBackground = Mod.FindObject("UIBackground");
-    RSDK.DrawRect(SUBBOX_XPOS, BOX_YPOS, 110, BOX_HEIGHT(optionCount),
-                  UIBackground->activeColors[2], 0xFF, INK_NONE,
-                  true);
+    RSDK.DrawRect(SUBBOX_XPOS, BOX_YPOS, 110, BOX_HEIGHT(optionCount), UIBackground->activeColors[2], 0xFF, INK_NONE, true);
 
     Vector2 drawPos;
 
@@ -553,7 +565,7 @@ void UISaveSlot_EditState_DrawSetValue(void)
     int32 digitCount = Mod_UISaveSlot->valueDigits;
     int32 digit      = 1;
     while (digitCount--) {
-        int32 digitNumber      = Mod_UISaveSlot->customValue / digit % 10;
+        int32 digitNumber                = Mod_UISaveSlot->customValue / digit % 10;
         Mod_UISaveSlot->animator.frameID = 16 + digitNumber;
         if (digitNumber == 6 || digitNumber == 7)
             drawPos.x -= TO_FIXED(1);
@@ -588,7 +600,7 @@ void UISaveSlot_EditState_DrawEmeralds(void)
 
     // Initialize Emeralds Position
     drawPos.x = TO_FIXED(SUBBOX_XPOS + 9);
-    drawPos.y += TO_FIXED(OPTION_SPACING);
+    drawPos.y += TO_FIXED(OPTION_SPACING + 2);
 
     // Draw Emeralds
     for (int8 e = 0; e < 7; e++) {
@@ -611,8 +623,6 @@ void UISaveSlot_EditState_DrawEmeralds(void)
 
 void UISaveSlot_HandleTouchControls(void)
 {
-    RSDK_THIS(UISaveSlot);
-
     RSDKControllerState *controller = &ControllerInfo[CONT_P1];
 
     bool32 touchedUp = false;
@@ -724,8 +734,6 @@ bool32 UISaveSlot_CheckTouchRect(int32 x1, int32 y1, int32 x2, int32 y2)
 
 void UISaveSlot_HandleUpDown(int8 maxCount)
 {
-    RSDK_THIS(UISaveSlot);
-
     if (Mod_UISaveSlot->state == UISaveSlot_EditState_Main) {
         if (ControllerInfo[CONT_P1].keyDown.press) {
             if (++Mod_UISaveSlot->mainSelection > maxCount)
@@ -750,8 +758,6 @@ void UISaveSlot_HandleUpDown(int8 maxCount)
 
 void UISaveSlot_HandleSetValue(int32 minValue, int32 maxValue)
 {
-    RSDK_THIS(UISaveSlot);
-
     if (ControllerInfo[CONT_P1].keyRight.press) {
         if (++Mod_UISaveSlot->subSelection > Mod_UISaveSlot->valueDigits - 1)
             Mod_UISaveSlot->subSelection = 0;
@@ -777,25 +783,3 @@ void UISaveSlot_HandleSetValue(int32 minValue, int32 maxValue)
             Mod_UISaveSlot->customValue += maxValue - minValue + 1;
     }
 }
-
-#if MANIA_USE_PLUS
-void UISaveSlot_SetCharacterFlags(SaveRAM *saveRAM)
-{
-    saveRAM->characterFlags = 0;
-
-    if (saveRAM->playerID & 0xFF)
-        saveRAM->characterFlags |= 1 << HUD_CharacterIndexFromID(saveRAM->playerID & 0xFF);
-
-    if (saveRAM->playerID >> 8 & 0xFF)
-        saveRAM->characterFlags |= 1 << HUD_CharacterIndexFromID(saveRAM->playerID >> 8 & 0xFF);
-
-    if (saveRAM->stock & 0xFF)
-        saveRAM->characterFlags |= 1 << HUD_CharacterIndexFromID(saveRAM->stock & 0xFF);
-
-    if (saveRAM->stock >> 8 & 0xFF)
-        saveRAM->characterFlags |= 1 << HUD_CharacterIndexFromID(saveRAM->stock >> 8 & 0xFF);
-
-    if (saveRAM->stock >> 16 & 0xFF)
-        saveRAM->characterFlags |= 1 << HUD_CharacterIndexFromID(saveRAM->stock >> 16 & 0xFF);
-}
-#endif

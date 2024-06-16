@@ -16,12 +16,12 @@
 #define SUBBOX_XPOS    (MAINBOX_XPOS + MAINBOX_WIDTH + 3)
 #define BOX_YPOS       (12)
 #define OPTION_SPACING (14)
-#define BOX_HEIGHT(x)  ((x)*OPTION_SPACING + 5) // x = Option Count
+#define BOX_HEIGHT(x)  ((x) * OPTION_SPACING + 5) // x = Option Count
 
 #if MANIA_USE_PLUS
-#define LoadSaveRAM() SaveRAM *saveRAM = (SaveRAM *)SaveGame_GetDataPtr(self->slotID, self->encoreMode);
+#define GetSaveRAMPointer() SaveRAM *saveRAM = (SaveRAM *)SaveGame_GetDataPtr(self->slotID, self->encoreMode);
 #else
-#define LoadSaveRAM() (SaveRAM *)SaveGame_GetDataPtr(self->slotID);
+#define GetSaveRAMPointer() (SaveRAM *)SaveGame_GetDataPtr(self->slotID);
 #endif
 
 #define AddMenuOption(option, string)                                                                                                                \
@@ -33,6 +33,21 @@
     Mod_UISaveSlot->state     = UISaveSlot_EditState_Main;                                                                                           \
     Mod_UISaveSlot->stateDraw = StateMachine_None;                                                                                                   \
     UISaveSlot_LoadSaveInfo();
+
+#if MANIA_USE_PLUS
+#define SetCharacterFlags()                                                                                                                          \
+    saveRAM->characterFlags = 0;                                                                                                                     \
+    if (saveRAM->playerID & 0xFF)                                                                                                                    \
+        saveRAM->characterFlags |= 1 << HUD_CharacterIndexFromID(saveRAM->playerID & 0xFF);                                                          \
+    if (saveRAM->playerID >> 8 & 0xFF)                                                                                                               \
+        saveRAM->characterFlags |= 1 << HUD_CharacterIndexFromID(saveRAM->playerID >> 8 & 0xFF);                                                     \
+    if (saveRAM->stock & 0xFF)                                                                                                                       \
+        saveRAM->characterFlags |= 1 << HUD_CharacterIndexFromID(saveRAM->stock & 0xFF);                                                             \
+    if (saveRAM->stock >> 8 & 0xFF)                                                                                                                  \
+        saveRAM->characterFlags |= 1 << HUD_CharacterIndexFromID(saveRAM->stock >> 8 & 0xFF);                                                        \
+    if (saveRAM->stock >> 16 & 0xFF)                                                                                                                 \
+        saveRAM->characterFlags |= 1 << HUD_CharacterIndexFromID(saveRAM->stock >> 16 & 0xFF);
+#endif
 
 #define DrawOptionText(string)                                                                                                                       \
     RSDK.DrawText(&Mod_UISaveSlot->animator, &drawPos, string, 0, string.length, ALIGN_LEFT, 0, 0, 0, true);                                         \
@@ -254,10 +269,6 @@ void UISaveSlot_HandleTouchControls(void);
 bool32 UISaveSlot_CheckTouchRect(int32 x1, int32 y1, int32 x2, int32 y2);
 void UISaveSlot_HandleUpDown(int8 maxCount);
 void UISaveSlot_HandleSetValue(int32 minValue, int32 maxValue);
-
-#if MANIA_USE_PLUS
-void UISaveSlot_SetCharacterFlags(SaveRAM *saveRAM);
-#endif
 
 #if !MANIA_USE_PLUS
 extern bool32 (*APICallback_GetConfirmButtonFlip)(void);
