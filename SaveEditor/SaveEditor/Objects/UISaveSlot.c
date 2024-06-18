@@ -20,6 +20,7 @@ bool32 UISaveSlot_State_Hook(bool32 skipped)
 
             ObjectUIWidgets *UIWidgets = Mod.FindObject("UIWidgets");
             RSDK.SetSpriteAnimation(UIWidgets->fontFrames, 0, &Mod_UISaveSlot->animator, true, 0);
+            RSDK.SetSpriteAnimation(UISaveSlot->aniFrames, 4, &Mod_UISaveSlot->emeraldsAnimator, true, 0);
 
             // Initialize Options
 #if MANIA_USE_PLUS
@@ -96,8 +97,6 @@ bool32 UISaveSlot_State_Hook(bool32 skipped)
             Mod_UISaveSlot->touchRight   = false;
             Mod_UISaveSlot->touchConfirm = false;
             Mod_UISaveSlot->touchBack    = false;
-
-            RSDK.SetSpriteAnimation(UISaveSlot->aniFrames, 4, &Mod_UISaveSlot->emeraldsAnimator, true, 0);
 
             TouchInfo->count = 0;
 
@@ -759,7 +758,7 @@ void UISaveSlot_HandleUpDown(int8 maxCount)
 void UISaveSlot_HandleSetValue(int32 minValue, int32 maxValue)
 {
     if (ControllerInfo[CONT_P1].keyRight.press) {
-        if (++Mod_UISaveSlot->subSelection > Mod_UISaveSlot->valueDigits - 1)
+        if (++Mod_UISaveSlot->subSelection >= Mod_UISaveSlot->valueDigits)
             Mod_UISaveSlot->subSelection = 0;
     }
     else if (ControllerInfo[CONT_P1].keyLeft.press) {

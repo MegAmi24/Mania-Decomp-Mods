@@ -96,7 +96,8 @@ void MegAmiMenu_Create(void *data)
         RSDK.InitString(&self->strings[MENUSTRING_HYPERRING], !player->hyperRing ? "GIVE HYPER RING" : "REMOVE HYPER RING", false);
         RSDK.InitString(&self->strings[MENUSTRING_SETRINGS], "SET RING COUNT", false);
         RSDK.InitString(&self->strings[MENUSTRING_SUPER], player->superState != SUPERSTATE_SUPER ? "TURN SUPER" : "REVERT SUPER", false);
-        RSDK.InitString(&self->strings[MENUSTRING_INVINCIBILITY], !MegAmiMenu->playerInv[player->playerID] ? "ENABLE INVINCIBILITY" : "DISABLE INVINCIBILITY", false);
+        RSDK.InitString(&self->strings[MENUSTRING_INVINCIBILITY],
+                        !MegAmiMenu->playerInv[player->playerID] ? "ENABLE INVINCIBILITY" : "DISABLE INVINCIBILITY", false);
         RSDK.InitString(&self->strings[MENUSTRING_EXIT], "EXIT", false);
         RSDK.InitString(&self->strings[MENUSTRING_SONIC], "SONIC", false);
         RSDK.InitString(&self->strings[MENUSTRING_TAILS], "TAILS", false);
@@ -132,7 +133,7 @@ void MegAmiMenu_Create(void *data)
     }
 }
 
-void MegAmiMenu_StageLoad(void) { MegAmiMenu->sfxFail = RSDK.GetSfx("Stage/Fail.wav"); }
+void MegAmiMenu_StageLoad(void) {}
 
 void MegAmiMenu_State_Main(void)
 {
@@ -156,8 +157,10 @@ void MegAmiMenu_State_Main(void)
                     self->stateDraw    = MegAmiMenu_State_DrawChar;
                     self->subSelection = 0;
                 }
-                else
-                    RSDK.PlaySfx(MegAmiMenu->sfxFail, false, 255);
+                else {
+                    ObjectUIWidgets *UIWidgets = Mod.FindObject("UIWidgets");
+                    RSDK.PlaySfx(UIWidgets->sfxFail, false, 255);
+                }
                 break;
             case MEGAMIMENU_SHIELD:
                 self->state        = MegAmiMenu_State_Shield;
@@ -635,7 +638,7 @@ void MegAmiMenu_HandleSetValue(RSDKControllerState controller, int32 minValue, i
     RSDK_THIS(MegAmiMenu);
 
     if (controller.keyRight.press) {
-        if (++self->subSelection > self->valueDigits - 1)
+        if (++self->subSelection >= self->valueDigits)
             self->subSelection = 0;
     }
     else if (controller.keyLeft.press) {
@@ -665,7 +668,8 @@ void MegAmiMenu_EditorDraw(void)
 {
     RSDK_THIS(MegAmiMenu);
     RSDK.DrawRect(self->position.x - TO_FIXED(45), self->position.y - TO_FIXED(9), TO_FIXED(90), TO_FIXED(19), BOX_COLOR, 0xFF, INK_NONE, false);
-    RSDK.DrawText(&self->animator, &self->position, &self->strings[MENUSTRING_P1CHAR], 0, self->strings[MENUSTRING_P1CHAR].length, ALIGN_CENTER, 0, 0, 0, false);
+    RSDK.DrawText(&self->animator, &self->position, &self->strings[MENUSTRING_P1CHAR], 0, self->strings[MENUSTRING_P1CHAR].length, ALIGN_CENTER, 0, 0,
+                  0, false);
 }
 
 void MegAmiMenu_EditorLoad(void) {}

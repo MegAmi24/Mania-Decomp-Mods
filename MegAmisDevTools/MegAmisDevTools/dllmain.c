@@ -44,7 +44,7 @@ void DefaultCharacterCallback(void *data)
 {
     UNUSED(data);
 
-    uint8 leader  = ID_SONIC;
+    uint8 leader   = ID_SONIC;
     uint8 sidekick = ID_TAILS;
 
 #if MANIA_USE_PLUS
@@ -101,13 +101,13 @@ void InitModAPI(void)
 #if !MANIA_USE_PLUS
     APICallback_GetConfirmButtonFlip = Mod.GetPublicFunction(NULL, "APICallback_GetConfirmButtonFlip");
 #endif
-    Player_GetAltHitbox         = Mod.GetPublicFunction(NULL, "Player_GetAltHitbox");
-    Player_GiveRings            = Mod.GetPublicFunction(NULL, "Player_GiveRings");
-    Player_ChangeCharacter      = Mod.GetPublicFunction(NULL, "Player_ChangeCharacter");
-    Player_TryTransform         = Mod.GetPublicFunction(NULL, "Player_TryTransform");
-    Player_ApplyShield          = Mod.GetPublicFunction(NULL, "Player_ApplyShield");
-    Player_UpdatePhysicsState   = Mod.GetPublicFunction(NULL, "Player_UpdatePhysicsState");
-    Music_PlayJingle            = Mod.GetPublicFunction(NULL, "Music_PlayJingle");
+    Player_GetAltHitbox       = Mod.GetPublicFunction(NULL, "Player_GetAltHitbox");
+    Player_GiveRings          = Mod.GetPublicFunction(NULL, "Player_GiveRings");
+    Player_ChangeCharacter    = Mod.GetPublicFunction(NULL, "Player_ChangeCharacter");
+    Player_TryTransform       = Mod.GetPublicFunction(NULL, "Player_TryTransform");
+    Player_ApplyShield        = Mod.GetPublicFunction(NULL, "Player_ApplyShield");
+    Player_UpdatePhysicsState = Mod.GetPublicFunction(NULL, "Player_UpdatePhysicsState");
+    Music_PlayJingle          = Mod.GetPublicFunction(NULL, "Music_PlayJingle");
 
     // Add Public Functions
     ADD_PUBLIC_FUNC(MegAmiMenu_State_Main);

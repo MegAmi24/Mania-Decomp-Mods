@@ -16,7 +16,7 @@
 #define SUBBOX_XPOS    (MAINBOX_XPOS + MAINBOX_WIDTH + 3)
 #define BOX_YPOS       (12)
 #define OPTION_SPACING (14)
-#define BOX_HEIGHT(x)  ((x)*OPTION_SPACING + 5) // x = Option Count
+#define BOX_HEIGHT(x)  ((x) * OPTION_SPACING + 5) // x = Option Count
 #define BOX_COLOR      (0xFF0000)
 
 #define DrawOptionText(string)                                                                                                                       \
@@ -74,7 +74,6 @@ typedef struct {
     RSDK_OBJECT
     bool32 playerInv[PLAYER_COUNT];
     uint16 aniFrames;
-    uint16 sfxFail;
     uint8 touchUp;
     uint8 touchDown;
     uint8 touchLeft;
