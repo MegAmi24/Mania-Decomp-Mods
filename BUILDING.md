@@ -11,8 +11,8 @@ If you've already cloned the repo, run this command inside of the repository:
 ```git submodule update --init```
 
 ## Set up GameAPI
-Mods require the [GameAPI](https://github.com/Rubberduckycooly/GameAPI) dependency to build.
-Some repositories (such as this one) include GameAPI as a submodule, which is downloaded along with the repository when cloned with the above command. Others don't include it, in which case you can simply clone it by running `git clone https://github.com/Rubberduckycooly/GameAPI --recursive` (if you plan to build multiple mods, using symlinks is recommended). When doing this, keep in mind that the location GameAPI needs to be in may differ from repo to repo; most will have it in the mod's root directory, but others may have it elsewhere.
+Mods require the [GameAPI](https://github.com/RSDKModding/RSDKv5-GameAPI) dependency to build.
+Some repositories (such as this one) include GameAPI as a submodule, which is downloaded along with the repository when cloned with the above command. Others don't include it, in which case you can simply clone it by running `git clone https://github.com/RSDKModding/RSDKv5-GameAPI --recursive` (if you plan to build multiple mods, using symlinks is recommended). When doing this, keep in mind that the location GameAPI needs to be in may differ from repo to repo; most will have it in the mod's root directory, but others may have it elsewhere. If you're getting errors with GameAPI not being found despite cloning the repo in the correct location, you may need to rename the `RSDKv5-GameAPI` folder to `GameAPI`.
 
 ## Building
 
