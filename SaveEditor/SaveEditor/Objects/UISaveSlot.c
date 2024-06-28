@@ -9,13 +9,15 @@ bool32 UISaveSlot_State_Hook(bool32 skipped)
     RSDK_THIS(UISaveSlot);
 
     if (Mod_UISaveSlot->state == StateMachine_None) {
-        EntityUIControl *control = (EntityUIControl *)self->parent;
-        GetSaveRAMPointer();
+        if (self->type != UISAVESLOT_REGULAR)
+            return false;
 
-        if (control->position.x != control->targetPos.x || self->type != UISAVESLOT_REGULAR)
+        EntityUIControl *control = (EntityUIControl *)self->parent;
+        if (!control || control->targetPos.x != self->position.x || control->position.x != control->targetPos.x)
             return false;
 
         if (ControllerInfo[CONT_P1].keySelect.press || UISaveSlot_CheckTouchRect(0, ScreenInfo->size.y - 32, 32, ScreenInfo->size.y)) {
+            GetSaveRAMPointer();
             if (saveRAM->saveState == SAVEGAME_BLANK) {
                 String msg;
                 INIT_STRING(msg);
