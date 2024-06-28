@@ -230,6 +230,8 @@ extern ModObjectUISaveSlot *Mod_UISaveSlot;
 // State Hooks
 bool32 UISaveSlot_State_Hook(bool32 skipped);
 
+void UISaveSlot_SetupEditor(void);
+
 // States
 void UISaveSlot_EditState_Main(void);
 void UISaveSlot_EditState_ManiaChar(void);
@@ -247,10 +249,13 @@ void UISaveSlot_EditState_SetScore(void);
 void UISaveSlot_EditState_Emeralds(void);
 void UISaveSlot_EditState_Wait(void);
 
+void UISaveSlot_InitDLG_CB(void);
 void UISaveSlot_CloseEditor_CB(void);
 #if MANIA_USE_PLUS
+void UISaveSlot_InitSaveCB(bool32 success);
 void UISaveSlot_Edit_ExitCB(bool32 success);
 #else
+void UISaveSlot_InitSaveCB(void);
 void UISaveSlot_Edit_ExitCB(void);
 #endif
 bool32 UISaveSlot_Edit_BackCB(void);

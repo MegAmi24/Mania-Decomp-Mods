@@ -12,94 +12,30 @@ bool32 UISaveSlot_State_Hook(bool32 skipped)
         EntityUIControl *control = (EntityUIControl *)self->parent;
         GetSaveRAMPointer();
 
-        if (control->position.x != control->targetPos.x || saveRAM->saveState == SAVEGAME_BLANK || self->type != UISAVESLOT_REGULAR)
+        if (control->position.x != control->targetPos.x || self->type != UISAVESLOT_REGULAR)
             return false;
 
         if (ControllerInfo[CONT_P1].keySelect.press || UISaveSlot_CheckTouchRect(0, ScreenInfo->size.y - 32, 32, ScreenInfo->size.y)) {
-            Mod_UISaveSlot->menuCount = -1;
+            if (saveRAM->saveState == SAVEGAME_BLANK) {
+                String msg;
+                INIT_STRING(msg);
 
-            ObjectUIWidgets *UIWidgets = Mod.FindObject("UIWidgets");
-            RSDK.SetSpriteAnimation(UIWidgets->fontFrames, 0, &Mod_UISaveSlot->animator, true, 0);
-            RSDK.SetSpriteAnimation(UISaveSlot->aniFrames, 4, &Mod_UISaveSlot->emeraldsAnimator, true, 0);
-
-            // Initialize Options
-#if MANIA_USE_PLUS
-            if (!self->encoreMode) {
-                AddMenuOption(SAVEEDITOR_CHAR, "CHARACTER");
+                // UIDialog_CreateDialogYesNo wasn't a public function until late June 2024, so we have to check if it's found
+                if (UIDialog_CreateDialogYesNo) {
+                    // Ask before initializing
+                    RSDK.InitString(&msg, "THIS SAVE SLOT IS EMPTY.\nYOU WILL NEED TO INITIALIZE IT BEFORE EDITING.\nPROCEED?", 0);
+                    EntityUIDialog *dialog = UIDialog_CreateDialogYesNo(&msg, UISaveSlot_InitDLG_CB, NULL, false, true);
+                    if (dialog)
+                        dialog->entityPtr = (Entity *)self;
+                }
+                else {
+                    // Can't ask first, just do it
+                    RSDK.InitString(&msg, "THIS SAVE SLOT IS EMPTY.\nIT WILL BE INITIALIZED BEFORE EDITING.", 0);
+                    EntityUIDialog *dialog = UIDialog_CreateDialogOk(&msg, UISaveSlot_InitDLG_CB, false);
+                }
             }
-            else {
-                AddMenuOption(SAVEEDITOR_LEADER, "LEADER");
-                AddMenuOption(SAVEEDITOR_SIDEKICK, "SIDEKICK");
-                AddMenuOption(SAVEEDITOR_STOCK1, "STOCK 1");
-                AddMenuOption(SAVEEDITOR_STOCK2, "STOCK 2");
-                AddMenuOption(SAVEEDITOR_STOCK3, "STOCK 3");
-            }
-#else
-            AddMenuOption(SAVEEDITOR_CHAR, "CHARACTER");
-#endif
-            AddMenuOption(SAVEEDITOR_ZONE, "ZONE");
-#if MANIA_USE_PLUS
-            if (!self->encoreMode) {
-                AddMenuOption(SAVEEDITOR_LIVES, "LIVES");
-            }
-            AddMenuOption(SAVEEDITOR_CONTINUES, "CONTINUES");
-#else
-            AddMenuOption(SAVEEDITOR_LIVES, "LIVES");
-#endif
-            AddMenuOption(SAVEEDITOR_SCORE, "SCORE");
-            AddMenuOption(SAVEEDITOR_EMERALDS, "EMERALDS");
-            AddMenuOption(SAVEEDITOR_EXIT, "EXIT");
-
-            // Initialize Strings
-            RSDK.InitString(&Mod_UISaveSlot->charStrings[CHARACTER_SONIC_TAILS], "SONIC & TAILS", false);
-            RSDK.InitString(&Mod_UISaveSlot->charStrings[CHARACTER_SONIC], "SONIC", false);
-            RSDK.InitString(&Mod_UISaveSlot->charStrings[CHARACTER_TAILS], "TAILS", false);
-            RSDK.InitString(&Mod_UISaveSlot->charStrings[CHARACTER_KNUCKLES], "KNUCKLES", false);
-#if MANIA_USE_PLUS
-            RSDK.InitString(&Mod_UISaveSlot->charStrings[CHARACTER_MIGHTY], "MIGHTY", false);
-            RSDK.InitString(&Mod_UISaveSlot->charStrings[CHARACTER_RAY], "RAY", false);
-            RSDK.InitString(&Mod_UISaveSlot->charStrings[CHARACTER_NONE], "NONE", false);
-#endif
-
-            for (uint8 m = 0; m <= Mod_UISaveSlot->menuCount; m++) RSDK.SetSpriteString(UIWidgets->fontFrames, 0, &Mod_UISaveSlot->menuStrings[m]);
-            for (uint8 c = 0; c < CHARACTER_COUNT; c++) RSDK.SetSpriteString(UIWidgets->fontFrames, 0, &Mod_UISaveSlot->charStrings[c]);
-
-            for (uint8 z = 0; z < ZONE_COUNT_SAVEFILE; z++) {
-                if (z == ZONE_COUNT_SAVEFILE - 1)
-                    RSDK.InitString(&Mod_UISaveSlot->zoneStrings[z], "CLEAR", false);
-                else
-                    Localization_GetZoneName(&Mod_UISaveSlot->zoneStrings[z], z);
-                RSDK.SetSpriteString(UIWidgets->fontFrames, 0, &Mod_UISaveSlot->zoneStrings[z]);
-            }
-
-            Mod_UISaveSlot->state     = UISaveSlot_EditState_Main;
-            Mod_UISaveSlot->stateDraw = StateMachine_None;
-
-            Mod_UISaveSlot->mainSelection = 0;
-            Mod_UISaveSlot->subSelection  = 0;
-            Mod_UISaveSlot->customValue   = 0;
-            Mod_UISaveSlot->valueDigits   = 0;
-
-            Mod_UISaveSlot->processButtonCBStore = self->processButtonCB;
-            self->processButtonCB                = StateMachine_None;
-            Mod_UISaveSlot->backPressCBStore     = control->backPressCB;
-            control->backPressCB                 = UISaveSlot_Edit_BackCB;
-            Mod_UISaveSlot->yPressCBStore        = control->yPressCB;
-            control->yPressCB                    = StateMachine_None;
-#if MANIA_USE_PLUS
-            Mod_UISaveSlot->stateInputStore = self->stateInput;
-            self->stateInput                = StateMachine_None;
-#endif
-
-            Mod_UISaveSlot->touchUp      = false;
-            Mod_UISaveSlot->touchDown    = false;
-            Mod_UISaveSlot->touchLeft    = false;
-            Mod_UISaveSlot->touchRight   = false;
-            Mod_UISaveSlot->touchConfirm = false;
-            Mod_UISaveSlot->touchBack    = false;
-
-            TouchInfo->count = 0;
-
+            else
+                UISaveSlot_SetupEditor();
             return true;
         }
     }
@@ -109,7 +45,98 @@ bool32 UISaveSlot_State_Hook(bool32 skipped)
         StateMachine_Run(Mod_UISaveSlot->state);
         return true;
     }
+
     return false;
+}
+
+void UISaveSlot_SetupEditor(void)
+{
+    RSDK_THIS(UISaveSlot);
+
+    EntityUIControl *control = (EntityUIControl *)self->parent;
+    GetSaveRAMPointer();
+
+    Mod_UISaveSlot->menuCount = -1;
+
+    ObjectUIWidgets *UIWidgets = Mod.FindObject("UIWidgets");
+    RSDK.SetSpriteAnimation(UIWidgets->fontFrames, 0, &Mod_UISaveSlot->animator, true, 0);
+    RSDK.SetSpriteAnimation(UISaveSlot->aniFrames, 4, &Mod_UISaveSlot->emeraldsAnimator, true, 0);
+
+    // Initialize Options
+#if MANIA_USE_PLUS
+    if (!self->encoreMode) {
+        AddMenuOption(SAVEEDITOR_CHAR, "CHARACTER");
+    }
+    else {
+        AddMenuOption(SAVEEDITOR_LEADER, "LEADER");
+        AddMenuOption(SAVEEDITOR_SIDEKICK, "SIDEKICK");
+        AddMenuOption(SAVEEDITOR_STOCK1, "STOCK 1");
+        AddMenuOption(SAVEEDITOR_STOCK2, "STOCK 2");
+        AddMenuOption(SAVEEDITOR_STOCK3, "STOCK 3");
+    }
+    AddMenuOption(SAVEEDITOR_ZONE, "ZONE");
+    if (!self->encoreMode) {
+        AddMenuOption(SAVEEDITOR_LIVES, "LIVES");
+    }
+    AddMenuOption(SAVEEDITOR_CONTINUES, "CONTINUES");
+#else
+    AddMenuOption(SAVEEDITOR_CHAR, "CHARACTER");
+    AddMenuOption(SAVEEDITOR_ZONE, "ZONE");
+    AddMenuOption(SAVEEDITOR_LIVES, "LIVES");
+#endif
+    AddMenuOption(SAVEEDITOR_SCORE, "SCORE");
+    AddMenuOption(SAVEEDITOR_EMERALDS, "EMERALDS");
+    AddMenuOption(SAVEEDITOR_EXIT, "EXIT");
+
+    // Initialize Strings
+    RSDK.InitString(&Mod_UISaveSlot->charStrings[CHARACTER_SONIC_TAILS], "SONIC & TAILS", false);
+    RSDK.InitString(&Mod_UISaveSlot->charStrings[CHARACTER_SONIC], "SONIC", false);
+    RSDK.InitString(&Mod_UISaveSlot->charStrings[CHARACTER_TAILS], "TAILS", false);
+    RSDK.InitString(&Mod_UISaveSlot->charStrings[CHARACTER_KNUCKLES], "KNUCKLES", false);
+#if MANIA_USE_PLUS
+    RSDK.InitString(&Mod_UISaveSlot->charStrings[CHARACTER_MIGHTY], "MIGHTY", false);
+    RSDK.InitString(&Mod_UISaveSlot->charStrings[CHARACTER_RAY], "RAY", false);
+    RSDK.InitString(&Mod_UISaveSlot->charStrings[CHARACTER_NONE], "NONE", false);
+#endif
+
+    for (uint8 m = 0; m <= Mod_UISaveSlot->menuCount; m++) RSDK.SetSpriteString(UIWidgets->fontFrames, 0, &Mod_UISaveSlot->menuStrings[m]);
+    for (uint8 c = 0; c < CHARACTER_COUNT; c++) RSDK.SetSpriteString(UIWidgets->fontFrames, 0, &Mod_UISaveSlot->charStrings[c]);
+
+    for (uint8 z = 0; z < ZONE_COUNT_SAVEFILE; z++) {
+        if (z == ZONE_COUNT_SAVEFILE - 1)
+            RSDK.InitString(&Mod_UISaveSlot->zoneStrings[z], "CLEAR", false);
+        else
+            Localization_GetZoneName(&Mod_UISaveSlot->zoneStrings[z], z);
+        RSDK.SetSpriteString(UIWidgets->fontFrames, 0, &Mod_UISaveSlot->zoneStrings[z]);
+    }
+
+    Mod_UISaveSlot->state     = UISaveSlot_EditState_Main;
+    Mod_UISaveSlot->stateDraw = StateMachine_None;
+
+    Mod_UISaveSlot->mainSelection = 0;
+    Mod_UISaveSlot->subSelection  = 0;
+    Mod_UISaveSlot->customValue   = 0;
+    Mod_UISaveSlot->valueDigits   = 0;
+
+    Mod_UISaveSlot->processButtonCBStore = self->processButtonCB;
+    self->processButtonCB                = StateMachine_None;
+    Mod_UISaveSlot->backPressCBStore     = control->backPressCB;
+    control->backPressCB                 = UISaveSlot_Edit_BackCB;
+    Mod_UISaveSlot->yPressCBStore        = control->yPressCB;
+    control->yPressCB                    = StateMachine_None;
+#if MANIA_USE_PLUS
+    Mod_UISaveSlot->stateInputStore = self->stateInput;
+    self->stateInput                = StateMachine_None;
+#endif
+
+    Mod_UISaveSlot->touchUp      = false;
+    Mod_UISaveSlot->touchDown    = false;
+    Mod_UISaveSlot->touchLeft    = false;
+    Mod_UISaveSlot->touchRight   = false;
+    Mod_UISaveSlot->touchConfirm = false;
+    Mod_UISaveSlot->touchBack    = false;
+
+    TouchInfo->count = 0;
 }
 
 void UISaveSlot_ModCB_OnDraw(void *data)
@@ -347,12 +374,21 @@ void UISaveSlot_EditState_Zone(void)
             if (saveRAM->zoneID >= ZONE_ERZ) {
                 saveRAM->saveState = SAVEGAME_COMPLETE;
                 saveRAM->zoneID    = ZONE_ERZ;
+                self->state        = Mod.GetPublicFunction(NULL, "UISaveSlot_State_CompletedSave");
             }
-            else
+            else {
                 saveRAM->saveState = SAVEGAME_INPROGRESS;
+                self->state        = Mod.GetPublicFunction(NULL, "UISaveSlot_State_ActiveSave");
+            }
             saveRAM->collectedSpecialRings = 0;
         }
+
+        // Workaround for zone palettes not being applied after initializing a new save
+        // Setting currentlySelected to true when initializing it just breaks the whole menu. todo: find a proper fix
+        bool32 selectedStore = self->currentlySelected;
+        self->currentlySelected = true;
         ExitSubMenu();
+        self->currentlySelected = selectedStore;
     }
     else if (backPress) {
         ExitSubMenu();
@@ -447,6 +483,64 @@ void UISaveSlot_EditState_Emeralds(void)
 }
 
 void UISaveSlot_EditState_Wait(void) {}
+
+void UISaveSlot_InitDLG_CB(void)
+{
+    ObjectUIDialog *UIDialog   = Mod.FindObject("UIDialog");
+    EntityUIDialog *dialog   = (EntityUIDialog *)UIDialog->activeDialog;
+    EntityUISaveSlot *self   = (EntityUISaveSlot *)dialog->entityPtr;
+
+    dialog->parent->state = StateMachine_None;
+
+    UIWaitSpinner_StartWait();
+
+    GetSaveRAMPointer();
+
+    saveRAM->saveState             = SAVEGAME_INPROGRESS;
+    saveRAM->zoneID                = 0;
+    saveRAM->lives                 = 3;
+    saveRAM->collectedEmeralds     = 0b0000000;
+    saveRAM->continues             = 0;
+    saveRAM->score                 = 0;
+    saveRAM->score1UP              = 500000;
+    saveRAM->collectedSpecialRings = 0;
+    saveRAM->nextSpecialStage      = 0;
+#if MANIA_USE_PLUS
+    saveRAM->characterID = !self->encoreMode ? self->frameID : 0;
+    if (self->encoreMode) {
+        saveRAM->playerID = ID_SONIC | ID_MIGHTY << 8;
+        saveRAM->stock    = ID_NONE;
+    }
+#else
+    saveRAM->characterID = self->frameID;
+#endif
+
+    SaveGame_SaveFile(UISaveSlot_InitSaveCB);
+}
+
+#if MANIA_USE_PLUS
+void UISaveSlot_InitSaveCB(bool32 success)
+#else
+void UISaveSlot_InitSaveCB(void)
+#endif
+{
+    ObjectUIDialog *UIDialog   = Mod.FindObject("UIDialog");
+    EntityUIDialog *dialog     = (EntityUIDialog *)UIDialog->activeDialog;
+    EntityUISaveSlot *saveSlot = (EntityUISaveSlot *)dialog->entityPtr;
+    saveSlot->state            = Mod.GetPublicFunction(NULL, "UISaveSlot_State_ActiveSave");
+#if MANIA_USE_PLUS
+    saveSlot->stateInput = StateMachine_None;
+#endif
+    saveSlot->isSelected = true;
+    UIWaitSpinner_FinishWait();
+    UIDialog_CloseOnSel_HandleSelection(dialog, StateMachine_None);
+
+    Entity *storeEntity = SceneInfo->entity;
+    SceneInfo->entity   = (Entity *)saveSlot;
+    UISaveSlot_LoadSaveInfo();
+    UISaveSlot_SetupEditor();
+    SceneInfo->entity = storeEntity;
+}
 
 void UISaveSlot_CloseEditor_CB(void)
 {

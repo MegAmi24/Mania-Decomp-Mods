@@ -9,6 +9,8 @@
 #define UICONTROL_PROMPT_COUNT (4)
 #endif
 
+#define UIDIALOG_OPTION_COUNT (3)
+
 typedef struct {
     RSDK_OBJECT
     bool32 isProcessingInput;
@@ -117,6 +119,36 @@ typedef struct {
 } EntityUIControl;
 
 typedef struct {
+    RSDK_ENTITY
+    StateMachine(state);
+    int32 timer;
+    int32 closeDelay;
+    String textInfo;
+    int32 buttonCount;
+    Vector2 bgRectSize;
+    Vector2 dialogPos;
+    EntityUIControl *parent;
+    Entity *entityPtr;
+    uint8 buttonFrames[UIDIALOG_OPTION_COUNT];
+    StateMachine(callbacks[UIDIALOG_OPTION_COUNT]);
+    bool32 closeOnSelect[UIDIALOG_OPTION_COUNT];
+    void *buttons[UIDIALOG_OPTION_COUNT];
+    StateMachine(closeCB);
+    bool32 playEventSfx;
+    bool32 useAltColor;
+    int32 lineLength[3];
+    int32 lineCount;
+    Animator animator;
+} EntityUIDialog;
+
+typedef struct {
+    RSDK_OBJECT
+    EntityUIDialog *activeDialog;
+    EntityUIControl *controlStore;
+    StateMachine(controlStateStore);
+} ObjectUIDialog;
+
+typedef struct {
     RSDK_OBJECT
 #if MANIA_USE_PLUS
     int32 buttonColors[16];
@@ -164,5 +196,10 @@ typedef struct {
     int32 unused4;
     bool32 fullyExpanded;
 } EntityFXRuby;
+
+extern EntityUIDialog *(*UIDialog_CreateDialogOk)(String *text, void (*callback)(void), bool32 closeOnSelect);
+extern EntityUIDialog *(*UIDialog_CreateDialogYesNo)(String *text, void (*callbackYes)(void), void (*callbackNo)(void), bool32 closeOnSelect_Yes,
+                                                     bool32 closeOnSelect_No);
+extern void (*UIDialog_CloseOnSel_HandleSelection)(EntityUIDialog *dialog, void (*callback)(void));
 
 #endif
