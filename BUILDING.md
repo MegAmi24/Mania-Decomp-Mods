@@ -8,7 +8,7 @@ Clone the repo **recursively**, using:
 `git clone [link-to-github-repository] --recursive`
 
 If you've already cloned the repo, run this command inside of the repository:
-```git submodule update --init```
+```git submodule update --remote --init --recursive```
 
 ## Set up GameAPI
 Mods require the [GameAPI](https://github.com/RSDKModding/RSDKv5-GameAPI) dependency to build.
