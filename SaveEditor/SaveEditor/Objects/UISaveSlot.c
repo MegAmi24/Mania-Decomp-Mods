@@ -17,8 +17,9 @@ bool32 UISaveSlot_State_Hook(bool32 skipped)
             return false;
 
         if (ControllerInfo[CONT_P1].keySelect.press || UISaveSlot_CheckTouchRect(0, ScreenInfo->size.y - 32, 32, ScreenInfo->size.y)) {
-            GetSaveRAMPointer();
-            if (saveRAM->saveState == SAVEGAME_BLANK) {
+            if (!self->isNewSave)
+                UISaveSlot_SetupEditor();
+            else {
                 String msg;
                 INIT_STRING(msg);
 
@@ -36,8 +37,6 @@ bool32 UISaveSlot_State_Hook(bool32 skipped)
                     EntityUIDialog *dialog = UIDialog_CreateDialogOk(&msg, UISaveSlot_InitDLG_CB, false);
                 }
             }
-            else
-                UISaveSlot_SetupEditor();
             return true;
         }
     }
@@ -387,7 +386,7 @@ void UISaveSlot_EditState_Zone(void)
 
         // Workaround for zone palettes not being applied after initializing a new save
         // Setting currentlySelected to true when initializing it just breaks the whole menu. todo: find a proper fix
-        bool32 selectedStore = self->currentlySelected;
+        bool32 selectedStore    = self->currentlySelected;
         self->currentlySelected = true;
         ExitSubMenu();
         self->currentlySelected = selectedStore;
@@ -488,7 +487,7 @@ void UISaveSlot_EditState_Wait(void) {}
 
 void UISaveSlot_InitDLG_CB(void)
 {
-    ObjectUIDialog *UIDialog   = Mod.FindObject("UIDialog");
+    ObjectUIDialog *UIDialog = Mod.FindObject("UIDialog");
     EntityUIDialog *dialog   = (EntityUIDialog *)UIDialog->activeDialog;
     EntityUISaveSlot *self   = (EntityUISaveSlot *)dialog->entityPtr;
 
