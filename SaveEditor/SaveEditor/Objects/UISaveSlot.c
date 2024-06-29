@@ -35,6 +35,8 @@ bool32 UISaveSlot_State_Hook(bool32 skipped)
                     // Can't ask first, just do it
                     RSDK.InitString(&msg, "THIS SAVE SLOT IS EMPTY.\nIT WILL BE INITIALIZED BEFORE EDITING.", 0);
                     EntityUIDialog *dialog = UIDialog_CreateDialogOk(&msg, UISaveSlot_InitDLG_CB, false);
+                    if (dialog)
+                        dialog->entityPtr = (Entity *)self;
                 }
             }
             return true;
