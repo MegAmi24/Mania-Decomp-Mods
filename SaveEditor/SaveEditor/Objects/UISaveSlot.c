@@ -8,6 +8,11 @@ bool32 UISaveSlot_State_Hook(bool32 skipped)
 {
     RSDK_THIS(UISaveSlot);
 
+    // For some reason this hook sometimes gets called even when not in the menu scene??????
+    // Just return false if that happens. todo: figure out why tf this is happening
+    if (!UISaveSlot || self->classID != UISaveSlot->classID)
+        return false;
+
     if (Mod_UISaveSlot->state == StateMachine_None) {
         if (self->type != UISAVESLOT_REGULAR)
             return false;
