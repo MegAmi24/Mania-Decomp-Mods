@@ -2,12 +2,14 @@
 #include "Player.h"
 
 // Resolve externals
-StateMachine(Player_Action_Jump);
+void (*Player_Action_Jump)(EntityPlayer *entity);
 StateMachine(Player_Action_Spindash);
 StateMachine(Player_State_Air);
 StateMachine(Player_State_FlyCarried);
 StateMachine(Player_Input_P2_AI);
 StateMachine(Player_Input_P2_Player);
+
+SaveRAM *(*SaveGame_GetSaveRAM)(void);
 
 #if RETRO_USE_MOD_LOADER
 DLLExport bool32 LinkModLogic(EngineInfo *info, const char *id);
@@ -23,16 +25,23 @@ void InitModAPI(void)
     Player_State_FlyCarried = Mod.GetPublicFunction(NULL, "Player_State_FlyCarried");
     Player_Input_P2_AI      = Mod.GetPublicFunction(NULL, "Player_Input_P2_AI");
     Player_Input_P2_Player  = Mod.GetPublicFunction(NULL, "Player_Input_P2_Player");
-    
+
+    SaveGame_GetSaveRAM = Mod.GetPublicFunction(NULL, "SaveGame_GetSaveRAM");
+
+    Mod.RegisterStateHook(Mod.GetPublicFunction(NULL, "Player_JumpAbility_Sonic"), Player_JumpAbility_Sonic_Hook, true);
+
     Mod.RegisterStateHook(Mod.GetPublicFunction(NULL, "Player_State_TailsFlight"), Player_State_TailsFlight_Hook, false);
 
-    Mod.RegisterStateHook(Mod.GetPublicFunction(NULL, "Player_JumpAbility_Knux"), Player_JumpAbility_Knux_Hook, true);
     Mod.RegisterStateHook(Mod.GetPublicFunction(NULL, "Player_State_KnuxGlideDrop"), Player_State_KnuxGlideDrop_Hook, false);
     Mod.RegisterStateHook(Mod.GetPublicFunction(NULL, "Player_State_KnuxGlideSlide"), Player_State_KnuxGlideSlide_Hook, false);
 
     ADD_PUBLIC_FUNC(Player_GroundActionControls);
+    ADD_PUBLIC_FUNC(Player_CanTransform);
 
     MOD_REGISTER_OBJECT_HOOK(Player);
+
+    // Support for Super Cancel
+    Mod.LoadModInfo("SuperCancel", NULL, NULL, NULL, &superCancel);
 }
 
 #if RETRO_USE_MOD_LOADER

@@ -1,7 +1,30 @@
 #include "GameAPI/Game.h"
 #include "Player.h"
 
+bool32 superCancel = false;
+
 ObjectPlayer *Player;
+
+bool32 Player_JumpAbility_Sonic_Hook(bool32 skipped)
+{
+    RSDK_THIS(Player);
+
+    if (self->shield == SHIELD_BUBBLE || self->shield == SHIELD_FIRE) {
+        if (self->jumpAbilityState == 1) {
+            if (self->up && (!self->sidekick || self->stateInput == Player_Input_P2_Player)) {
+#if GAME_VERSION != VER_100
+                if (!(Player_CanTransform(self) && ControllerInfo[self->controllerID].keyY.press)) {
+#else
+                if (!Player_CanTransform(self)) {
+#endif
+                    return true;
+                }
+            }
+        }
+    }  
+
+    return false;
+}
 
 bool32 Player_State_TailsFlight_Hook(bool32 skipped)
 {
@@ -32,24 +55,6 @@ bool32 Player_State_TailsFlight_Hook(bool32 skipped)
         self->state = Player_State_Air;
         self->jumpAbilityState = 0;
         RSDK.SetSpriteAnimation(self->aniFrames, ANI_JUMP, &self->animator, false, 0);
-    }
-
-    return false;
-}
-
-bool32 Player_JumpAbility_Knux_Hook(bool32 skipped)
-{
-    RSDK_THIS(Player);
-
-    if (self->jumpPress && self->jumpAbilityState == 1
-        && (self->stateInput != Player_Input_P2_AI
-            || (self->up
-#if MANIA_USE_PLUS
-                && globals->gameMode != MODE_ENCORE
-#endif
-                ))) {
-        if (!self->invertGravity)
-            self->velocity.y += 0x20000;
     }
 
     return false;
@@ -97,4 +102,28 @@ void Player_GroundActionControls(void)
         else
             Player_Action_Jump(self);
     }
+}
+
+// Function yoinked from ManiaTouchControls LOL
+bool32 Player_CanTransform(EntityPlayer *player)
+{
+    if (!SceneInfo->timeEnabled)
+        return false;
+
+    if (superCancel && !RSDK.FindObject("ERZSetup") && player->superState == SUPERSTATE_SUPER)
+        return true;
+
+    SaveRAM *saveRAM = SaveGame_GetSaveRAM();
+    if (!saveRAM)
+        return false;
+
+#if MANIA_USE_PLUS
+    if (Player->canSuperCB && !Player->canSuperCB(false))
+        return false;
+#endif
+
+    if (player->superState >= SUPERSTATE_SUPER || saveRAM->chaosEmeralds != 0x7F || player->rings < 50 || player->sidekick)
+        return false;
+
+    return true;
 }

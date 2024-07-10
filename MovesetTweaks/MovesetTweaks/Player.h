@@ -99,6 +99,14 @@ typedef enum {
 } PlayerAnimationIDs;
 
 typedef enum {
+    SHIELD_NONE,
+    SHIELD_BLUE,
+    SHIELD_BUBBLE,
+    SHIELD_FIRE,
+    SHIELD_LIGHTNING,
+} ShieldTypes;
+
+typedef enum {
     SUPERSTATE_NONE,
     SUPERSTATE_FADEIN,
     SUPERSTATE_SUPER,
@@ -416,19 +424,23 @@ typedef struct {
 // Object Struct
 extern ObjectPlayer *Player;
 
-extern StateMachine(Player_Action_Jump);
+extern bool32 superCancel;
+
+extern void (*Player_Action_Jump)(EntityPlayer *entity);
 extern StateMachine(Player_Action_Spindash);
 extern StateMachine(Player_State_Air);
 extern StateMachine(Player_State_FlyCarried);
 extern StateMachine(Player_Input_P2_AI);
 extern StateMachine(Player_Input_P2_Player);
 
+bool32 Player_JumpAbility_Sonic_Hook(bool32 skipped);
+
 bool32 Player_State_TailsFlight_Hook(bool32 skipped);
 
-bool32 Player_JumpAbility_Knux_Hook(bool32 skipped);
 bool32 Player_State_KnuxGlideDrop_Hook(bool32 skipped);
 bool32 Player_State_KnuxGlideSlide_Hook(bool32 skipped);
 
 void Player_GroundActionControls(void);
+bool32 Player_CanTransform(EntityPlayer *player);
 
 #endif //! OBJ_PLAYER_H

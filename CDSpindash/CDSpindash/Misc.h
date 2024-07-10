@@ -1,5 +1,5 @@
-#ifndef OBJ_DUST_H
-#define OBJ_DUST_H
+#ifndef OBJ_MISC_H
+#define OBJ_MISC_H
 
 #include "GameAPI/Game.h"
 
@@ -169,4 +169,4 @@ void SDashWheel_Update(void);
 extern StateMachine(Camera_State_FollowY);
 bool32 DashLift_State_HandleDash_Hook(bool32 skipped);
 
-#endif //! OBJ_DUST_H
+#endif //! OBJ_MISC_H
