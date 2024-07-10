@@ -421,6 +421,18 @@ typedef struct {
 #endif
 } EntityPlayer;
 
+typedef struct {
+    RSDK_ENTITY
+    EntityPlayer *player;
+    StateMachine(state);
+    int32 type;
+    int32 timer;
+    int32 frameFlags;
+    bool32 forceVisible;
+    Animator shieldAnimator;
+    Animator fxAnimator;
+} EntityShield;
+
 // Object Struct
 extern ObjectPlayer *Player;
 
@@ -441,6 +453,6 @@ bool32 Player_State_KnuxGlideDrop_Hook(bool32 skipped);
 bool32 Player_State_KnuxGlideSlide_Hook(bool32 skipped);
 
 void Player_GroundActionControls(void);
-bool32 Player_CanTransform(EntityPlayer *player);
+bool32 Player_CanTransform(void);
 
 #endif //! OBJ_PLAYER_H

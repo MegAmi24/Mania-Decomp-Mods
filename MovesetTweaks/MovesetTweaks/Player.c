@@ -9,13 +9,22 @@ bool32 Player_JumpAbility_Sonic_Hook(bool32 skipped)
 {
     RSDK_THIS(Player);
 
+    ObjectShield *Shield = Mod.FindObject("Shield");
+    EntityShield *shield = RSDK_GET_ENTITY(Player->playerCount + RSDK.GetEntitySlot(self), Shield);
+    if (self->invincibleTimer) {
+        if (shield->classID != Shield->classID || shield->shieldAnimator.animationID != SHIELDANI_INSTA) {
+            if (!(globals->medalMods & MEDAL_NODROPDASH))
+                return false;
+        }
+    }
+
     if (self->shield == SHIELD_BUBBLE || self->shield == SHIELD_FIRE) {
         if (self->jumpAbilityState == 1) {
             if (self->up && (!self->sidekick || self->stateInput == Player_Input_P2_Player)) {
 #if GAME_VERSION != VER_100
-                if (!(Player_CanTransform(self) && ControllerInfo[self->controllerID].keyY.press)) {
+                if (!(Player_CanTransform() && ControllerInfo[self->controllerID].keyY.press)) {
 #else
-                if (!Player_CanTransform(self)) {
+                if (!Player_CanTransform()) {
 #endif
                     return true;
                 }
@@ -65,9 +74,9 @@ bool32 Player_State_KnuxGlideDrop_Hook(bool32 skipped)
     RSDK_THIS(Player);
 
     if (self->onGround && !self->groundVel && self->jumpPress) {
-        Player_GroundActionControls();
         self->skidding = 0;
         self->timer    = 0;
+        Player_GroundActionControls();
     }
 
     return false;
@@ -79,8 +88,8 @@ bool32 Player_State_KnuxGlideSlide_Hook(bool32 skipped)
 
     ObjectZone *Zone = Mod.FindObject("Zone");
     if (self->onGround && self->jumpPress && (!self->groundVel || Zone->autoScrollSpeed)) {
-        Player_GroundActionControls();
         self->skidding = 0;
+        Player_GroundActionControls();
     }
 
     return false;
@@ -105,12 +114,14 @@ void Player_GroundActionControls(void)
 }
 
 // Function yoinked from ManiaTouchControls LOL
-bool32 Player_CanTransform(EntityPlayer *player)
+bool32 Player_CanTransform(void)
 {
+    RSDK_THIS(Player);
+
     if (!SceneInfo->timeEnabled)
         return false;
 
-    if (superCancel && !RSDK.FindObject("ERZSetup") && player->superState == SUPERSTATE_SUPER)
+    if (superCancel && !RSDK.FindObject("ERZSetup") && self->superState == SUPERSTATE_SUPER)
         return true;
 
     SaveRAM *saveRAM = SaveGame_GetSaveRAM();
@@ -122,7 +133,7 @@ bool32 Player_CanTransform(EntityPlayer *player)
         return false;
 #endif
 
-    if (player->superState >= SUPERSTATE_SUPER || saveRAM->chaosEmeralds != 0x7F || player->rings < 50 || player->sidekick)
+    if (self->superState >= SUPERSTATE_SUPER || saveRAM->chaosEmeralds != 0x7F || self->rings < 50 || self->sidekick)
         return false;
 
     return true;

@@ -3,6 +3,20 @@
 
 #include "GameAPI/Game.h"
 
+typedef enum {
+    SHIELDANI_BLUE,
+    SHIELDANI_FIRE,
+    SHIELDANI_FIREATTACK,
+    SHIELDANI_LIGHTNING,
+    SHIELDANI_LIGHTINGSPARK,
+    SHIELDANI_BUBBLEADD,
+    SHIELDANI_BUBBLE,
+    SHIELDANI_BUBBLEATTACKDADD,
+    SHIELDANI_BUBBLEATTACKD,
+    SHIELDANI_BUBBLEATTACKUPADD,
+    SHIELDANI_INSTA,
+} ShieldAniIDs;
+
 typedef struct {
     uint8 padding[0x58];
 
@@ -108,6 +122,19 @@ typedef struct {
     SaveRAM *saveRAM;
     int32 unused1;
 } ObjectSaveGame;
+
+typedef struct {
+    RSDK_OBJECT
+    uint16 aniFrames;
+    uint16 sfxBlueShield;
+    uint16 sfxBubbleShield;
+    uint16 sfxFireShield;
+    uint16 sfxLightningShield;
+    uint16 sfxInstaShield;
+    uint16 sfxBubbleBounce;
+    uint16 sfxFireDash;
+    uint16 sfxLightningJump;
+} ObjectShield;
 
 // Entity Class
 typedef struct {
