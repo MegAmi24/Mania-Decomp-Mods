@@ -339,7 +339,7 @@ typedef struct {
 // Object Struct
 extern ObjectPlayer *Player;
 
-void Player_Create(void *data);
+void Player_Update(void);
 
 extern StateMachine(Player_Action_Peelout);
 
