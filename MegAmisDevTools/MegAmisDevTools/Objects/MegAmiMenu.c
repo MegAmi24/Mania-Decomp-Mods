@@ -40,10 +40,7 @@ void MegAmiMenu_Draw(void)
 {
     RSDK_THIS(MegAmiMenu);
 
-    EntityPlayer *parentplayer = (EntityPlayer *)self->parent;
-    EntityPlayer *camplayer    = RSDK_GET_ENTITY(SceneInfo->currentScreenID, Player);
-
-    if (RSDK.GetEntitySlot(parentplayer) == RSDK.GetEntitySlot(camplayer)) {
+    if (RSDK.GetEntitySlot(self->parent) == RSDK.GetEntitySlot(RSDK_GET_ENTITY(SceneInfo->currentScreenID, Player))) {
         RSDK.DrawRect(MAINBOX_XPOS, BOX_YPOS, MAINBOX_WIDTH, BOX_HEIGHT(MEGAMIMENU_COUNT), BOX_COLOR, 0xFF, INK_NONE, true);
 
         Vector2 drawPos;
@@ -76,11 +73,12 @@ void MegAmiMenu_Create(void *data)
     RSDK_THIS(MegAmiMenu);
 
     ObjectUIWidgets *UIWidgets = Mod.FindObject("UIWidgets");
-    ObjectZone *Zone           = Mod.FindObject("Zone");
 
     RSDK.SetSpriteAnimation(UIWidgets->fontFrames, 0, &self->animator, true, 0);
 
     if (!SceneInfo->inEditor) {
+        ObjectZone *Zone = Mod.FindObject("Zone");
+
         self->active    = ACTIVE_ALWAYS;
         self->visible   = true;
         self->drawGroup = Zone->hudDrawGroup;
@@ -152,7 +150,7 @@ void MegAmiMenu_State_Main(void)
                 self->subSelection = 0;
                 break;
             case MEGAMIMENU_P2CHAR:
-                if (!player->sidekick || !globals->gameMode == MODE_COMPETITION) {
+                if (!player->sidekick && globals->gameMode != MODE_COMPETITION) {
                     self->state        = MegAmiMenu_State_P2Char;
                     self->stateDraw    = MegAmiMenu_State_DrawChar;
                     self->subSelection = 0;
