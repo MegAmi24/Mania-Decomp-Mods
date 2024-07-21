@@ -23,8 +23,8 @@ bool32 Player_Input_P1_Hook(bool32 skippedState)
 {
     RSDK_THIS(Player);
 
-    ObjectAnnouncer *announcer = Mod.FindObject("Announcer");
-    if (!announcer)
+    ObjectAnnouncer *Announcer = Mod.FindObject("Announcer");
+    if (!Announcer)
         return false;
 
     for (int32 t = 0; t < TouchInfo->count; ++t) {
@@ -38,9 +38,9 @@ bool32 Player_Input_P1_Hook(bool32 skippedState)
     }
 
     if (self->controllerID <= CONT_P4) {
-        if (globals->gameMode != MODE_COMPETITION || announcer->finishedCountdown) {
-            ObjectLottoMachine *lottoMachine = Mod.FindObject("LottoMachine");
-            if (!lottoMachine || !((1 << self->playerID) & lottoMachine->activePlayers)) {
+        if (globals->gameMode != MODE_COMPETITION || Announcer->finishedCountdown) {
+            ObjectLottoMachine *LottoMachine = Mod.FindObject("LottoMachine");
+            if (!LottoMachine || !((1 << self->playerID) & LottoMachine->activePlayers)) {
                 if (ControllerInfo[self->controllerID].keySelect.press) {
                     if (self->state != Mod.GetPublicFunction(NULL, "Player_State_Death")
                         && self->state != Mod.GetPublicFunction(NULL, "Player_State_Drown")) {
