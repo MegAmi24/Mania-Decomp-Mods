@@ -103,7 +103,6 @@ void MegAmiMenu_Create(void *data)
 #if MANIA_USE_PLUS
         RSDK.InitString(&self->strings[MENUSTRING_MIGHTY], "MIGHTY", false);
         RSDK.InitString(&self->strings[MENUSTRING_RAY], "RAY", false);
-        RSDK.InitString(&self->strings[MENUSTRING_AMY], "AMY", false);
 #endif
         RSDK.InitString(&self->strings[MENUSTRING_NONE], "NONE", false);
         RSDK.InitString(&self->strings[MENUSTRING_BLUE], "BLUE SHIELD", false);
@@ -216,7 +215,7 @@ void MegAmiMenu_State_P1Char(void)
     int8 optionCount = 2;
 #if MANIA_USE_PLUS
     if (API.CheckDLC(DLC_PLUS))
-        optionCount += 2 + amyEnabled;
+        optionCount += 2;
 #endif
 
     MegAmiMenu_HandleUpDown(ControllerInfo[player->controllerID], optionCount);
@@ -240,7 +239,7 @@ void MegAmiMenu_State_P2Char(void)
     int8 optionCount = 3;
 #if MANIA_USE_PLUS
     if (API.CheckDLC(DLC_PLUS))
-        optionCount += 2 + amyEnabled;
+        optionCount += 2;
 #endif
 
     MegAmiMenu_HandleUpDown(ControllerInfo[player->controllerID], optionCount);
@@ -395,7 +394,7 @@ void MegAmiMenu_State_DrawChar(void)
     int8 characterCount = 3;
 #if MANIA_USE_PLUS
     if (API.CheckDLC(DLC_PLUS))
-        characterCount += 2 + amyEnabled;
+        characterCount += 2;
 #endif
 
     RSDK.DrawRect(SUBBOX_XPOS, BOX_YPOS, 80, BOX_HEIGHT(characterCount + (self->mainSelection == MEGAMIMENU_P2CHAR)), BOX_COLOR, 0xFF, INK_NONE,

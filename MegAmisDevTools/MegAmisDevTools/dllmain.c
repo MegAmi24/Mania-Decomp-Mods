@@ -6,9 +6,6 @@
 #include "Objects/DebugMode.h"
 #include "Objects/Misc.h"
 
-#if MANIA_USE_PLUS
-bool32 amyEnabled = false;
-#endif
 ModConfig config;
 
 // Resolve externals
@@ -78,19 +75,10 @@ void InitModAPI(void)
     config.defaultLeader   = Mod.GetSettingsInteger("", "Config:defaultLeader", 0);
     config.defaultSidekick = Mod.GetSettingsInteger("", "Config:defaultSidekick", 1);
 
-#if MANIA_USE_PLUS
-    // Initialize Amy variable
-    bool32 modActive = false;
-    Mod.LoadModInfo("Extra Slot Amy", NULL, NULL, NULL, &modActive);
-    amyEnabled = modActive;
-    Mod.LoadModInfo("Sonic Mania Addendum", NULL, NULL, NULL, &modActive);
-    amyEnabled |= modActive;
-#endif
-
     uint8 characterCount = 2;
 #if MANIA_USE_PLUS
     if (API.CheckDLC(DLC_PLUS))
-        characterCount += 2 + amyEnabled;
+        characterCount += 2;
 #endif
 
     Mod.SetSettingsInteger("Config:defaultLeader", CLAMP(config.defaultLeader, 0, characterCount));
