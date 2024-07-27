@@ -41,7 +41,7 @@ void MegAmiMenu_Draw(void)
     RSDK_THIS(MegAmiMenu);
 
     if (RSDK.GetEntitySlot(self->parent) == RSDK.GetEntitySlot(RSDK_GET_ENTITY(SceneInfo->currentScreenID, Player))) {
-        RSDK.DrawRect(MAINBOX_XPOS, BOX_YPOS, MAINBOX_WIDTH, BOX_HEIGHT(MEGAMIMENU_COUNT), BOX_COLOR, 0xFF, INK_NONE, true);
+        RSDK.DrawRect(MAINBOX_XPOS, BOX_YPOS, self->mainBoxWidth, BOX_HEIGHT(MEGAMIMENU_COUNT), BOX_COLOR, 0xFF, INK_NONE, true);
 
         Vector2 drawPos;
 
@@ -62,7 +62,7 @@ void MegAmiMenu_Draw(void)
         }
 
         if (self->stateDraw) {
-            RSDK.DrawRect(MAINBOX_XPOS, BOX_YPOS, MAINBOX_WIDTH, BOX_HEIGHT(MEGAMIMENU_COUNT), 0x000000, 0x80, INK_ALPHA, true);
+            RSDK.DrawRect(MAINBOX_XPOS, BOX_YPOS, self->mainBoxWidth, BOX_HEIGHT(MEGAMIMENU_COUNT), 0x000000, 0x80, INK_ALPHA, true);
             StateMachine_Run(self->stateDraw);
         }
     }
@@ -85,6 +85,8 @@ void MegAmiMenu_Create(void *data)
 
         self->parent         = (Entity *)data;
         EntityPlayer *player = (EntityPlayer *)self->parent;
+
+        self->mainBoxWidth = 19;
 
         // Initialize Strings
         RSDK.InitString(&self->strings[MENUSTRING_P1CHAR], "CHANGE CHARACTER", false);
@@ -111,6 +113,12 @@ void MegAmiMenu_Create(void *data)
         RSDK.InitString(&self->strings[MENUSTRING_LIGHTNING], "LIGHTNING SHIELD", false);
 
         for (uint8 s = 0; s < MENUSTRING_COUNT; s++) RSDK.SetSpriteString(UIWidgets->fontFrames, 0, &self->strings[s]);
+
+        for (uint8 s = MENUSTRING_P1CHAR; s < MEGAMIMENU_COUNT; s++) {
+            int32 stringWidth = RSDK.GetStringWidth(UIWidgets->fontFrames, 0, &self->strings[s], 0, &self->strings[s].length, 0) + 19;
+            if (stringWidth > self->mainBoxWidth)
+                self->mainBoxWidth = stringWidth;
+        }
 
         self->state     = MegAmiMenu_State_Main;
         self->stateDraw = StateMachine_None;
@@ -391,14 +399,27 @@ void MegAmiMenu_State_DrawChar(void)
 {
     RSDK_THIS(MegAmiMenu);
 
+    ObjectUIWidgets *UIWidgets = Mod.FindObject("UIWidgets");
+
     int8 characterCount = 3;
 #if MANIA_USE_PLUS
     if (API.CheckDLC(DLC_PLUS))
         characterCount += 2;
 #endif
 
-    RSDK.DrawRect(SUBBOX_XPOS, BOX_YPOS, 80, BOX_HEIGHT(characterCount + (self->mainSelection == MEGAMIMENU_P2CHAR)), BOX_COLOR, 0xFF, INK_NONE,
-                  true);
+    // Set Box Width
+    int32 subBoxWidth =
+        self->mainSelection == MEGAMIMENU_P2CHAR
+            ? (RSDK.GetStringWidth(UIWidgets->fontFrames, 0, &self->strings[MENUSTRING_NONE], 0, &self->strings[MENUSTRING_NONE].length, 0) + 19)
+            : 19;
+    for (uint8 s = MENUSTRING_SONIC; s < MENUSTRING_SONIC + characterCount; s++) {
+        int32 stringWidth = RSDK.GetStringWidth(UIWidgets->fontFrames, 0, &self->strings[s], 0, &self->strings[s].length, 0) + 19;
+        if (stringWidth > subBoxWidth)
+            subBoxWidth = stringWidth;
+    }
+
+    RSDK.DrawRect(SUBBOX_XPOS, BOX_YPOS, subBoxWidth, BOX_HEIGHT(characterCount + (self->mainSelection == MEGAMIMENU_P2CHAR)), BOX_COLOR, 0xFF,
+                  INK_NONE, true);
 
     Vector2 drawPos;
 
@@ -426,7 +447,17 @@ void MegAmiMenu_State_DrawShield(void)
 {
     RSDK_THIS(MegAmiMenu);
 
-    RSDK.DrawRect(SUBBOX_XPOS, BOX_YPOS, 130, BOX_HEIGHT(5), BOX_COLOR, 0xFF, INK_NONE, true);
+    ObjectUIWidgets *UIWidgets = Mod.FindObject("UIWidgets");
+
+    // Set Box Width
+    int32 subBoxWidth = 19;
+    for (uint8 s = MENUSTRING_BLUE; s <= MENUSTRING_LIGHTNING; s++) {
+        int32 stringWidth = RSDK.GetStringWidth(UIWidgets->fontFrames, 0, &self->strings[s], 0, &self->strings[s].length, 0) + 19;
+        if (stringWidth > subBoxWidth)
+            subBoxWidth = stringWidth;
+    }
+
+    RSDK.DrawRect(SUBBOX_XPOS, BOX_YPOS, subBoxWidth, BOX_HEIGHT(5), BOX_COLOR, 0xFF, INK_NONE, true);
 
     Vector2 drawPos;
 
@@ -452,7 +483,7 @@ void MegAmiMenu_State_DrawSetValue(void)
 {
     RSDK_THIS(MegAmiMenu);
 
-    RSDK.DrawRect(SUBBOX_XPOS, BOX_YPOS, (self->valueDigits * 8) + 11, BOX_HEIGHT(3), BOX_COLOR, 0xFF, INK_NONE, true);
+    RSDK.DrawRect(SUBBOX_XPOS, BOX_YPOS, (self->valueDigits * 8) + 10, BOX_HEIGHT(3), BOX_COLOR, 0xFF, INK_NONE, true);
 
     Vector2 drawPos;
 

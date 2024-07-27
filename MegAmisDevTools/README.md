@@ -8,7 +8,7 @@ Adds a debug menu with several features
   * Toggling Hyper Ring
   * Manually setting ring count
   * (De)activating Super form
-  * Toggling invulnerability
+  * Toggling invincibility
 * Debug Mode enabled on scene load
 * Debug Mode no longer disables act/zone transitions
 * Disabled autosave popup message
