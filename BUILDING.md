@@ -1,5 +1,5 @@
 # Building RSDKv5(U) Decompilation Mods
-It should be noted that the building process for some mods may vary due to various factors, from folder structure to external dependencies. This guide is made for the mods in this repository, although it should work with a majority of other ones.
+It should be noted that the building process for some mods may vary due to various factors, from folder structure to external dependencies. This guide is made for the mods in this repository, and while I tried my best to cover what to do in other scenarios, I can only do so much.
 
 ## Get the source code
 First, you will need to clone the repository containing the source code for the mod. To do this, you need to install Git, which you can find [here](https://git-scm.com/downloads).
@@ -25,15 +25,15 @@ cmake --build build --config release
 
 The resulting build will be located somewhere in `build/` depending on your system.
 
-The following cmake arguments are available when compiling:
-- Use these on the `cmake -B build` step like so: `cmake -B build -DRETRO_REVISION=2`
+The following CMake arguments are available when compiling (only use these if you know what you're doing!):
+- Use these by adding `-D[flag-name]=[value]` to the end of the `cmake -B build` command. For example, to build with `RETRO_REVISION` set to 2, add `-DRETRO_REVISION=2` to the command.
 
 #### GameAPI Mod flags
 - `RETRO_REVISION`: What RSDKv5 revision to compile for. Takes an integer, defaults to `3` (RSDKv5U).
 - `RETRO_MOD_LOADER_VER`: Manually sets the mod loader version. Takes an integer, defaults to the current latest version.
 - `MANIA_FIRST_RELEASE`: Whether or not to build the first release of Sonic Mania. Takes a boolean, defaults to `off`.
 - `MANIA_PRE_PLUS`: Whether or not to build a pre-plus version of Sonic Mania. Takes a boolean, defaults to `off`.
-- `GAME_VERSION`: Which release version of Sonic Mania to target for. Takes an integer, defaults to `3` when `MANIA_PRE_PLUS` is enabled, and `6` otherwise (last steam release).
+- `GAME_VERSION`: Which release version of Sonic Mania to target for. Takes an integer, defaults to `3` when `MANIA_PRE_PLUS` is enabled, and `6` otherwise (last Steam release).
 - `MOD_INCLUDE_EDITOR`: Whether or not to include functions for use in certain RSDKv5 scene editors. For mods, this generally doesn't matter. Takes a boolean, defaults to `on`.
 
 ### Building in Visual Studio
