@@ -39,11 +39,13 @@ The following CMake arguments are available when compiling (only use these if yo
 ### Building in Visual Studio
 Simply open the solution and build the project. Make sure that the architecture, engine revision, game version, and mod loader version match with the target engine and game decompilation binaries.
 
-### Setting Up SymLink for Android
-To add a symbolic link for your mod, write the appropriate command in `[RSDKv5-decompilation-root]/android/app/jni`:
-  * Windows: `mklink /d "[mod-folder-name]" "[path-to-mod-root]"`
-  * Linux: `ln -s "[path-to-mod-root]" "[mod-folder-name]"`
+### Building for Android
+After [setting up the RSDKv5(U) decompilation for building](https://github.com/Rubberduckycooly/RSDKv5-Decompilation#how-to-build), you will need to add a symbolic link for the root directory of the mod so that it will be built as part of the APK. The root directory of the mod is the folder in the repository containing the `CMakeLists.txt` file. To add the symlink, write the appropriate command in `[RSDKv5-decompilation-root]/android/app/jni`:
+  * Windows: `mklink /d "[mod-logicfile-name]" "[path-to-mod-root]"`
+  * Linux: `ln -s "[path-to-mod-root]" "[mod-logicfile-name]"`
 
-You will also need to symlink GameAPI. Simply enter the above appropriate command, with `[path-to-mod-root]` being the root GameAPI folder and `[mod-folder-name]` being `GameAPI`.
+It's important that `[mod-logicfile-name]` matches the name given for the `LogicFile` tag in the mod's `mod.ini` file.
+
+You will also need to symlink GameAPI. Simply enter the above appropriate command, with `[path-to-mod-root]` being the root GameAPI folder and `[mod-logicfile-name]` being `GameAPI`.
 
 After adding the symlinks, build the decompilation in Android Studio.
