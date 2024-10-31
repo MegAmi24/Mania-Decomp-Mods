@@ -24,6 +24,8 @@
 #define GetSaveRAMPointer() SaveRAM *saveRAM = (SaveRAM *)SaveGame_GetDataPtr(self->slotID);
 #endif
 
+#define selectedOption (Mod_UISaveSlot->menuOptions[Mod_UISaveSlot->mainSelection])
+
 #define AddMenuOption(option, string)                                                                                                                \
     Mod_UISaveSlot->menuCount++;                                                                                                                     \
     Mod_UISaveSlot->menuOptions[Mod_UISaveSlot->menuCount] = option;                                                                                 \

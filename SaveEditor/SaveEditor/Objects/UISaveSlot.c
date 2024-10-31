@@ -193,7 +193,7 @@ void UISaveSlot_EditState_Main(void)
 
     if (confirmPress) {
         GetSaveRAMPointer();
-        switch (Mod_UISaveSlot->menuOptions[Mod_UISaveSlot->mainSelection]) {
+        switch (selectedOption) {
             default: break;
             case SAVEEDITOR_CHAR:
                 Mod_UISaveSlot->state        = UISaveSlot_EditState_ManiaChar;
@@ -222,7 +222,7 @@ void UISaveSlot_EditState_Main(void)
                 Mod_UISaveSlot->stateDraw    = UISaveSlot_EditState_DrawChar;
                 Mod_UISaveSlot->subSelection = 0;
 
-                int32 stockID = (saveRAM->stock >> (8 * (Mod_UISaveSlot->menuOptions[Mod_UISaveSlot->mainSelection] - SAVEEDITOR_STOCK1))) & 0xFF;
+                int32 stockID = (saveRAM->stock >> (8 * (selectedOption - SAVEEDITOR_STOCK1))) & 0xFF;
                 if (stockID)
                     Mod_UISaveSlot->subSelection = HUD_CharacterIndexFromID(stockID) + 1;
                 break;
@@ -351,7 +351,7 @@ void UISaveSlot_EditState_EncoreStock(void)
     if (API.CheckDLC(DLC_PLUS))
         optionCount += 2;
 
-    int8 stock = Mod_UISaveSlot->menuOptions[Mod_UISaveSlot->mainSelection] - SAVEEDITOR_STOCK1;
+    int8 stock = selectedOption - SAVEEDITOR_STOCK1;
 
     UISaveSlot_HandleUpDown(optionCount);
 
