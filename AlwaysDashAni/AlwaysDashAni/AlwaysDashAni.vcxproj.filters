@@ -4,7 +4,7 @@
     <ClCompile Include="..\AlwaysDashAni\dllmain.c">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\GameAPI\C\GameAPI\Game.c">
+    <ClCompile Include="GameAPI\C\GameAPI\Game.c">
       <Filter>GameAPI</Filter>
     </ClCompile>
     <ClCompile Include="Player.c">
@@ -12,16 +12,16 @@
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="..\..\GameAPI\C\GameAPI\Game.h">
+    <ClInclude Include="GameAPI\C\GameAPI\Game.h">
       <Filter>GameAPI</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\GameAPI\C\GameAPI\GameLink.h">
+    <ClInclude Include="GameAPI\C\GameAPI\GameLink.h">
       <Filter>GameAPI</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\GameAPI\C\GameAPI\GameObjects.h">
+    <ClInclude Include="GameAPI\C\GameAPI\GameObjects.h">
       <Filter>GameAPI</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\GameAPI\C\GameAPI\GameVariables.h">
+    <ClInclude Include="GameAPI\C\GameAPI\GameVariables.h">
       <Filter>GameAPI</Filter>
     </ClInclude>
     <ClInclude Include="..\AlwaysDashAni\ModConfig.h">

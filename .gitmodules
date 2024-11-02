@@ -1,3 +1,66 @@
-[submodule "GameAPI"]
-	path = GameAPI
+[submodule "Act2ClearJingle/GameAPI"]
+	path = Act2ClearJingle/GameAPI
+	url = https://github.com/RSDKModding/RSDKv5-GameAPI
+[submodule "AlwaysDashAni/GameAPI"]
+	path = AlwaysDashAni/GameAPI
+	url = https://github.com/RSDKModding/RSDKv5-GameAPI
+[submodule "CDSpindash/GameAPI"]
+	path = CDSpindash/GameAPI
+	url = https://github.com/RSDKModding/RSDKv5-GameAPI
+[submodule "DimTimerCustomizer/GameAPI"]
+	path = DimTimerCustomizer/GameAPI
+	url = https://github.com/RSDKModding/RSDKv5-GameAPI
+[submodule "DisableAutoSavePopup/GameAPI"]
+	path = DisableAutoSavePopup/GameAPI
+	url = https://github.com/RSDKModding/RSDKv5-GameAPI
+[submodule "DunkeyLives/GameAPI"]
+	path = DunkeyLives/GameAPI
+	url = https://github.com/RSDKModding/RSDKv5-GameAPI
+[submodule "GetRedSpheres/GameAPI"]
+	path = GetRedSpheres/GameAPI
+	url = https://github.com/RSDKModding/RSDKv5-GameAPI
+[submodule "HealthMeter/GameAPI"]
+	path = HealthMeter/GameAPI
+	url = https://github.com/RSDKModding/RSDKv5-GameAPI
+[submodule "MegAmisDevTools/GameAPI"]
+	path = MegAmisDevTools/GameAPI
+	url = https://github.com/RSDKModding/RSDKv5-GameAPI
+[submodule "MKItemBox/GameAPI"]
+	path = MKItemBox/GameAPI
+	url = https://github.com/RSDKModding/RSDKv5-GameAPI
+[submodule "MovesetTweaks/GameAPI"]
+	path = MovesetTweaks/GameAPI
+	url = https://github.com/RSDKModding/RSDKv5-GameAPI
+[submodule "NoBonusStages/GameAPI"]
+	path = NoBonusStages/GameAPI
+	url = https://github.com/RSDKModding/RSDKv5-GameAPI
+[submodule "NoSpecialCheat/GameAPI"]
+	path = NoSpecialCheat/GameAPI
+	url = https://github.com/RSDKModding/RSDKv5-GameAPI
+[submodule "OuttaHereRestored/GameAPI"]
+	path = OuttaHereRestored/GameAPI
+	url = https://github.com/RSDKModding/RSDKv5-GameAPI
+[submodule "PeeloutAllChar/GameAPI"]
+	path = PeeloutAllChar/GameAPI
+	url = https://github.com/RSDKModding/RSDKv5-GameAPI
+[submodule "PlusTitleFixes/GameAPI"]
+	path = PlusTitleFixes/GameAPI
+	url = https://github.com/RSDKModding/RSDKv5-GameAPI
+[submodule "RollJumpLock/GameAPI"]
+	path = RollJumpLock/GameAPI
+	url = https://github.com/RSDKModding/RSDKv5-GameAPI
+[submodule "S2DebugPause/GameAPI"]
+	path = S2DebugPause/GameAPI
+	url = https://github.com/RSDKModding/RSDKv5-GameAPI
+[submodule "SaveEditor/GameAPI"]
+	path = SaveEditor/GameAPI
+	url = https://github.com/RSDKModding/RSDKv5-GameAPI
+[submodule "ShieldControl/GameAPI"]
+	path = ShieldControl/GameAPI
+	url = https://github.com/RSDKModding/RSDKv5-GameAPI
+[submodule "SonicDiesOfBleach/GameAPI"]
+	path = SonicDiesOfBleach/GameAPI
+	url = https://github.com/RSDKModding/RSDKv5-GameAPI
+[submodule "SuperCancel/GameAPI"]
+	path = SuperCancel/GameAPI
 	url = https://github.com/RSDKModding/RSDKv5-GameAPI

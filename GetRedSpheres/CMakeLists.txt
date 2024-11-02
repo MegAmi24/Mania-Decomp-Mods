@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 3.7)
+cmake_minimum_required(VERSION 3.10)
 
 project(GetRedSpheres)
 
@@ -23,8 +23,27 @@ endif()
 
 option(MOD_INCLUDE_EDITOR "Whether or not to include editor functions. Defaults to true" ON)
 
+find_path(GAMEAPI
+  NAMES
+    C
+    CPP
+  PATHS
+    .
+    ..
+  PATH_SUFFIXES
+    GameAPI
+    RSDKv5-GameAPI
+  NO_DEFAULT_PATH
+)
+
+if(GAMEAPI)
+  message(STATUS "Found GameAPI for ${MOD_NAME}: ${GAMEAPI}")
+else()
+  message(FATAL_ERROR "GameAPI not found for ${MOD_NAME}. Did you clone the repository recursively?")
+endif()
+
 add_library(GetRedSpheres SHARED
-    ../GameAPI/C/GameAPI/Game.c
+    ${GAMEAPI}/C/GameAPI/Game.c
     ${MOD_NAME}/dllmain.c
     ${MOD_NAME}/BSS_Message.c
     ${MOD_NAME}/BSS_HUD.c
@@ -34,7 +53,7 @@ add_library(GetRedSpheres SHARED
 
 target_include_directories(GetRedSpheres PRIVATE
     ${MOD_NAME}/
-    ../GameAPI/C/
+    ${GAMEAPI}/C/
 )
 
 set_target_properties(GetRedSpheres PROPERTIES OUTPUT_NAME ${OUTPUT_NAME})

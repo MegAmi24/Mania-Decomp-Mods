@@ -171,17 +171,17 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="..\..\GameAPI\C\GameAPI\Game.c" />
+    <ClCompile Include="GameAPI\C\GameAPI\Game.c" />
     <ClCompile Include="dllmain.c" />
     <ClCompile Include="Objects\DebugMode.c" />
     <ClCompile Include="Objects\MegAmiMenu.c" />
     <ClCompile Include="Objects\Player.c" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="..\..\GameAPI\C\GameAPI\Game.h" />
-    <ClInclude Include="..\..\GameAPI\C\GameAPI\GameLink.h" />
-    <ClInclude Include="..\..\GameAPI\C\GameAPI\GameObjects.h" />
-    <ClInclude Include="..\..\GameAPI\C\GameAPI\GameVariables.h" />
+    <ClInclude Include="GameAPI\C\GameAPI\Game.h" />
+    <ClInclude Include="GameAPI\C\GameAPI\GameLink.h" />
+    <ClInclude Include="GameAPI\C\GameAPI\GameObjects.h" />
+    <ClInclude Include="GameAPI\C\GameAPI\GameVariables.h" />
     <ClInclude Include="ModConfig.h" />
     <ClInclude Include="Objects\DebugMode.h" />
     <ClInclude Include="Objects\MegAmiMenu.h" />

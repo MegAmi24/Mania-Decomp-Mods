@@ -171,16 +171,16 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="..\..\GameAPI\C\GameAPI\Game.c" />
+    <ClCompile Include="GameAPI\C\GameAPI\Game.c" />
     <ClCompile Include="dllmain.c" />
     <ClCompile Include="HUD.c" />
     <ClCompile Include="Player.c" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="..\..\GameAPI\C\GameAPI\Game.h" />
-    <ClInclude Include="..\..\GameAPI\C\GameAPI\GameLink.h" />
-    <ClInclude Include="..\..\GameAPI\C\GameAPI\GameObjects.h" />
-    <ClInclude Include="..\..\GameAPI\C\GameAPI\GameVariables.h" />
+    <ClInclude Include="GameAPI\C\GameAPI\Game.h" />
+    <ClInclude Include="GameAPI\C\GameAPI\GameLink.h" />
+    <ClInclude Include="GameAPI\C\GameAPI\GameObjects.h" />
+    <ClInclude Include="GameAPI\C\GameAPI\GameVariables.h" />
     <ClInclude Include="HUD.h" />
     <ClInclude Include="Player.h" />
   </ItemGroup>

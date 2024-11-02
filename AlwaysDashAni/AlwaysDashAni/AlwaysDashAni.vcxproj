@@ -173,15 +173,15 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="..\AlwaysDashAni\dllmain.c" />
-    <ClCompile Include="..\..\GameAPI\C\GameAPI\Game.c" />
+    <ClCompile Include="GameAPI\C\GameAPI\Game.c" />
     <ClCompile Include="Player.c" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\AlwaysDashAni\ModConfig.h" />
-    <ClInclude Include="..\..\GameAPI\C\GameAPI\Game.h" />
-    <ClInclude Include="..\..\GameAPI\C\GameAPI\GameLink.h" />
-    <ClInclude Include="..\..\GameAPI\C\GameAPI\GameObjects.h" />
-    <ClInclude Include="..\..\GameAPI\C\GameAPI\GameVariables.h" />
+    <ClInclude Include="GameAPI\C\GameAPI\Game.h" />
+    <ClInclude Include="GameAPI\C\GameAPI\GameLink.h" />
+    <ClInclude Include="GameAPI\C\GameAPI\GameObjects.h" />
+    <ClInclude Include="GameAPI\C\GameAPI\GameVariables.h" />
     <ClInclude Include="Player.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

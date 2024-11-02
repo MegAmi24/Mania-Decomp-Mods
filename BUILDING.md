@@ -1,5 +1,7 @@
 # Building RSDKv5(U) Decompilation Mods
-It should be noted that the building process for some mods may vary due to various factors, from folder structure to external dependencies. This guide is made for the mods in this repository, and while I tried my best to cover what to do in other scenarios, I can only do so much.
+
+> [!WARNING]
+> The building process for some mods may vary due to various factors, from folder structure to external dependencies. This guide is made for the mods in this repository, and while I tried my best to cover what to do in other scenarios, I can only do so much.
 
 ## Get the source code
 First, you will need to clone the repository containing the source code for the mod. To do this, you need to install Git, which you can find [here](https://git-scm.com/downloads).
@@ -7,12 +9,15 @@ First, you will need to clone the repository containing the source code for the 
 Clone the repo **recursively**, using:
 `git clone [link-to-github-repository] --recursive`
 
-If you've already cloned the repo, run this command inside of the repository:
-```git submodule update --remote --init --recursive```
+If you've already cloned the repo, run these commands inside of the repository to ensure the clone is up-to-date:
+```
+git pull
+git submodule update --remote --init --recursive
+```
 
 ## Set up GameAPI
 Mods require the [GameAPI](https://github.com/RSDKModding/RSDKv5-GameAPI) dependency to build.
-Some repositories (such as this one) include GameAPI as a submodule, which is downloaded along with the repository when cloned with the above command. Others don't include it, in which case you can simply clone it by running `git clone https://github.com/RSDKModding/RSDKv5-GameAPI --recursive` (if you plan to build multiple mods, using symlinks is recommended). When doing this, keep in mind that the location GameAPI needs to be in may differ from repo to repo; most will have it in the mod's root directory, but others may have it elsewhere. If you're getting errors with GameAPI not being found despite cloning the repo in the correct location, you may need to rename the `RSDKv5-GameAPI` folder to `GameAPI`.
+Some repositories (such as this one) include GameAPI as a submodule, which is downloaded along with the repository when cloned recursively. Others don't include it, in which case you can simply clone it by running `git clone https://github.com/RSDKModding/RSDKv5-GameAPI --recursive` (if you plan to build multiple mods, using symlinks is recommended). When doing this, keep in mind that the location GameAPI needs to be in may differ from repo to repo; most will have it in the mod's root directory, but others may have it elsewhere. If you're getting errors with GameAPI not being found despite cloning the repo in the correct location, you may need to rename the `RSDKv5-GameAPI` folder to `GameAPI`.
 
 ## Building
 
@@ -46,6 +51,4 @@ After [setting up the RSDKv5(U) decompilation for building](https://github.com/R
 
 It's important that `[mod-logicfile-name]` matches the name given for the `LogicFile` tag in the mod's `mod.ini` file.
 
-You will also need to symlink GameAPI. Simply enter the above appropriate command, with `[path-to-mod-root]` being the root GameAPI folder and `[mod-logicfile-name]` being `GameAPI`.
-
-After adding the symlinks, build the decompilation in Android Studio.
+After adding the symlinks, build the decompilation in Android Studio. Don't forget to add the `mod.ini` file and `Data` folder (if there is one) for the mod to a folder in your setup's `mods` folder!

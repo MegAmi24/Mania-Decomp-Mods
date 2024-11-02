@@ -171,7 +171,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="..\..\GameAPI\C\GameAPI\Game.c" />
+    <ClCompile Include="GameAPI\C\GameAPI\Game.c" />
     <ClCompile Include="BSS_Collectable.c" />
     <ClCompile Include="BSS_HUD.c" />
     <ClCompile Include="BSS_Message.c" />
@@ -179,10 +179,10 @@
     <ClCompile Include="dllmain.c" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="..\..\GameAPI\C\GameAPI\Game.h" />
-    <ClInclude Include="..\..\GameAPI\C\GameAPI\GameLink.h" />
-    <ClInclude Include="..\..\GameAPI\C\GameAPI\GameObjects.h" />
-    <ClInclude Include="..\..\GameAPI\C\GameAPI\GameVariables.h" />
+    <ClInclude Include="GameAPI\C\GameAPI\Game.h" />
+    <ClInclude Include="GameAPI\C\GameAPI\GameLink.h" />
+    <ClInclude Include="GameAPI\C\GameAPI\GameObjects.h" />
+    <ClInclude Include="GameAPI\C\GameAPI\GameVariables.h" />
     <ClInclude Include="BSS_Collectable.h" />
     <ClInclude Include="BSS_HUD.h" />
     <ClInclude Include="BSS_Message.h" />
