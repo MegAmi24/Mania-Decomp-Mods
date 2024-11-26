@@ -64,3 +64,6 @@
 [submodule "SuperCancel/GameAPI"]
 	path = SuperCancel/GameAPI
 	url = https://github.com/RSDKModding/RSDKv5-GameAPI
+[submodule "RetrySpecialStage/GameAPI"]
+	path = RetrySpecialStage/GameAPI
+	url = https://github.com/RSDKModding/RSDKv5-GameAPI
