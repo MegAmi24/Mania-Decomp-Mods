@@ -80,7 +80,7 @@ void UFO_Setup_RetryDLG_CB(void)
 void UFO_Setup_CancelDLG_CB(void)
 {
     Entity *storeEntity = SceneInfo->entity;
-    SceneInfo->entity = RSDK_GET_ENTITY_GEN(SLOT_UFO_SETUP);
+    SceneInfo->entity   = RSDK_GET_ENTITY_GEN(SLOT_UFO_SETUP);
     UFO_Setup_ShowClearScreen();
     SceneInfo->entity = storeEntity;
 }

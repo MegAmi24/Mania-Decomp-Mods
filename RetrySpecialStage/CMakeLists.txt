@@ -46,6 +46,7 @@ endif()
 add_library(RetrySpecialStage SHARED
     ${GAMEAPI}/C/GameAPI/Game.c
     ${MOD_NAME}/dllmain.c
+    ${MOD_NAME}/UFO_Setup.c
 )
 
 target_include_directories(RetrySpecialStage PRIVATE
