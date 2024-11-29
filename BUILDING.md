@@ -34,7 +34,7 @@ The following CMake arguments are available when compiling (only use these if yo
 - Use these by adding `-D[flag-name]=[value]` to the end of the `cmake -B build` command. For example, to build with `RETRO_REVISION` set to 2, add `-DRETRO_REVISION=2` to the command.
 
 #### GameAPI Mod flags
-- `RETRO_REVISION`: What RSDKv5 revision to compile for. Takes an integer, defaults to `3` (RSDKv5U).
+- `RETRO_REVISION`: What RSDKv5 revision to compile for. Set this to `2` to build for standalone v5. Takes an integer, defaults to `3` (RSDKv5U).
 - `RETRO_MOD_LOADER_VER`: Manually sets the mod loader version. Takes an integer, defaults to the current latest version.
 - `MANIA_FIRST_RELEASE`: Whether or not to build the first release of Sonic Mania. Takes a boolean, defaults to `off`.
 - `MANIA_PRE_PLUS`: Whether or not to build a pre-plus version of Sonic Mania. Takes a boolean, defaults to `off`.
