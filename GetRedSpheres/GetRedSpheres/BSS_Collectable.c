@@ -8,7 +8,7 @@ void BSS_Collectable_Create(void *data)
 {
     RSDK_THIS(BSS_Collectable);
 
-    Mod.Super(BSS_Collectable->classID, SUPER_CREATE, NULL);
+    Mod.Super(BSS_Collectable->classID, SUPER_CREATE, data);
 
     if ((config.alwaysGetRed || GET_CHARACTER_ID(1) == ID_KNUCKLES) && !SceneInfo->inEditor) {
         // Swap Blue and Red Sphere sprites

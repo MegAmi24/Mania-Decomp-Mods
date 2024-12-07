@@ -92,7 +92,7 @@ void HUD_Create(void *data)
         RSDK.SetSpriteAnimation(Mod_HUD->healthFrames, 1, &self->healthIconAnimator, true, 0);
     }
 
-    Mod.Super(HUD->classID, SUPER_CREATE, NULL);
+    Mod.Super(HUD->classID, SUPER_CREATE, data);
 }
 
 void HUD_StageLoad(void)

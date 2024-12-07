@@ -79,7 +79,7 @@ void Player_Create(void *data)
 {
     RSDK_THIS(Player);
 
-    Mod.Super(self->classID, SUPER_CREATE, NULL);
+    Mod.Super(self->classID, SUPER_CREATE, data);
 
     if (!SceneInfo->inEditor) {
         self->health = Mod_Player->health;
