@@ -16,7 +16,7 @@ void InitModAPI(void)
     Zone_IsZoneLastAct  = Mod.GetPublicFunction(NULL, "Zone_IsZoneLastAct");
 
     MOD_REGISTER_OBJECT_HOOK(Music);
-    MOD_REGISTER_OBJ_OVERLOAD(Music, NULL, NULL, NULL, NULL, NULL, Music_StageLoad, NULL, NULL, NULL);
+    MOD_REGISTER_OBJ_OVERLOAD(Music, NULL, NULL, Music_StaticUpdate, NULL, NULL, Music_StageLoad, NULL, NULL, NULL);
 }
 
 #if RETRO_USE_MOD_LOADER

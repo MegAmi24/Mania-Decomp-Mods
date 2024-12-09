@@ -76,6 +76,7 @@ typedef struct {
 extern ObjectMusic *Music;
 
 // Standard Entity Events
+void Music_StaticUpdate(void);
 void Music_StageLoad(void);
 
 // Extra Entity Functions
