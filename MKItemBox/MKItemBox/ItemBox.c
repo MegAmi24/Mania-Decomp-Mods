@@ -105,7 +105,7 @@ void ItemBox_Break_New(EntityItemBox *itemBox, EntityPlayer *player)
         ++session->items[RSDK.GetEntitySlot(player)];
     }
 
-    RSDK.CreateEntity(TYPE_BLANK, NULL, itemBox->position.x, itemBox->position.y);
+    RSDK.CreateEntity(TYPE_DEFAULTOBJECT, NULL, itemBox->position.x, itemBox->position.y);
 
     itemBox->storedEntity  = (Entity *)player;
     itemBox->alpha         = 0x100;
