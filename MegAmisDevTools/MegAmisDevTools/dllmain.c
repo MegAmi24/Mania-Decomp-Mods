@@ -18,6 +18,8 @@ void (*Player_ChangeCharacter)(EntityPlayer *player, int32 character);
 bool32 (*Player_TryTransform)(EntityPlayer *player, uint8 emeraldMasks);
 void (*Player_ApplyShield)(EntityPlayer *player);
 void (*Player_UpdatePhysicsState)(EntityPlayer *entity);
+StateMachine(Player_State_Death);
+StateMachine(Player_State_Drown);
 void (*Music_PlayJingle)(uint8 trackID);
 
 #if RETRO_USE_MOD_LOADER
@@ -95,6 +97,8 @@ void InitModAPI(void)
     Player_TryTransform       = Mod.GetPublicFunction(NULL, "Player_TryTransform");
     Player_ApplyShield        = Mod.GetPublicFunction(NULL, "Player_ApplyShield");
     Player_UpdatePhysicsState = Mod.GetPublicFunction(NULL, "Player_UpdatePhysicsState");
+    Player_State_Death        = Mod.GetPublicFunction(NULL, "Player_State_Death");
+    Player_State_Drown        = Mod.GetPublicFunction(NULL, "Player_State_Drown");
     Music_PlayJingle          = Mod.GetPublicFunction(NULL, "Music_PlayJingle");
 
     // Add Public Functions

@@ -376,6 +376,10 @@ extern void (*Player_ApplyShield)(EntityPlayer *player);
 // State helpers
 extern void (*Player_UpdatePhysicsState)(EntityPlayer *entity);
 
+// States
+extern StateMachine(Player_State_Death);
+extern StateMachine(Player_State_Drown);
+
 // Extra Entity Functions
 bool32 Player_Input_P1_Hook(bool32 skippedState);
 

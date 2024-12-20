@@ -23,6 +23,11 @@ bool32 Player_Input_P1_Hook(bool32 skippedState)
 {
     RSDK_THIS(Player);
 
+#if MANIA_USE_PLUS
+    if (self->stateInputReplay != StateMachine_None)
+        return false;
+#endif
+
     ObjectAnnouncer *Announcer = Mod.FindObject("Announcer");
     if (!Announcer)
         return false;
@@ -42,8 +47,7 @@ bool32 Player_Input_P1_Hook(bool32 skippedState)
             ObjectLottoMachine *LottoMachine = Mod.FindObject("LottoMachine");
             if (!LottoMachine || !((1 << self->playerID) & LottoMachine->activePlayers)) {
                 if (ControllerInfo[self->controllerID].keySelect.press) {
-                    if (self->state != Mod.GetPublicFunction(NULL, "Player_State_Death")
-                        && self->state != Mod.GetPublicFunction(NULL, "Player_State_Drown")) {
+                    if (self->state != Player_State_Death && self->state != Player_State_Drown) {
                         CREATE_ENTITY(MegAmiMenu, self, self->position.x, self->position.y);
                         ControllerInfo[self->controllerID].keySelect.press = false;
                     }
