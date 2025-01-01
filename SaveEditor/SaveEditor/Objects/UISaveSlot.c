@@ -180,6 +180,12 @@ void UISaveSlot_DrawMenu(void)
     }
 }
 
+void UISaveSlot_StageLoad(void)
+{
+    Mod.Super(UISaveSlot->classID, SUPER_STAGELOAD, NULL);
+    Mod_UISaveSlot->state = StateMachine_None;
+}
+
 void UISaveSlot_EditState_Main(void)
 {
     RSDK_THIS(UISaveSlot);

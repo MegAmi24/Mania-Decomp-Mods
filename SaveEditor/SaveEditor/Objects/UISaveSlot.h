@@ -215,6 +215,9 @@ typedef struct {
 extern ObjectUISaveSlot *UISaveSlot;
 extern ModObjectUISaveSlot *Mod_UISaveSlot;
 
+// Entity Events
+void UISaveSlot_StageLoad(void);
+
 // State Hooks
 bool32 UISaveSlot_State_Hook(bool32 skipped);
 

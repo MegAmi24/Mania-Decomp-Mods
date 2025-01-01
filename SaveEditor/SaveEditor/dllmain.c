@@ -94,7 +94,7 @@ void InitModAPI(void)
     Mod.RegisterStateHook(Mod.GetPublicFunction(NULL, "UISaveSlot_State_NewSave"), UISaveSlot_State_Hook, true);
 
     // Register Modded Objects
-    MOD_REGISTER_OBJ_OVERLOAD_MSV(UISaveSlot, Mod_UISaveSlot, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+    MOD_REGISTER_OBJ_OVERLOAD_MSV(UISaveSlot, Mod_UISaveSlot, NULL, NULL, NULL, NULL, NULL, UISaveSlot_StageLoad, NULL, NULL, NULL);
 
     // Register Mod Callbacks
     Mod.AddModCallback(MODCB_ONDRAW, UISaveSlot_ModCB_OnDraw);
