@@ -133,12 +133,6 @@ typedef struct {
 typedef struct {
     StateMachine(state);
     StateMachine(stateDraw);
-    void (*processButtonCBStore)(void);
-    bool32 (*backPressCBStore)(void);
-    StateMachine(yPressCBStore);
-#if MANIA_USE_PLUS
-    StateMachine(stateInputStore);
-#endif
     int8 mainSelection;
     int8 subSelection;
     int32 customValue;
@@ -151,14 +145,6 @@ typedef struct {
     Animator animator;
     Animator emeraldsAnimator;
     uint16 aniFrames;
-    bool32 anyUpPress;
-    bool32 anyDownPress;
-    bool32 anyLeftPress;
-    bool32 anyRightPress;
-    bool32 anyConfirmPress;
-    bool32 anyBackPress;
-    bool32 anyYPress;
-    bool32 anyXPress;
     uint8 touchUp;
     uint8 touchDown;
     uint8 touchLeft;
@@ -260,7 +246,6 @@ void UISaveSlot_Edit_ExitCB(bool32 success);
 void UISaveSlot_InitSaveCB(void);
 void UISaveSlot_Edit_ExitCB(void);
 #endif
-bool32 UISaveSlot_Edit_BackCB(void);
 
 // Draw States
 void UISaveSlot_ModCB_OnDraw(void *data);

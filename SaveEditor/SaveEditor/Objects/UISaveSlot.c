@@ -48,6 +48,10 @@ bool32 UISaveSlot_State_Hook(bool32 skipped)
         }
     }
     else {
+        ObjectUIControl *UIControl = Mod.FindObject("UIControl");
+        UIControl->lockInput       = true;
+        UIControl->inputLocked     = true;
+
         UISaveSlot_HandleTouchControls();
         TouchInfo->count = 0;
         StateMachine_Run(Mod_UISaveSlot->state);
@@ -126,16 +130,7 @@ void UISaveSlot_SetupEditor(void)
     Mod_UISaveSlot->customValue   = 0;
     Mod_UISaveSlot->valueDigits   = 0;
 
-    Mod_UISaveSlot->processButtonCBStore = self->processButtonCB;
-    self->processButtonCB                = StateMachine_None;
-    Mod_UISaveSlot->backPressCBStore     = control->backPressCB;
-    control->backPressCB                 = UISaveSlot_Edit_BackCB;
-    Mod_UISaveSlot->yPressCBStore        = control->yPressCB;
-    control->yPressCB                    = StateMachine_None;
-#if MANIA_USE_PLUS
-    Mod_UISaveSlot->stateInputStore = self->stateInput;
-    self->stateInput                = StateMachine_None;
-#endif
+    UIControl_ClearInputs(-1);
 
     Mod_UISaveSlot->touchUp      = false;
     Mod_UISaveSlot->touchDown    = false;
@@ -563,20 +558,9 @@ void UISaveSlot_Edit_ExitCB(bool32 success)
 void UISaveSlot_Edit_ExitCB(void)
 #endif
 {
-    RSDK_THIS(UISaveSlot);
-
     UIWaitSpinner_FinishWait();
-    EntityUIControl *control = (EntityUIControl *)self->parent;
-    self->processButtonCB    = Mod_UISaveSlot->processButtonCBStore;
-    control->backPressCB     = Mod_UISaveSlot->backPressCBStore;
-    control->yPressCB        = Mod_UISaveSlot->yPressCBStore;
-#if MANIA_USE_PLUS
-    self->stateInput = Mod_UISaveSlot->stateInputStore;
-#endif
     Mod_UISaveSlot->state = StateMachine_None;
 }
-
-bool32 UISaveSlot_Edit_BackCB(void) { return false; }
 
 void UISaveSlot_EditState_DrawChar(void)
 {

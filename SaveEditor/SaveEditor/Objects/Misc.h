@@ -202,4 +202,6 @@ extern EntityUIDialog *(*UIDialog_CreateDialogYesNo)(String *text, void (*callba
                                                      bool32 closeOnSelect_No);
 extern void (*UIDialog_CloseOnSel_HandleSelection)(EntityUIDialog *dialog, void (*callback)(void));
 
+extern void (*UIControl_ClearInputs)(uint8 buttonID);
+
 #endif

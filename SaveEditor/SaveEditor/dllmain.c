@@ -24,6 +24,7 @@ EntityUIDialog *(*UIDialog_CreateDialogOk)(String *text, void (*callback)(void),
 EntityUIDialog *(*UIDialog_CreateDialogYesNo)(String *text, void (*callbackYes)(void), void (*callbackNo)(void), bool32 closeOnSelect_Yes,
                                               bool32 closeOnSelect_No);
 void (*UIDialog_CloseOnSel_HandleSelection)(EntityUIDialog *dialog, void (*callback)(void));
+void (*UIControl_ClearInputs)(uint8 buttonID);
 
 #if RETRO_USE_MOD_LOADER
 DLLExport bool32 LinkModLogic(EngineInfo *info, const char *id);
@@ -49,6 +50,7 @@ void InitModAPI(void)
     UIDialog_CreateDialogOk             = Mod.GetPublicFunction(NULL, "UIDialog_CreateDialogOk");
     UIDialog_CreateDialogYesNo          = Mod.GetPublicFunction(NULL, "UIDialog_CreateDialogYesNo");
     UIDialog_CloseOnSel_HandleSelection = Mod.GetPublicFunction(NULL, "UIDialog_CloseOnSel_HandleSelection");
+    UIControl_ClearInputs               = Mod.GetPublicFunction(NULL, "UIControl_ClearInputs");
 
     // Add Public Functions
     ADD_PUBLIC_FUNC(UISaveSlot_SetupEditor);
@@ -73,7 +75,6 @@ void InitModAPI(void)
     ADD_PUBLIC_FUNC(UISaveSlot_CloseEditor_CB);
     ADD_PUBLIC_FUNC(UISaveSlot_InitSaveCB);
     ADD_PUBLIC_FUNC(UISaveSlot_Edit_ExitCB);
-    ADD_PUBLIC_FUNC(UISaveSlot_Edit_BackCB);
 
     ADD_PUBLIC_FUNC(UISaveSlot_DrawMenu);
 
