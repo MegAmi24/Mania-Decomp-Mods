@@ -554,8 +554,8 @@ void UISaveSlot_InitSaveCB(void)
 void UISaveSlot_CloseEditor_CB(void)
 {
     UIWaitSpinner_StartWait();
-    SaveGame_SaveFile(UISaveSlot_Edit_ExitCB);
     Mod_UISaveSlot->state = UISaveSlot_EditState_Wait;
+    SaveGame_SaveFile(UISaveSlot_Edit_ExitCB);
 }
 
 #if MANIA_USE_PLUS
