@@ -12,16 +12,17 @@ void DimTimerCustomizerHook(void *data)
 {
     UNUSED(data);
 
-    ObjectReplayRecorder *recorder = Mod.FindObject("ReplayRecorder");
-    EntityReplayRecorder *manager  = recorder->playbackManager;
-
-    if (recorder && manager && manager->active == ACTIVE_NORMAL) // If a replay is playing
-        RSDK.SetVideoSetting(VIDEOSETTING_DIMTIMER, config.TAttackDimTimer * RSDK.GetVideoSetting(VIDEOSETTING_REFRESHRATE));
-    else
-        RSDK.SetVideoSetting(VIDEOSETTING_DIMTIMER, config.NormalDimTimer * RSDK.GetVideoSetting(VIDEOSETTING_REFRESHRATE));
-
     if (!config.EnableDim)
         RSDK.SetVideoSetting(VIDEOSETTING_DIMTIMER, 9999999999);
+    else {
+        ObjectReplayRecorder *recorder = Mod.FindObject("ReplayRecorder");
+        EntityReplayRecorder *manager  = recorder->playbackManager;
+
+        if (recorder && manager && manager->active == ACTIVE_NORMAL) // If a replay is playing
+            RSDK.SetVideoSetting(VIDEOSETTING_DIMTIMER, config.TAttackDimTimer * RSDK.GetVideoSetting(VIDEOSETTING_REFRESHRATE));
+        else
+            RSDK.SetVideoSetting(VIDEOSETTING_DIMTIMER, config.NormalDimTimer * RSDK.GetVideoSetting(VIDEOSETTING_REFRESHRATE));
+    }
 }
 
 void InitModAPI(void)
