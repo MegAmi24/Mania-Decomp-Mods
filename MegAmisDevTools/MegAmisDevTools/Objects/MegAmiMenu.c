@@ -41,7 +41,7 @@ void MegAmiMenu_Draw(void)
     RSDK_THIS(MegAmiMenu);
 
     if (RSDK.GetEntitySlot(self->parent) == RSDK.GetEntitySlot(RSDK_GET_ENTITY(SceneInfo->currentScreenID, Player))) {
-        RSDK.DrawRect(MAINBOX_XPOS, BOX_YPOS, self->mainBoxWidth, BOX_HEIGHT(MEGAMIMENU_COUNT), BOX_COLOR, 0xFF, INK_NONE, true);
+        RSDK.DrawRect(MAINBOX_XPOS, BOX_YPOS, self->mainBoxWidth, BOX_HEIGHT(self->menuCount + 1), BOX_COLOR, 0xFF, INK_NONE, true);
 
         Vector2 drawPos;
 
@@ -57,12 +57,12 @@ void MegAmiMenu_Draw(void)
         drawPos.y = TO_FIXED(BOX_YPOS + 9);
 
         // Draw Option Text
-        for (uint8 s = MENUSTRING_P1CHAR; s <= MENUSTRING_EXIT; s++) {
-            DrawOptionText(&self->strings[s]);
+        for (uint8 s = 0; s <= self->menuCount; s++) {
+            DrawOptionText(&self->menuStrings[s]);
         }
 
         if (self->stateDraw) {
-            RSDK.DrawRect(MAINBOX_XPOS, BOX_YPOS, self->mainBoxWidth, BOX_HEIGHT(MEGAMIMENU_COUNT), 0x000000, 0x80, INK_ALPHA, true);
+            RSDK.DrawRect(MAINBOX_XPOS, BOX_YPOS, self->mainBoxWidth, BOX_HEIGHT(self->menuCount + 1), 0x000000, 0x80, INK_ALPHA, true);
             StateMachine_Run(self->stateDraw);
         }
     }
@@ -86,39 +86,30 @@ void MegAmiMenu_Create(void *data)
         self->parent         = (Entity *)data;
         EntityPlayer *player = (EntityPlayer *)self->parent;
 
-        self->mainBoxWidth = 19;
+        self->menuCount = -1;
 
-        // Initialize Strings
-        RSDK.InitString(&self->strings[MENUSTRING_P1CHAR], "CHANGE CHARACTER", false);
-        RSDK.InitString(&self->strings[MENUSTRING_P2CHAR], "CHANGE SIDEKICK", false);
-        RSDK.InitString(&self->strings[MENUSTRING_SHIELD], "CHANGE SHIELD", false);
-        RSDK.InitString(&self->strings[MENUSTRING_SHOES], "GIVE SPEED SHOES", false);
-        RSDK.InitString(&self->strings[MENUSTRING_HYPERRING], !player->hyperRing ? "GIVE HYPER RING" : "REMOVE HYPER RING", false);
-        RSDK.InitString(&self->strings[MENUSTRING_SETRINGS], "SET RING COUNT", false);
-        RSDK.InitString(&self->strings[MENUSTRING_SUPER], player->superState != SUPERSTATE_SUPER ? "TURN SUPER" : "REVERT SUPER", false);
-        RSDK.InitString(&self->strings[MENUSTRING_INVINCIBILITY],
-                        !MegAmiMenu->playerInv[player->playerID] ? "ENABLE INVINCIBILITY" : "DISABLE INVINCIBILITY", false);
-        RSDK.InitString(&self->strings[MENUSTRING_EXIT], "EXIT", false);
-        RSDK.InitString(&self->strings[MENUSTRING_SONIC], "SONIC", false);
-        RSDK.InitString(&self->strings[MENUSTRING_TAILS], "TAILS", false);
-        RSDK.InitString(&self->strings[MENUSTRING_KNUCKLES], "KNUCKLES", false);
-#if MANIA_USE_PLUS
-        RSDK.InitString(&self->strings[MENUSTRING_MIGHTY], "MIGHTY", false);
-        RSDK.InitString(&self->strings[MENUSTRING_RAY], "RAY", false);
-#endif
-        RSDK.InitString(&self->strings[MENUSTRING_NONE], "NONE", false);
-        RSDK.InitString(&self->strings[MENUSTRING_BLUE], "BLUE SHIELD", false);
-        RSDK.InitString(&self->strings[MENUSTRING_BUBBLE], "BUBBLE SHIELD", false);
-        RSDK.InitString(&self->strings[MENUSTRING_FIRE], "FIRE SHIELD", false);
-        RSDK.InitString(&self->strings[MENUSTRING_LIGHTNING], "LIGHTNING SHIELD", false);
+        // Initialize Options
+        AddMenuOption(MEGAMIMENU_P1CHAR, "CHANGE CHARACTER");
+        if (!player->sidekick && globals->gameMode != MODE_COMPETITION) {
+            AddMenuOption(MEGAMIMENU_P2CHAR, "CHANGE SIDEKICK");
+        }
+        AddMenuOption(MEGAMIMENU_SHIELD, "CHANGE SHIELD");
+        AddMenuOption(MEGAMIMENU_SHOES, "GIVE SPEED SHOES");
+        AddMenuOption(MEGAMIMENU_HYPERRING, !player->hyperRing ? "GIVE HYPER RING" : "REMOVE HYPER RING");
+        AddMenuOption(MEGAMIMENU_SETRINGS, "SET RING COUNT");
+        AddMenuOption(MEGAMIMENU_SUPER, player->superState != SUPERSTATE_SUPER ? "TURN SUPER" : "REVERT SUPER");
+        AddMenuOption(MEGAMIMENU_INVINCIBILITY, !MegAmiMenu->playerInv[player->playerID] ? "ENABLE INVINCIBILITY" : "DISABLE INVINCIBILITY");
+        AddMenuOption(MEGAMIMENU_EXIT, "EXIT");
 
-        for (uint8 s = 0; s < MENUSTRING_COUNT; s++) RSDK.SetSpriteString(UIWidgets->fontFrames, 0, &self->strings[s]);
+        for (uint8 s = 0; s <= self->menuCount; s++) RSDK.SetSpriteString(UIWidgets->fontFrames, 0, &self->menuStrings[s]);
 
-        for (uint8 s = MENUSTRING_P1CHAR; s < MEGAMIMENU_COUNT; s++) {
-            int32 stringWidth = RSDK.GetStringWidth(UIWidgets->fontFrames, 0, &self->strings[s], 0, &self->strings[s].length, 0) + 19;
+        self->mainBoxWidth = 0;
+        for (uint8 s = 0; s <= self->menuCount; s++) {
+            int32 stringWidth = RSDK.GetStringWidth(UIWidgets->fontFrames, 0, &self->menuStrings[s], 0, &self->menuStrings[s].length, 0);
             if (stringWidth > self->mainBoxWidth)
                 self->mainBoxWidth = stringWidth;
         }
+        self->mainBoxWidth += 19;
 
         self->state     = MegAmiMenu_State_Main;
         self->stateDraw = StateMachine_None;
@@ -133,12 +124,35 @@ void MegAmiMenu_Create(void *data)
         RSDK.SetEngineState(ENGINESTATE_FROZEN);
     }
     else {
-        RSDK.InitString(&self->strings[MENUSTRING_P1CHAR], "MEGAMI MENU", false);
-        RSDK.SetSpriteString(UIWidgets->fontFrames, 0, &self->strings[MENUSTRING_P1CHAR]);
+        RSDK.InitString(&self->menuStrings[0], "MEGAMI MENU", false);
+        RSDK.SetSpriteString(UIWidgets->fontFrames, 0, &self->menuStrings[0]);
     }
 }
 
-void MegAmiMenu_StageLoad(void) {}
+void MegAmiMenu_StageLoad(void)
+{
+    ObjectUIWidgets *UIWidgets = Mod.FindObject("UIWidgets");
+
+    // Initialize Character Strings
+    RSDK.InitString(&MegAmiMenu->charStrings[CHARACTER_NONE], "NONE", false);
+    RSDK.InitString(&MegAmiMenu->charStrings[CHARACTER_SONIC], "SONIC", false);
+    RSDK.InitString(&MegAmiMenu->charStrings[CHARACTER_TAILS], "TAILS", false);
+    RSDK.InitString(&MegAmiMenu->charStrings[CHARACTER_KNUCKLES], "KNUCKLES", false);
+#if MANIA_USE_PLUS
+    RSDK.InitString(&MegAmiMenu->charStrings[CHARACTER_MIGHTY], "MIGHTY", false);
+    RSDK.InitString(&MegAmiMenu->charStrings[CHARACTER_RAY], "RAY", false);
+#endif
+
+    // Initialize Shield Strings
+    RSDK.InitString(&MegAmiMenu->shieldStrings[SHIELD_NONE], "NONE", false);
+    RSDK.InitString(&MegAmiMenu->shieldStrings[SHIELD_BLUE], "BLUE", false);
+    RSDK.InitString(&MegAmiMenu->shieldStrings[SHIELD_BUBBLE], "BUBBLE", false);
+    RSDK.InitString(&MegAmiMenu->shieldStrings[SHIELD_FIRE], "FIRE", false);
+    RSDK.InitString(&MegAmiMenu->shieldStrings[SHIELD_LIGHTNING], "LIGHTNING", false);
+
+    for (uint8 c = 0; c < CHARACTER_COUNT; c++) RSDK.SetSpriteString(UIWidgets->fontFrames, 0, &MegAmiMenu->charStrings[c]);
+    for (uint8 s = 0; s < SHIELD_COUNT; s++) RSDK.SetSpriteString(UIWidgets->fontFrames, 0, &MegAmiMenu->shieldStrings[s]);
+}
 
 void MegAmiMenu_State_Main(void)
 {
@@ -146,10 +160,10 @@ void MegAmiMenu_State_Main(void)
 
     EntityPlayer *player = (EntityPlayer *)self->parent;
 
-    MegAmiMenu_HandleUpDown(ControllerInfo[player->controllerID], MEGAMIMENU_EXIT);
+    MegAmiMenu_HandleUpDown(ControllerInfo[player->controllerID], self->menuCount);
 
     if (confirmPress) {
-        switch (self->mainSelection) {
+        switch (selectedOption) {
             default: break;
             case MEGAMIMENU_P1CHAR:
                 self->state        = MegAmiMenu_State_P1Char;
@@ -157,15 +171,9 @@ void MegAmiMenu_State_Main(void)
                 self->subSelection = 0;
                 break;
             case MEGAMIMENU_P2CHAR:
-                if (!player->sidekick && globals->gameMode != MODE_COMPETITION) {
-                    self->state        = MegAmiMenu_State_P2Char;
-                    self->stateDraw    = MegAmiMenu_State_DrawChar;
-                    self->subSelection = 0;
-                }
-                else {
-                    ObjectUIWidgets *UIWidgets = Mod.FindObject("UIWidgets");
-                    RSDK.PlaySfx(UIWidgets->sfxFail, false, 255);
-                }
+                self->state        = MegAmiMenu_State_P2Char;
+                self->stateDraw    = MegAmiMenu_State_DrawChar;
+                self->subSelection = 0;
                 break;
             case MEGAMIMENU_SHIELD:
                 self->state        = MegAmiMenu_State_Shield;
@@ -404,17 +412,15 @@ void MegAmiMenu_State_DrawChar(void)
 #endif
 
     // Set Box Width
-    int32 subBoxWidth =
-        self->mainSelection == MEGAMIMENU_P2CHAR
-            ? (RSDK.GetStringWidth(UIWidgets->fontFrames, 0, &self->strings[MENUSTRING_NONE], 0, &self->strings[MENUSTRING_NONE].length, 0) + 19)
-            : 19;
-    for (uint8 s = MENUSTRING_SONIC; s < MENUSTRING_SONIC + characterCount; s++) {
-        int32 stringWidth = RSDK.GetStringWidth(UIWidgets->fontFrames, 0, &self->strings[s], 0, &self->strings[s].length, 0) + 19;
+    int32 subBoxWidth = 0;
+    for (uint8 s = CHARACTER_NONE + (selectedOption != MEGAMIMENU_P2CHAR); s <= characterCount; s++) {
+        int32 stringWidth = RSDK.GetStringWidth(UIWidgets->fontFrames, 0, &MegAmiMenu->charStrings[s], 0, &MegAmiMenu->charStrings[s].length, 0);
         if (stringWidth > subBoxWidth)
             subBoxWidth = stringWidth;
     }
+    subBoxWidth += 19;
 
-    RSDK.DrawRect(SUBBOX_XPOS, BOX_YPOS, subBoxWidth, BOX_HEIGHT(characterCount + (self->mainSelection == MEGAMIMENU_P2CHAR)), BOX_COLOR, 0xFF,
+    RSDK.DrawRect(SUBBOX_XPOS, BOX_YPOS, subBoxWidth, BOX_HEIGHT(characterCount + (selectedOption == MEGAMIMENU_P2CHAR)), BOX_COLOR, 0xFF,
                   INK_NONE, true);
 
     Vector2 drawPos;
@@ -431,11 +437,8 @@ void MegAmiMenu_State_DrawChar(void)
     drawPos.y = TO_FIXED(BOX_YPOS + 9);
 
     // Draw Option Text
-    if (self->mainSelection == MEGAMIMENU_P2CHAR) {
-        DrawOptionText(&self->strings[MENUSTRING_NONE]);
-    }
-    for (uint8 s = MENUSTRING_SONIC; s < MENUSTRING_SONIC + characterCount; s++) {
-        DrawOptionText(&self->strings[s]);
+    for (uint8 s = CHARACTER_NONE + (selectedOption != MEGAMIMENU_P2CHAR); s <= characterCount; s++) {
+        DrawOptionText(&MegAmiMenu->charStrings[s]);
     }
 }
 
@@ -446,12 +449,14 @@ void MegAmiMenu_State_DrawShield(void)
     ObjectUIWidgets *UIWidgets = Mod.FindObject("UIWidgets");
 
     // Set Box Width
-    int32 subBoxWidth = 19;
-    for (uint8 s = MENUSTRING_BLUE; s <= MENUSTRING_LIGHTNING; s++) {
-        int32 stringWidth = RSDK.GetStringWidth(UIWidgets->fontFrames, 0, &self->strings[s], 0, &self->strings[s].length, 0) + 19;
+    int32 subBoxWidth = 0;
+    for (uint8 s = SHIELD_NONE; s < SHIELD_COUNT; s++) {
+        int32 stringWidth =
+            RSDK.GetStringWidth(UIWidgets->fontFrames, 0, &MegAmiMenu->shieldStrings[s], 0, &MegAmiMenu->shieldStrings[s].length, 0);
         if (stringWidth > subBoxWidth)
             subBoxWidth = stringWidth;
     }
+    subBoxWidth += 19;
 
     RSDK.DrawRect(SUBBOX_XPOS, BOX_YPOS, subBoxWidth, BOX_HEIGHT(5), BOX_COLOR, 0xFF, INK_NONE, true);
 
@@ -469,9 +474,8 @@ void MegAmiMenu_State_DrawShield(void)
     drawPos.y = TO_FIXED(BOX_YPOS + 9);
 
     // Draw Option Text
-    DrawOptionText(&self->strings[MENUSTRING_NONE]);
-    for (uint8 s = MENUSTRING_BLUE; s <= MENUSTRING_LIGHTNING; s++) {
-        DrawOptionText(&self->strings[s]);
+    for (uint8 s = SHIELD_NONE; s < SHIELD_COUNT; s++) {
+        DrawOptionText(&MegAmiMenu->shieldStrings[s]);
     }
 }
 
@@ -692,8 +696,7 @@ void MegAmiMenu_EditorDraw(void)
 {
     RSDK_THIS(MegAmiMenu);
     RSDK.DrawRect(self->position.x - TO_FIXED(45), self->position.y - TO_FIXED(9), TO_FIXED(90), TO_FIXED(19), BOX_COLOR, 0xFF, INK_NONE, false);
-    RSDK.DrawText(&self->animator, &self->position, &self->strings[MENUSTRING_P1CHAR], 0, self->strings[MENUSTRING_P1CHAR].length, ALIGN_CENTER, 0, 0,
-                  0, false);
+    RSDK.DrawText(&self->animator, &self->position, &self->menuStrings[0], 0, self->menuStrings[0].length, ALIGN_CENTER, 0, 0, 0, false);
 }
 
 void MegAmiMenu_EditorLoad(void) {}

@@ -12,6 +12,7 @@ typedef enum {
     SHIELD_BUBBLE,
     SHIELD_FIRE,
     SHIELD_LIGHTNING,
+    SHIELD_COUNT,
 } ShieldTypes;
 
 typedef enum {

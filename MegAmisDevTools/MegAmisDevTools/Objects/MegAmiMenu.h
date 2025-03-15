@@ -18,6 +18,13 @@
 #define BOX_HEIGHT(x)  ((x) * OPTION_SPACING + 5) // x = Option Count
 #define BOX_COLOR      (0xFF0000)
 
+#define selectedOption (self->menuOptions[self->mainSelection])
+
+#define AddMenuOption(option, string)                                                                                                                \
+    self->menuCount++;                                                                                                                               \
+    self->menuOptions[self->menuCount] = option;                                                                                                     \
+    RSDK.InitString(&self->menuStrings[self->menuCount], string, false);
+
 #define DrawOptionText(string)                                                                                                                       \
     RSDK.DrawText(&self->animator, &drawPos, string, 0, string.length, ALIGN_LEFT, 0, 0, 0, true);                                                   \
     drawPos.y += TO_FIXED(OPTION_SPACING);
@@ -43,35 +50,24 @@ typedef enum {
 } MegAmiMenuOptions;
 
 typedef enum {
-    MENUSTRING_P1CHAR,
-    MENUSTRING_P2CHAR,
-    MENUSTRING_SHIELD,
-    MENUSTRING_SHOES,
-    MENUSTRING_HYPERRING,
-    MENUSTRING_SETRINGS,
-    MENUSTRING_SUPER,
-    MENUSTRING_INVINCIBILITY,
-    MENUSTRING_EXIT,
-    MENUSTRING_SONIC,
-    MENUSTRING_TAILS,
-    MENUSTRING_KNUCKLES,
+    CHARACTER_NONE,
+    CHARACTER_SONIC,
+    CHARACTER_TAILS,
+    CHARACTER_KNUCKLES,
 #if MANIA_USE_PLUS
-    MENUSTRING_MIGHTY,
-    MENUSTRING_RAY,
+    CHARACTER_MIGHTY,
+    CHARACTER_RAY,
 #endif
-    MENUSTRING_NONE,
-    MENUSTRING_BLUE,
-    MENUSTRING_BUBBLE,
-    MENUSTRING_FIRE,
-    MENUSTRING_LIGHTNING,
-    MENUSTRING_COUNT,
-} MegAmiMenuStrings;
+    CHARACTER_COUNT,
+} CharacterStrings;
 
 // Object Class
 typedef struct {
     RSDK_OBJECT
     bool32 playerInv[PLAYER_COUNT];
     uint16 aniFrames;
+    String charStrings[CHARACTER_COUNT];
+    String shieldStrings[SHIELD_COUNT];
     uint8 touchUp;
     uint8 touchDown;
     uint8 touchLeft;
@@ -90,7 +86,9 @@ typedef struct {
     int32 customValue;
     uint8 valueDigits;
     Entity *parent;
-    String strings[MENUSTRING_COUNT];
+    int8 menuCount;
+    int8 menuOptions[MEGAMIMENU_COUNT];
+    String menuStrings[MEGAMIMENU_COUNT];
     int32 mainBoxWidth;
     Animator animator;
 } EntityMegAmiMenu;
