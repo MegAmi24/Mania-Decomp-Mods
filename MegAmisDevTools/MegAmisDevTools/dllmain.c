@@ -21,6 +21,7 @@ void (*Player_UpdatePhysicsState)(EntityPlayer *entity);
 StateMachine(Player_State_Death);
 StateMachine(Player_State_Drown);
 void (*Music_PlayJingle)(uint8 trackID);
+int32 (*HUD_CharacterIndexFromID)(int32 characterID);
 
 #if RETRO_USE_MOD_LOADER
 DLLExport bool32 LinkModLogic(EngineInfo *info, const char *id);
@@ -100,11 +101,15 @@ void InitModAPI(void)
     Player_State_Death        = Mod.GetPublicFunction(NULL, "Player_State_Death");
     Player_State_Drown        = Mod.GetPublicFunction(NULL, "Player_State_Drown");
     Music_PlayJingle          = Mod.GetPublicFunction(NULL, "Music_PlayJingle");
+    HUD_CharacterIndexFromID  = Mod.GetPublicFunction(NULL, "HUD_CharacterIndexFromID");
 
     // Add Public Functions
     ADD_PUBLIC_FUNC(MegAmiMenu_State_Main);
     ADD_PUBLIC_FUNC(MegAmiMenu_State_P1Char);
     ADD_PUBLIC_FUNC(MegAmiMenu_State_P2Char);
+#if MANIA_USE_PLUS
+    ADD_PUBLIC_FUNC(MegAmiMenu_State_EncoreStock);
+#endif
     ADD_PUBLIC_FUNC(MegAmiMenu_State_Shield);
     ADD_PUBLIC_FUNC(MegAmiMenu_State_SetRings);
 

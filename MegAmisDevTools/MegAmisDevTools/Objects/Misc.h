@@ -232,5 +232,6 @@ typedef struct {
 } EntityCamera;
 
 extern void (*Music_PlayJingle)(uint8 trackID);
+extern int32 (*HUD_CharacterIndexFromID)(int32 characterID);
 
 #endif

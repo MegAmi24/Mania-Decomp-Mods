@@ -93,10 +93,17 @@ void MegAmiMenu_Create(void *data)
         if (!player->sidekick && globals->gameMode != MODE_COMPETITION) {
             AddMenuOption(MEGAMIMENU_P2CHAR, "CHANGE SIDEKICK");
         }
+#if MANIA_USE_PLUS
+        if (globals->gameMode == MODE_ENCORE) {
+            AddMenuOption(MEGAMIMENU_STOCK1, "CHANGE STOCK 1");
+            AddMenuOption(MEGAMIMENU_STOCK2, "CHANGE STOCK 2");
+            AddMenuOption(MEGAMIMENU_STOCK3, "CHANGE STOCK 3");
+        }
+#endif
         AddMenuOption(MEGAMIMENU_SHIELD, "CHANGE SHIELD");
         AddMenuOption(MEGAMIMENU_SHOES, "GIVE SPEED SHOES");
-        AddMenuOption(MEGAMIMENU_HYPERRING, !player->hyperRing ? "GIVE HYPER RING" : "REMOVE HYPER RING");
         AddMenuOption(MEGAMIMENU_SETRINGS, "SET RING COUNT");
+        AddMenuOption(MEGAMIMENU_HYPERRING, !player->hyperRing ? "GIVE HYPER RING" : "REMOVE HYPER RING");
         AddMenuOption(MEGAMIMENU_SUPER, player->superState != SUPERSTATE_SUPER ? "TURN SUPER" : "REVERT SUPER");
         AddMenuOption(MEGAMIMENU_INVINCIBILITY, !MegAmiMenu->playerInv[player->playerID] ? "ENABLE INVINCIBILITY" : "DISABLE INVINCIBILITY");
         AddMenuOption(MEGAMIMENU_EXIT, "EXIT");
@@ -175,6 +182,15 @@ void MegAmiMenu_State_Main(void)
                 self->stateDraw    = MegAmiMenu_State_DrawChar;
                 self->subSelection = 0;
                 break;
+#if MANIA_USE_PLUS
+            case MEGAMIMENU_STOCK1:
+            case MEGAMIMENU_STOCK2:
+            case MEGAMIMENU_STOCK3:
+                self->state        = MegAmiMenu_State_EncoreStock;
+                self->stateDraw    = MegAmiMenu_State_DrawChar;
+                self->subSelection = 0;
+                break;
+#endif
             case MEGAMIMENU_SHIELD:
                 self->state        = MegAmiMenu_State_Shield;
                 self->stateDraw    = MegAmiMenu_State_DrawShield;
@@ -191,16 +207,16 @@ void MegAmiMenu_State_Main(void)
                 }
                 destroyEntity(self);
                 break;
-            case MEGAMIMENU_HYPERRING:
-                player->hyperRing ^= true;
-                destroyEntity(self);
-                break;
             case MEGAMIMENU_SETRINGS:
                 self->state        = MegAmiMenu_State_SetRings;
                 self->stateDraw    = MegAmiMenu_State_DrawSetValue;
                 self->subSelection = 0;
                 self->customValue  = player->rings;
                 self->valueDigits  = 3;
+                break;
+            case MEGAMIMENU_HYPERRING:
+                player->hyperRing ^= true;
+                destroyEntity(self);
                 break;
             case MEGAMIMENU_SUPER:
                 if (player->superState == SUPERSTATE_NONE) {
@@ -238,6 +254,11 @@ void MegAmiMenu_State_P1Char(void)
 
     if (confirmPress) {
         Player_ChangeCharacter(player, 1 << self->subSelection);
+#if MANIA_USE_PLUS
+        if (globals->gameMode == MODE_ENCORE) {
+            SetCharacterFlags();
+        }
+#endif
         destroyEntity(self);
     }
     else if (backPress) {
@@ -347,6 +368,11 @@ void MegAmiMenu_State_P2Char(void)
             Player->playerCount = RSDK.GetEntityCount(Player->classID, false);
 #endif
         }
+#if MANIA_USE_PLUS
+        if (globals->gameMode == MODE_ENCORE) {
+            SetCharacterFlags();
+        }
+#endif
         destroyEntity(self);
     }
     else if (backPress) {
@@ -354,6 +380,34 @@ void MegAmiMenu_State_P2Char(void)
         self->stateDraw = StateMachine_None;
     }
 }
+
+#if MANIA_USE_PLUS
+void MegAmiMenu_State_EncoreStock(void)
+{
+    RSDK_THIS(MegAmiMenu);
+
+    EntityPlayer *player = (EntityPlayer *)self->parent;
+
+    int8 optionCount = 3;
+    if (API.CheckDLC(DLC_PLUS))
+        optionCount += 2;
+
+    MegAmiMenu_HandleUpDown(ControllerInfo[player->controllerID], optionCount);
+
+    if (confirmPress) {
+        int8 stock = selectedOption - MEGAMIMENU_STOCK1;
+        globals->stock &= ~(255 << (8 * stock));
+        if (self->subSelection)
+            globals->stock |= (1 << (self->subSelection - 1)) << (8 * stock);
+        SetCharacterFlags();
+        destroyEntity(self);
+    }
+    else if (backPress) {
+        self->state     = MegAmiMenu_State_Main;
+        self->stateDraw = StateMachine_None;
+    }
+}
+#endif
 
 void MegAmiMenu_State_Shield(void)
 {
@@ -411,16 +465,22 @@ void MegAmiMenu_State_DrawChar(void)
         characterCount += 2;
 #endif
 
+#if MANIA_USE_PLUS
+    bool32 showNone = self->state == MegAmiMenu_State_P2Char || self->state == MegAmiMenu_State_EncoreStock;
+#else
+    bool32 showNone = self->state == MegAmiMenu_State_P2Char;
+#endif
+
     // Set Box Width
     int32 subBoxWidth = 0;
-    for (uint8 s = CHARACTER_NONE + (selectedOption != MEGAMIMENU_P2CHAR); s <= characterCount; s++) {
+    for (uint8 s = CHARACTER_NONE + !showNone; s <= characterCount; s++) {
         int32 stringWidth = RSDK.GetStringWidth(UIWidgets->fontFrames, 0, &MegAmiMenu->charStrings[s], 0, &MegAmiMenu->charStrings[s].length, 0);
         if (stringWidth > subBoxWidth)
             subBoxWidth = stringWidth;
     }
     subBoxWidth += 19;
 
-    RSDK.DrawRect(SUBBOX_XPOS, BOX_YPOS, subBoxWidth, BOX_HEIGHT(characterCount + (selectedOption == MEGAMIMENU_P2CHAR)), BOX_COLOR, 0xFF,
+    RSDK.DrawRect(SUBBOX_XPOS, BOX_YPOS, subBoxWidth, BOX_HEIGHT(characterCount + showNone), BOX_COLOR, 0xFF,
                   INK_NONE, true);
 
     Vector2 drawPos;
@@ -437,7 +497,7 @@ void MegAmiMenu_State_DrawChar(void)
     drawPos.y = TO_FIXED(BOX_YPOS + 9);
 
     // Draw Option Text
-    for (uint8 s = CHARACTER_NONE + (selectedOption != MEGAMIMENU_P2CHAR); s <= characterCount; s++) {
+    for (uint8 s = CHARACTER_NONE + !showNone; s <= characterCount; s++) {
         DrawOptionText(&MegAmiMenu->charStrings[s]);
     }
 }

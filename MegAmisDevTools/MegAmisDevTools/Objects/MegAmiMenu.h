@@ -25,6 +25,21 @@
     self->menuOptions[self->menuCount] = option;                                                                                                     \
     RSDK.InitString(&self->menuStrings[self->menuCount], string, false);
 
+#if MANIA_USE_PLUS
+#define SetCharacterFlags()                                                                                                                          \
+    globals->characterFlags = 0;                                                                                                                     \
+    if (GET_CHARACTER_ID(1))                                                                                                                         \
+        globals->characterFlags |= 1 << HUD_CharacterIndexFromID(GET_CHARACTER_ID(1));                                                               \
+    if (GET_CHARACTER_ID(2))                                                                                                                         \
+        globals->characterFlags |= 1 << HUD_CharacterIndexFromID(GET_CHARACTER_ID(2));                                                               \
+    if (GET_STOCK_ID(1))                                                                                                                             \
+        globals->characterFlags |= 1 << HUD_CharacterIndexFromID(GET_STOCK_ID(1));                                                                   \
+    if (GET_STOCK_ID(2))                                                                                                                             \
+        globals->characterFlags |= 1 << HUD_CharacterIndexFromID(GET_STOCK_ID(2));                                                                   \
+    if (GET_STOCK_ID(3))                                                                                                                             \
+        globals->characterFlags |= 1 << HUD_CharacterIndexFromID(GET_STOCK_ID(3));
+#endif
+
 #define DrawOptionText(string)                                                                                                                       \
     RSDK.DrawText(&self->animator, &drawPos, string, 0, string.length, ALIGN_LEFT, 0, 0, 0, true);                                                   \
     drawPos.y += TO_FIXED(OPTION_SPACING);
@@ -39,10 +54,15 @@
 typedef enum {
     MEGAMIMENU_P1CHAR,
     MEGAMIMENU_P2CHAR,
+#if MANIA_USE_PLUS
+    MEGAMIMENU_STOCK1,
+    MEGAMIMENU_STOCK2,
+    MEGAMIMENU_STOCK3,
+#endif
     MEGAMIMENU_SHIELD,
     MEGAMIMENU_SHOES,
-    MEGAMIMENU_HYPERRING,
     MEGAMIMENU_SETRINGS,
+    MEGAMIMENU_HYPERRING,
     MEGAMIMENU_SUPER,
     MEGAMIMENU_INVINCIBILITY,
     MEGAMIMENU_EXIT,
@@ -113,6 +133,9 @@ void MegAmiMenu_Serialize(void);
 void MegAmiMenu_State_Main(void);
 void MegAmiMenu_State_P1Char(void);
 void MegAmiMenu_State_P2Char(void);
+#if MANIA_USE_PLUS
+void MegAmiMenu_State_EncoreStock(void);
+#endif
 void MegAmiMenu_State_Shield(void);
 void MegAmiMenu_State_SetRings(void);
 
