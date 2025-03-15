@@ -12,10 +12,6 @@ void Player_Update(void)
     if (MegAmiMenu->playerInv[self->playerID] && self->blinkTimer >= 0 && self->blinkTimer <= 2)
         self->blinkTimer = 2;
 
-    // Fix a possible crash when changing sidekick
-    if (self->outerbox && !self->innerbox)
-        self->innerbox = Player_GetAltHitbox(self);
-
     Mod.Super(Player->classID, SUPER_UPDATE, NULL);
 }
 

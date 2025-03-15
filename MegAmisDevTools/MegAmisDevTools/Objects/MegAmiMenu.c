@@ -294,7 +294,7 @@ void MegAmiMenu_State_P2Char(void)
             sidekick->playerID  = 1;
 
             ObjectDust *Dust  = Mod.FindObject("Dust");
-            EntityDust *dust  = CREATE_ENTITY(Dust, INT_TO_VOID(1), sidekick->position.x, sidekick->position.y);
+            EntityDust *dust  = CREATE_ENTITY(Dust, INT_TO_VOID(1), player->position.x, player->position.y);
             dust->visible     = false;
             dust->active      = ACTIVE_NEVER;
             dust->isPermanent = true;
@@ -302,28 +302,24 @@ void MegAmiMenu_State_P2Char(void)
 
             ObjectZone *Zone = Mod.FindObject("Zone");
             Player_ChangeCharacter(sidekick, 1 << (self->subSelection - 1));
-            sidekick->velocity.x = 0;
-            sidekick->velocity.y = 0;
-            sidekick->groundVel  = 0;
-            sidekick->position.x = -TO_FIXED(64);
-            sidekick->position.y = -TO_FIXED(64);
-            sidekick->camera     = NULL;
-            sidekick->angle      = 0x80;
-            if (sidekick->characterID == ID_TAILS)
-                sidekick->state = Mod.GetPublicFunction(NULL, "Player_State_FlyToPlayer");
-            else {
-                sidekick->state            = Mod.GetPublicFunction(NULL, "Player_State_ReturnToPlayer");
-                sidekick->abilityValues[0] = ((ScreenInfo->position.y + ScreenInfo->size.y + 16) << 16) - player->position.y;
-                sidekick->drawFX |= FX_SCALE;
-                sidekick->scale.x    = 0x400;
-                sidekick->scale.y    = 0x400;
-                sidekick->velocity.y = CLAMP(sidekick->abilityValues[0] / -12, -0xE0000, -0x68000);
-            }
+            sidekick->velocity.x       = 0;
+            sidekick->velocity.y       = 0;
+            sidekick->groundVel        = 0;
+            sidekick->position.x       = -TO_FIXED(64);
+            sidekick->position.y       = -TO_FIXED(64);
+            sidekick->camera           = NULL;
+            sidekick->angle            = 0x80;
+            sidekick->state            = Mod.GetPublicFunction(NULL, "Player_State_HoldRespawn");
             sidekick->abilityPtrs[0]   = dust;
             sidekick->abilityValues[0] = 0;
             sidekick->nextAirState     = StateMachine_None;
             sidekick->nextGroundState  = StateMachine_None;
             sidekick->stateInput       = Mod.GetPublicFunction(NULL, "Player_Input_P2_Delay");
+            sidekick->position.x       = -0x400000;
+            sidekick->position.y       = -0x400000;
+            sidekick->velocity.x       = 0;
+            sidekick->velocity.y       = 0;
+            sidekick->groundVel        = 0;
             sidekick->tileCollisions   = TILECOLLISION_NONE;
             sidekick->interaction      = false;
             sidekick->drawGroup        = Zone->playerDrawGroup[1];
