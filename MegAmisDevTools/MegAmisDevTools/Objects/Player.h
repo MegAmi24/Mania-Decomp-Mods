@@ -238,9 +238,9 @@ typedef struct {
     EntityCamera *camera;
     Animator animator;
     Animator tailAnimator;
-    int32 maxWalkSpeed;
-    int32 maxJogSpeed;
-    int32 maxRunSpeed;
+    int32 minJogVelocity;
+    int32 minRunVelocity;
+    int32 minDashVelocity;
     int32 unused; // the only used variable in the player struct, I cant find a ref to it anywhere so...
     int32 tailRotation;
     int32 tailDirection;
@@ -274,7 +274,9 @@ typedef struct {
     bool32 groundedStore; // prev frame's onGround value
     bool32 invertGravity;
     bool32 isChibi;
+#if GAME_VERSION != VER_100
     bool32 isTransforming;
+#endif
     int32 superState;
     int32 superRingLossTimer;
     int32 superBlendAmount;
@@ -300,7 +302,9 @@ typedef struct {
     int32 sensorX[5];
     int32 sensorY;
     Vector2 moveLayerPosition;
+#if MANIA_USE_PLUS
     StateMachine(stateInputReplay);
+#endif
     StateMachine(stateInput);
     int32 controllerID;
     int32 controlLock;
@@ -318,7 +322,7 @@ typedef struct {
     Vector2 flyCarrySidekickPos;
     Vector2 flyCarryLeaderPos;
     uint8 deathType;
-    bool32 forceJumpIn;
+    bool32 forceRespawn;
 #if MANIA_USE_PLUS
     bool32 isGhost;
 #endif
