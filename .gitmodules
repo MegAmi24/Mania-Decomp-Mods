@@ -67,3 +67,6 @@
 [submodule "RetrySpecialStage/GameAPI"]
 	path = RetrySpecialStage/GameAPI
 	url = https://github.com/RSDKModding/RSDKv5-GameAPI
+[submodule "PaletteRandomizer/GameAPI"]
+	path = PaletteRandomizer/GameAPI
+	url = https://github.com/RSDKModding/RSDKv5-GameAPI
