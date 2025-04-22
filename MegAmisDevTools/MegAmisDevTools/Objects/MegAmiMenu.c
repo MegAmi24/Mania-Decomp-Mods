@@ -290,29 +290,26 @@ void MegAmiMenu_State_P2Char(void)
                 destroyEntity(sidekick);
 
                 // Handle new player count
-                ObjectShield *Shield         = Mod.FindObject("Shield");
-                EntityShield *shield         = RSDK_GET_ENTITY(RSDK.GetEntitySlot(player) + Player->playerCount, Shield);
-                ObjectImageTrail *ImageTrail = Mod.FindObject("ImageTrail");
-                EntityImageTrail *powerup    = RSDK_GET_ENTITY(2 * Player->playerCount + RSDK.GetEntitySlot(player), ImageTrail);
+                Entity *powerup1 = RSDK_GET_ENTITY_GEN(RSDK.GetEntitySlot(player) + Player->playerCount);
+                Entity *powerup2 = RSDK_GET_ENTITY_GEN(2 * Player->playerCount + RSDK.GetEntitySlot(player));
 #if MANIA_USE_PLUS
                 Player->playerCount = globals->gameMode == MODE_ENCORE ? 2 : RSDK.GetEntityCount(Player->classID, false);
 #else
                 Player->playerCount = RSDK.GetEntityCount(Player->classID, false);
 #endif
-                if (shield->classID)
-                    RSDK.CopyEntity(RSDK_GET_ENTITY_GEN(RSDK.GetEntitySlot(player) + Player->playerCount), shield, true);
-                if (powerup->classID)
-                    RSDK.CopyEntity(RSDK_GET_ENTITY_GEN(2 * Player->playerCount + RSDK.GetEntitySlot(player)), powerup, true);
+                if (powerup1->classID)
+                    RSDK.CopyEntity(RSDK_GET_ENTITY_GEN(RSDK.GetEntitySlot(player) + Player->playerCount), powerup1, true);
+                if (powerup2->classID)
+                    RSDK.CopyEntity(RSDK_GET_ENTITY_GEN(2 * Player->playerCount + RSDK.GetEntitySlot(player)), powerup2, true);
             }
             else
                 Player_ChangeCharacter(sidekick, 1 << (self->subSelection - 1)); // P2 already exists, just change the character
         }
         else if (self->subSelection > 0) {
             // P2 doesn't exist, spawn them
-            ObjectImageTrail *ImageTrail = Mod.FindObject("ImageTrail");
-            EntityImageTrail *powerup    = RSDK_GET_ENTITY(2 * Player->playerCount + RSDK.GetEntitySlot(player), ImageTrail);
-            if (powerup->classID)
-                RSDK.CopyEntity(RSDK_GET_ENTITY_GEN(RSDK.GetEntitySlot(powerup) + 2), powerup, true);
+            Entity *powerup2 = RSDK_GET_ENTITY_GEN(2 * Player->playerCount + RSDK.GetEntitySlot(player));
+            if (powerup2->classID)
+                RSDK.CopyEntity(RSDK_GET_ENTITY_GEN(RSDK.GetEntitySlot(powerup2) + 2), powerup2, true);
 
             if (sidekick->classID) // If this is a powerup
                 RSDK.CopyEntity(RSDK_GET_ENTITY_GEN(RSDK.GetEntitySlot(sidekick) + 1), sidekick, false);
@@ -422,7 +419,9 @@ void MegAmiMenu_State_Shield(void)
         Player_ApplyShield(player);
         if (player->shield == SHIELD_NONE) {
             ObjectShield *Shield = Mod.FindObject("Shield");
-            destroyEntity(RSDK_GET_ENTITY(Player->playerCount + RSDK.GetEntitySlot(player), Shield));
+            Entity *powerup = RSDK_GET_ENTITY_GEN(Player->playerCount + RSDK.GetEntitySlot(player));
+            if (powerup->classID == Shield->classID)
+                destroyEntity(powerup);
         }
         destroyEntity(self);
     }
