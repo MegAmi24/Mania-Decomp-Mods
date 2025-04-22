@@ -7,8 +7,10 @@
 
 #if MANIA_USE_PLUS
 #define API_GetConfirmButtonFlip API.GetConfirmButtonFlip
+#define API_GetNoSave()          API.GetNoSave()
 #else
 #define API_GetConfirmButtonFlip APICallback_GetConfirmButtonFlip
+#define API_GetNoSave()          globals->noSave
 #endif
 
 #define MAINBOX_XPOS   (16)

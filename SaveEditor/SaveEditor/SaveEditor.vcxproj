@@ -173,6 +173,7 @@
   <ItemGroup>
     <ClCompile Include="..\GameAPI\C\GameAPI\Game.c" />
     <ClCompile Include="dllmain.c" />
+    <ClCompile Include="Objects\UIMedallionPanel.c" />
     <ClCompile Include="Objects\UISaveSlot.c" />
   </ItemGroup>
   <ItemGroup>
@@ -180,7 +181,9 @@
     <ClInclude Include="..\GameAPI\C\GameAPI\GameLink.h" />
     <ClInclude Include="..\GameAPI\C\GameAPI\GameObjects.h" />
     <ClInclude Include="..\GameAPI\C\GameAPI\GameVariables.h" />
+    <ClInclude Include="Objects\GameProgress.h" />
     <ClInclude Include="Objects\SaveGame.h" />
+    <ClInclude Include="Objects\UIMedallionPanel.h" />
     <ClInclude Include="Objects\UISaveSlot.h" />
     <ClInclude Include="Objects\Misc.h" />
   </ItemGroup>

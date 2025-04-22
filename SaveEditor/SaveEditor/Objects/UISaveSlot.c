@@ -1,5 +1,6 @@
 #include "GameAPI/Game.h"
 #include "UISaveSlot.h"
+#include "GameProgress.h"
 
 ObjectUISaveSlot *UISaveSlot;
 ModObjectUISaveSlot *Mod_UISaveSlot;
@@ -18,7 +19,7 @@ bool32 UISaveSlot_State_Hook(bool32 skipped)
             return false;
 
         EntityUIControl *control = (EntityUIControl *)self->parent;
-        if (!control || control->targetPos.x != self->position.x || control->position.x != control->targetPos.x)
+        if (!control || control->targetPos.x != self->position.x || control->position.x != control->targetPos.x || control->selectionDisabled)
             return false;
 
         if (ControllerInfo[CONT_P1].keySelect.press || UISaveSlot_CheckTouchRect(0, ScreenInfo->size.y - 32, 32, ScreenInfo->size.y)) {
@@ -553,6 +554,23 @@ void UISaveSlot_InitSaveCB(void)
 
 void UISaveSlot_CloseEditor_CB(void)
 {
+    RSDK_THIS(UISaveSlot);
+
+    // Handle GameProgress Unlocks
+    GetSaveRAMPointer();
+    if (saveRAM->zoneID)
+        for (int32 z = 0; z < saveRAM->zoneID; z++) GameProgress_MarkZoneCompleted(z);
+    for (int8 e = 0; e < 7; e++) {
+        if (GET_BIT(saveRAM->collectedEmeralds, e))
+            GameProgress_GiveEmerald(e);
+    }
+#if MANIA_USE_PLUS
+    if (!self->encoreMode && saveRAM->saveState == SAVEGAME_COMPLETE)
+#else
+    if (saveRAM->saveState == SAVEGAME_COMPLETE)
+#endif
+        GameProgress_GiveEnding(saveRAM->collectedEmeralds == 0b1111111 ? GAMEPROGRESS_ENDING_GOOD : GAMEPROGRESS_ENDING_BAD);
+
     UIWaitSpinner_StartWait();
     Mod_UISaveSlot->state = UISaveSlot_EditState_Wait;
     SaveGame_SaveFile(UISaveSlot_Edit_ExitCB);
@@ -565,6 +583,17 @@ void UISaveSlot_Edit_ExitCB(void)
 #endif
 {
     UIWaitSpinner_FinishWait();
+#if MANIA_USE_PLUS
+    CompetitionMenu_HandleUnlocks();
+    ExtrasMenu_HandleUnlocks();
+    MainMenu_HandleUnlocks();
+    ManiaModeMenu_HandleUnlocks();
+    OptionsMenu_HandleUnlocks();
+    TimeAttackMenu_HandleUnlocks();
+    UISubHeading_HandleUnlocks();
+#else
+    MenuSetup_HandleUnlocks();
+#endif
     Mod_UISaveSlot->state = StateMachine_None;
 }
 

@@ -47,6 +47,7 @@ add_library(SaveEditor SHARED
     ${GAMEAPI}/C/GameAPI/Game.c
     ${MOD_NAME}/dllmain.c
     ${MOD_NAME}/Objects/UISaveSlot.c
+    ${MOD_NAME}/Objects/UIMedallionPanel.c
 )
 
 target_include_directories(SaveEditor PRIVATE

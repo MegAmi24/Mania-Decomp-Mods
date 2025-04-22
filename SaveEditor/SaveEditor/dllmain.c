@@ -1,7 +1,9 @@
 #include "GameAPI/Game.h"
 
 #include "Objects/UISaveSlot.h"
+#include "Objects/UIMedallionPanel.h"
 #include "Objects/SaveGame.h"
+#include "Objects/GameProgress.h"
 #include "Objects/Misc.h"
 
 // Resolve externals
@@ -25,6 +27,23 @@ EntityUIDialog *(*UIDialog_CreateDialogYesNo)(String *text, void (*callbackYes)(
                                               bool32 closeOnSelect_No);
 void (*UIDialog_CloseOnSel_HandleSelection)(EntityUIDialog *dialog, void (*callback)(void));
 void (*UIControl_ClearInputs)(uint8 buttonID);
+ProgressRAM *(*GameProgress_GetProgressRAM)(void);
+void (*GameProgress_ClearBSSSave)(void);
+void (*GameProgress_MarkZoneCompleted)(int32 zoneID);
+void (*GameProgress_GiveEmerald)(int32 emeraldID);
+void (*GameProgress_GiveEnding)(uint8 ending);
+void (*GameProgress_GiveMedal)(uint8 medalID, uint8 type);
+#if MANIA_USE_PLUS
+int32 (*CompetitionMenu_HandleUnlocks)(void);
+void (*ExtrasMenu_HandleUnlocks)(void);
+void (*MainMenu_HandleUnlocks)(void);
+void (*ManiaModeMenu_HandleUnlocks)(void);
+void (*OptionsMenu_HandleUnlocks)(void);
+void (*TimeAttackMenu_HandleUnlocks)(void);
+void (*UISubHeading_HandleUnlocks)(void);
+#else
+void (*MenuSetup_HandleUnlocks)(void);
+#endif
 
 #if RETRO_USE_MOD_LOADER
 DLLExport bool32 LinkModLogic(EngineInfo *info, const char *id);
@@ -51,6 +70,23 @@ void InitModAPI(void)
     UIDialog_CreateDialogYesNo          = Mod.GetPublicFunction(NULL, "UIDialog_CreateDialogYesNo");
     UIDialog_CloseOnSel_HandleSelection = Mod.GetPublicFunction(NULL, "UIDialog_CloseOnSel_HandleSelection");
     UIControl_ClearInputs               = Mod.GetPublicFunction(NULL, "UIControl_ClearInputs");
+    GameProgress_GetProgressRAM         = Mod.GetPublicFunction(NULL, "GameProgress_GetProgressRAM");
+    GameProgress_ClearBSSSave           = Mod.GetPublicFunction(NULL, "GameProgress_ClearBSSSave");
+    GameProgress_MarkZoneCompleted      = Mod.GetPublicFunction(NULL, "GameProgress_MarkZoneCompleted");
+    GameProgress_GiveEmerald            = Mod.GetPublicFunction(NULL, "GameProgress_GiveEmerald");
+    GameProgress_GiveEnding             = Mod.GetPublicFunction(NULL, "GameProgress_GiveEnding");
+    GameProgress_GiveMedal              = Mod.GetPublicFunction(NULL, "GameProgress_GiveMedal");
+#if MANIA_USE_PLUS
+    CompetitionMenu_HandleUnlocks = Mod.GetPublicFunction(NULL, "CompetitionMenu_HandleUnlocks");
+    ExtrasMenu_HandleUnlocks      = Mod.GetPublicFunction(NULL, "ExtrasMenu_HandleUnlocks");
+    MainMenu_HandleUnlocks        = Mod.GetPublicFunction(NULL, "MainMenu_HandleUnlocks");
+    ManiaModeMenu_HandleUnlocks   = Mod.GetPublicFunction(NULL, "ManiaModeMenu_HandleUnlocks");
+    OptionsMenu_HandleUnlocks     = Mod.GetPublicFunction(NULL, "OptionsMenu_HandleUnlocks");
+    TimeAttackMenu_HandleUnlocks  = Mod.GetPublicFunction(NULL, "TimeAttackMenu_HandleUnlocks");
+    UISubHeading_HandleUnlocks    = Mod.GetPublicFunction(NULL, "UISubHeading_HandleUnlocks");
+#else
+    MenuSetup_HandleUnlocks = Mod.GetPublicFunction(NULL, "MenuSetup_HandleUnlocks");
+#endif
 
     // Add Public Functions
     ADD_PUBLIC_FUNC(UISaveSlot_SetupEditor);
@@ -88,6 +124,14 @@ void InitModAPI(void)
     ADD_PUBLIC_FUNC(UISaveSlot_HandleUpDown);
     ADD_PUBLIC_FUNC(UISaveSlot_HandleSetValue);
 
+    ADD_PUBLIC_FUNC(UIMedallionPanel_State_Edit);
+    ADD_PUBLIC_FUNC(UIMedallionPanel_State_Wait);
+
+    ADD_PUBLIC_FUNC(UIMedallionPanel_CloseEditor_CB);
+    ADD_PUBLIC_FUNC(UIMedallionPanel_Edit_ExitCB);
+
+    ADD_PUBLIC_FUNC(UIMedallionPanel_DrawEditor);
+
     // Register State Hooks
     Mod.RegisterStateHook(Mod.GetPublicFunction(NULL, "UISaveSlot_State_ActiveSave"), UISaveSlot_State_Hook, true);
     Mod.RegisterStateHook(Mod.GetPublicFunction(NULL, "UISaveSlot_State_CompletedSave"), UISaveSlot_State_Hook, true);
@@ -95,6 +139,8 @@ void InitModAPI(void)
 
     // Register Modded Objects
     MOD_REGISTER_OBJ_OVERLOAD_MSV(UISaveSlot, Mod_UISaveSlot, NULL, NULL, NULL, NULL, NULL, UISaveSlot_StageLoad, NULL, NULL, NULL);
+    MOD_REGISTER_OBJ_OVERLOAD_MSV(UIMedallionPanel, Mod_UIMedallionPanel, UIMedallionPanel_Update, NULL, UIMedallionPanel_StaticUpdate,
+                                  UIMedallionPanel_Draw, NULL, UIMedallionPanel_StageLoad, NULL, NULL, NULL);
 
     // Register Mod Callbacks
     Mod.AddModCallback(MODCB_ONDRAW, UISaveSlot_ModCB_OnDraw);

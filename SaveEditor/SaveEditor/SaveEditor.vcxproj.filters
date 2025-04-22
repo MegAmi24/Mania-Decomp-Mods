@@ -22,6 +22,9 @@
     <ClCompile Include="Objects\UISaveSlot.c">
       <Filter>Source Files\Objects</Filter>
     </ClCompile>
+    <ClCompile Include="Objects\UIMedallionPanel.c">
+      <Filter>Source Files\Objects</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\GameAPI\C\GameAPI\Game.h">
@@ -43,6 +46,12 @@
       <Filter>Source Files\Objects</Filter>
     </ClInclude>
     <ClInclude Include="Objects\SaveGame.h">
+      <Filter>Source Files\Objects</Filter>
+    </ClInclude>
+    <ClInclude Include="Objects\UIMedallionPanel.h">
+      <Filter>Source Files\Objects</Filter>
+    </ClInclude>
+    <ClInclude Include="Objects\GameProgress.h">
       <Filter>Source Files\Objects</Filter>
     </ClInclude>
   </ItemGroup>
