@@ -14,30 +14,12 @@ void Player_StageLoad(void)
 
     int32 charPalettes[PLAYER_CHARACTER_COUNT];
 
+    Player_GetPalettes(charPalettes);
+
     for (int32 c = 0; c < PLAYER_CHARACTER_COUNT; c++) {
         int32 pal = 0, bank = 0;
 
-        if (config.allowSamePalettes || c == 0) {
-            RandomPalette(pal, bank);
-        }
-        else {
-            charPalettes[c] = -1;
-            while (charPalettes[c] == -1) {
-                int32 newPal = RSDK.Rand(0, PLAYER_PALETTE_COUNT);
-
-                // Check the characters we've set before this to make sure the new color wasn't used already
-                int32 i = 0;
-                for (; i < c; i++) {
-                    if (charPalettes[i] == newPal)
-                        break;
-                }
-
-                // If we've made it to the current character, then this is a new palette
-                if (i == c)
-                    charPalettes[c] = newPal;
-            }
-            SetPalette(charPalettes[c], pal, bank);
-        }
+        Player_SetPalette(charPalettes[c], &pal, &bank);
 
         switch (c) {
             case 0: // Sonic
@@ -151,4 +133,75 @@ void Player_StageLoad(void)
     }
 
     RestorePalettes();
+}
+
+void Player_RandomizePalettes(void)
+{
+    LoadPlayerPalettes();
+
+    int32 charPalettes[PLAYER_CHARACTER_COUNT];
+
+    Player_GetPalettes(charPalettes);
+
+    for (int32 c = 0; c < PLAYER_CHARACTER_COUNT; c++) {
+        int32 pal = 0, bank = 0;
+
+        Player_SetPalette(charPalettes[c], &pal, &bank);
+
+        int32 index;
+        switch (c) {
+            case 0: index = PLAYER_PALETTE_INDEX_SONIC; break;
+            case 1: index = PLAYER_PALETTE_INDEX_TAILS; break;
+            case 2: index = PLAYER_PALETTE_INDEX_KNUX; break;
+#if MANIA_USE_PLUS
+            case 3: index = PLAYER_PALETTE_INDEX_MIGHTY; break;
+            case 4: index = PLAYER_PALETTE_INDEX_RAY; break;
+#endif
+        }
+
+        for (int32 i = 0; i < PLAYER_PRIMARY_COLOR_COUNT; i++) RSDK.SetPaletteEntry(0, index + i, RSDK.GetPaletteEntry(bank, pal + i));
+    }
+
+    RestorePalettes();
+}
+
+void Player_SetPalette(int32 id, int32 *pal, int32 *bank)
+{
+    if (pal && bank) {
+        *pal = id;
+
+        *bank = PLAYER_PALETTE_BANK_START;
+        while (*pal >= 7) {
+            *pal -= 7;
+            if (*bank < PALETTE_BANK_COUNT - 1)
+                *bank += 1;
+        }
+
+        *pal *= (PLAYER_PRIMARY_COLOR_COUNT * 6);
+    }
+}
+
+void Player_GetPalettes(int32 *palTable)
+{
+    for (int32 c = 0; c < PLAYER_CHARACTER_COUNT; c++) {
+        if (config.allowSamePalettes || c == 0 || c >= PLAYER_PALETTE_COUNT)
+            palTable[c] = RSDK.Rand(0, PLAYER_PALETTE_COUNT);
+        else {
+            palTable[c] = -1;
+            while (palTable[c] == -1) {
+                int32 newPal = RSDK.Rand(0, PLAYER_PALETTE_COUNT);
+
+                // Check the characters we've set before this to make sure the new color wasn't used already
+                int32 i = 0;
+                for (; i < c; i++) {
+                    if (palTable[i] == newPal)
+                        break;
+                }
+
+                // If we've made it to the current character, then this is a new palette
+                if (i == c)
+                    palTable[c] = newPal;
+            }
+        }
+    }
 }

@@ -14,11 +14,11 @@
 
 #define PLAYER_PRIMARY_COLOR_COUNT (6)
 
-// The ones you care about
+// The one you care about
 #define PLAYER_PALETTE_COUNT (16)
-#define PLAYER_PALETTE_BANK_COUNT (3)
 
-#define PLAYER_PALETTE_BANK_START (PALETTE_BANK_COUNT - PLAYER_PALETTE_BANK_COUNT)
+#define PLAYER_PALETTE_BANK_COUNT ((PLAYER_PALETTE_COUNT + 6) / 7) // Using a round up division formula (x = (a + (b - 1)) / b)
+#define PLAYER_PALETTE_BANK_START (PLAYER_PALETTE_BANK_COUNT > 7 ? 1 : PALETTE_BANK_COUNT - PLAYER_PALETTE_BANK_COUNT)
 #define PLAYER_CHARACTER_COUNT (MANIA_USE_PLUS ? 5 : 3)
 
 #define LoadPlayerPalettes()                                                                                                                         \
@@ -41,20 +41,6 @@
             RSDK.SetPaletteEntry(PLAYER_PALETTE_BANK_START + b, i, palColors[b][i]);                                                                 \
         }                                                                                                                                            \
     }
-
-#define SetPalette(id, pal, bank)                                                                                                                    \
-    pal = id;                                                                                                                                        \
-                                                                                                                                                     \
-    bank = PLAYER_PALETTE_BANK_START;                                                                                                                \
-    while (pal >= 7) {                                                                                                                               \
-        pal -= 7;                                                                                                                                    \
-        if (bank < PALETTE_BANK_COUNT - 1)                                                                                                           \
-            bank++;                                                                                                                                  \
-    }                                                                                                                                                \
-                                                                                                                                                     \
-    pal *= (PLAYER_PRIMARY_COLOR_COUNT * 6)
-
-#define RandomPalette(pal, bank) SetPalette(RSDK.Rand(0, PLAYER_PALETTE_COUNT), pal, bank)
 
 // Object Class
 #if MANIA_USE_PLUS
@@ -371,5 +357,9 @@ typedef struct {
 extern ObjectPlayer *Player;
 
 void Player_StageLoad(void);
+
+void Player_RandomizePalettes(void);
+void Player_SetPalette(int32 id, int32 *pal, int32 *bank);
+void Player_GetPalettes(int32 *palTable);
 
 #endif //! OBJ_PLAYER_H

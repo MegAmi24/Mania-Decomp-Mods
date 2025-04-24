@@ -63,6 +63,10 @@ void InitModAPI(void)
     Mod.SetSettingsBool("Config:allowSamePalettes", config.allowSamePalettes);
     Mod.SaveSettings();
 
+    ADD_PUBLIC_FUNC(Player_RandomizePalettes);
+    ADD_PUBLIC_FUNC(Player_SetPalette);
+    ADD_PUBLIC_FUNC(Player_GetPalettes);
+
     MOD_REGISTER_OBJ_OVERLOAD(Player, NULL, NULL, NULL, NULL, NULL, Player_StageLoad, NULL, NULL, NULL);
     MOD_REGISTER_OBJ_OVERLOAD(ContinuePlayer, NULL, NULL, NULL, NULL, NULL, ContinuePlayer_StageLoad, NULL, NULL, NULL);
     MOD_REGISTER_OBJ_OVERLOAD(BSS_Player, NULL, NULL, NULL, NULL, NULL, BSS_Player_StageLoad, NULL, NULL, NULL);
