@@ -73,3 +73,6 @@
 [submodule "45DegreeRotation/GameAPI"]
 	path = 45DegreeRotation/GameAPI
 	url = https://github.com/RSDKModding/RSDKv5-GameAPI
+[submodule "OldSuperInput/GameAPI"]
+	path = OldSuperInput/GameAPI
+	url = https://github.com/RSDKModding/RSDKv5-GameAPI
