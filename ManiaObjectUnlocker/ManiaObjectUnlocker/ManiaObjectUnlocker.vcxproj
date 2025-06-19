@@ -1,0 +1,464 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Debug|Win32">
+      <Configuration>Debug</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|Win32">
+      <Configuration>Release</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Debug|x64">
+      <Configuration>Debug</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|x64">
+      <Configuration>Release</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+  </ItemGroup>
+  <PropertyGroup Label="Globals">
+    <VCProjectVersion>16.0</VCProjectVersion>
+    <Keyword>Win32Proj</Keyword>
+    <ProjectGuid>{a7ddf156-9c7e-4867-8641-65dc61f3d1ce}</ProjectGuid>
+    <RootNamespace>ManiaObjectUnlocker</RootNamespace>
+    <WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
+    <ConfigurationType>DynamicLibrary</ConfigurationType>
+    <UseDebugLibraries>true</UseDebugLibraries>
+    <PlatformToolset>v143</PlatformToolset>
+    <CharacterSet>Unicode</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
+    <ConfigurationType>DynamicLibrary</ConfigurationType>
+    <UseDebugLibraries>false</UseDebugLibraries>
+    <PlatformToolset>v143</PlatformToolset>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
+    <CharacterSet>Unicode</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
+    <ConfigurationType>DynamicLibrary</ConfigurationType>
+    <UseDebugLibraries>true</UseDebugLibraries>
+    <PlatformToolset>v143</PlatformToolset>
+    <CharacterSet>Unicode</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
+    <ConfigurationType>DynamicLibrary</ConfigurationType>
+    <UseDebugLibraries>false</UseDebugLibraries>
+    <PlatformToolset>v143</PlatformToolset>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
+    <CharacterSet>Unicode</CharacterSet>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+  <ImportGroup Label="ExtensionSettings">
+  </ImportGroup>
+  <ImportGroup Label="Shared">
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <PropertyGroup Label="UserMacros" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <LinkIncremental>true</LinkIncremental>
+    <OutDir>$(SolutionDir)build\$(Platform)\$(Configuration)\</OutDir>
+    <IntDir>$(SolutionDir)build\$(Platform)\$(Configuration)\Intermediate\</IntDir>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <LinkIncremental>false</LinkIncremental>
+    <OutDir>$(SolutionDir)build\$(Platform)\$(Configuration)\</OutDir>
+    <IntDir>$(SolutionDir)build\$(Platform)\$(Configuration)\Intermediate\</IntDir>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <LinkIncremental>true</LinkIncremental>
+    <OutDir>$(SolutionDir)build\$(Platform)\$(Configuration)\</OutDir>
+    <IntDir>$(SolutionDir)build\$(Platform)\$(Configuration)\Intermediate\</IntDir>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <LinkIncremental>false</LinkIncremental>
+    <OutDir>$(SolutionDir)build\$(Platform)\$(Configuration)\</OutDir>
+    <IntDir>$(SolutionDir)build\$(Platform)\$(Configuration)\Intermediate\</IntDir>
+  </PropertyGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <SDLCheck>true</SDLCheck>
+      <PreprocessorDefinitions>WIN32;_DEBUG;MANIAOBJECTUNLOCKER_EXPORTS;_WINDOWS;_USRDLL;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <ConformanceMode>true</ConformanceMode>
+      <PrecompiledHeader>NotUsing</PrecompiledHeader>
+      <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
+      <AdditionalIncludeDirectories>$(ProjectDir);$(SolutionDir)GameAPI\C\</AdditionalIncludeDirectories>
+    </ClCompile>
+    <Link>
+      <SubSystem>Windows</SubSystem>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <EnableUAC>false</EnableUAC>
+      <AdditionalLibraryDirectories>%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>kernel32.lib;user32.lib;gdi32.lib;winspool.lib;comdlg32.lib;advapi32.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;odbc32.lib;odbccp32.lib;%(AdditionalDependencies)</AdditionalDependencies>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+      <SDLCheck>true</SDLCheck>
+      <PreprocessorDefinitions>WIN32;NDEBUG;MANIAOBJECTUNLOCKER_EXPORTS;_WINDOWS;_USRDLL;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <ConformanceMode>true</ConformanceMode>
+      <PrecompiledHeader>NotUsing</PrecompiledHeader>
+      <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
+      <AdditionalIncludeDirectories>$(ProjectDir);$(SolutionDir)GameAPI\C\</AdditionalIncludeDirectories>
+    </ClCompile>
+    <Link>
+      <SubSystem>Windows</SubSystem>
+      <EnableCOMDATFolding>true</EnableCOMDATFolding>
+      <OptimizeReferences>true</OptimizeReferences>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <EnableUAC>false</EnableUAC>
+      <AdditionalLibraryDirectories>%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>kernel32.lib;user32.lib;gdi32.lib;winspool.lib;comdlg32.lib;advapi32.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;odbc32.lib;odbccp32.lib;%(AdditionalDependencies)</AdditionalDependencies>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <SDLCheck>true</SDLCheck>
+      <PreprocessorDefinitions>_DEBUG;MANIAOBJECTUNLOCKER_EXPORTS;_WINDOWS;_USRDLL;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <ConformanceMode>true</ConformanceMode>
+      <PrecompiledHeader>NotUsing</PrecompiledHeader>
+      <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
+      <AdditionalIncludeDirectories>$(ProjectDir);$(SolutionDir)GameAPI\C\</AdditionalIncludeDirectories>
+    </ClCompile>
+    <Link>
+      <SubSystem>Windows</SubSystem>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <EnableUAC>false</EnableUAC>
+      <AdditionalLibraryDirectories>%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>kernel32.lib;user32.lib;gdi32.lib;winspool.lib;comdlg32.lib;advapi32.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;odbc32.lib;odbccp32.lib;%(AdditionalDependencies)</AdditionalDependencies>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+      <SDLCheck>true</SDLCheck>
+      <PreprocessorDefinitions>NDEBUG;MANIAOBJECTUNLOCKER_EXPORTS;_WINDOWS;_USRDLL;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <ConformanceMode>true</ConformanceMode>
+      <PrecompiledHeader>NotUsing</PrecompiledHeader>
+      <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
+      <AdditionalIncludeDirectories>$(ProjectDir);$(SolutionDir)GameAPI\C\</AdditionalIncludeDirectories>
+    </ClCompile>
+    <Link>
+      <SubSystem>Windows</SubSystem>
+      <EnableCOMDATFolding>true</EnableCOMDATFolding>
+      <OptimizeReferences>true</OptimizeReferences>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <EnableUAC>false</EnableUAC>
+      <AdditionalLibraryDirectories>%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>kernel32.lib;user32.lib;gdi32.lib;winspool.lib;comdlg32.lib;advapi32.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;odbc32.lib;odbccp32.lib;%(AdditionalDependencies)</AdditionalDependencies>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemGroup>
+    <ClCompile Include="..\GameAPI\C\GameAPI\Game.c" />
+    <ClCompile Include="dllmain.c" />
+    <ClCompile Include="Objects\AIZ\AIZTornado.c" />
+    <ClCompile Include="Objects\AIZ\Bloominator.c" />
+    <ClCompile Include="Objects\AIZ\Rhinobot.c" />
+    <ClCompile Include="Objects\AIZ\Sweep.c" />
+    <ClCompile Include="Objects\Common\Button.c" />
+    <ClCompile Include="Objects\Common\Decoration.c" />
+    <ClCompile Include="Objects\Common\ParallaxSprite.c" />
+    <ClCompile Include="Objects\Common\Platform.c" />
+    <ClCompile Include="Objects\Common\Water.c" />
+    <ClCompile Include="Objects\CPZ\Ball.c" />
+    <ClCompile Include="Objects\CPZ\Bubbler.c" />
+    <ClCompile Include="Objects\CPZ\CaterkillerJr.c" />
+    <ClCompile Include="Objects\CPZ\OneWayDoor.c" />
+    <ClCompile Include="Objects\CPZ\SpeedBooster.c" />
+    <ClCompile Include="Objects\CPZ\TubeSpring.c" />
+    <ClCompile Include="Objects\Cutscene\CutsceneHBH.c" />
+    <ClCompile Include="Objects\Cutscene\RubyPortal.c" />
+    <ClCompile Include="Objects\FBZ\Blaster.c" />
+    <ClCompile Include="Objects\FBZ\ElectroMagnet.c" />
+    <ClCompile Include="Objects\FBZ\FlameSpring.c" />
+    <ClCompile Include="Objects\FBZ\HangGlider.c" />
+    <ClCompile Include="Objects\FBZ\HangPoint.c" />
+    <ClCompile Include="Objects\FBZ\MagSpikeBall.c" />
+    <ClCompile Include="Objects\FBZ\Technosqueek.c" />
+    <ClCompile Include="Objects\FBZ\Tuesday.c" />
+    <ClCompile Include="Objects\FBZ\TwistingDoor.c" />
+    <ClCompile Include="Objects\GHZ\Batbrain.c" />
+    <ClCompile Include="Objects\GHZ\Bridge.c" />
+    <ClCompile Include="Objects\GHZ\BuzzBomber.c" />
+    <ClCompile Include="Objects\GHZ\CheckerBall.c" />
+    <ClCompile Include="Objects\GHZ\Chopper.c" />
+    <ClCompile Include="Objects\GHZ\Crabmeat.c" />
+    <ClCompile Include="Objects\GHZ\Fireball.c" />
+    <ClCompile Include="Objects\GHZ\Motobug.c" />
+    <ClCompile Include="Objects\GHZ\Newtron.c" />
+    <ClCompile Include="Objects\GHZ\SpikeLog.c" />
+    <ClCompile Include="Objects\GHZ\Splats.c" />
+    <ClCompile Include="Objects\GHZ\ZipLine.c" />
+    <ClCompile Include="Objects\Global\Spikes.c" />
+    <ClCompile Include="Objects\HCZ\Blastoid.c" />
+    <ClCompile Include="Objects\HCZ\ButtonDoor.c" />
+    <ClCompile Include="Objects\HCZ\Current.c" />
+    <ClCompile Include="Objects\HCZ\DCEvent.c" />
+    <ClCompile Include="Objects\HCZ\DiveEggman.c" />
+    <ClCompile Include="Objects\HCZ\Fan.c" />
+    <ClCompile Include="Objects\HCZ\Jawz.c" />
+    <ClCompile Include="Objects\HCZ\Jellygnite.c" />
+    <ClCompile Include="Objects\HCZ\MegaChopper.c" />
+    <ClCompile Include="Objects\HCZ\Pointdexter.c" />
+    <ClCompile Include="Objects\HCZ\ScrewMobile.c" />
+    <ClCompile Include="Objects\HCZ\TurboSpiker.c" />
+    <ClCompile Include="Objects\LRZ\Drillerdroid.c" />
+    <ClCompile Include="Objects\LRZ\DrillerdroidO.c" />
+    <ClCompile Include="Objects\LRZ\Fireworm.c" />
+    <ClCompile Include="Objects\LRZ\Flamethrower.c" />
+    <ClCompile Include="Objects\LRZ\Iwamodoki.c" />
+    <ClCompile Include="Objects\LRZ\LavaFall.c" />
+    <ClCompile Include="Objects\LRZ\LavaGeyser.c" />
+    <ClCompile Include="Objects\LRZ\LRZFireball.c" />
+    <ClCompile Include="Objects\LRZ\LRZRockPile.c" />
+    <ClCompile Include="Objects\LRZ\OrbitSpike.c" />
+    <ClCompile Include="Objects\LRZ\Rexon.c" />
+    <ClCompile Include="Objects\LRZ\RockDrill.c" />
+    <ClCompile Include="Objects\LRZ\Stalactite.c" />
+    <ClCompile Include="Objects\LRZ\Toxomister.c" />
+    <ClCompile Include="Objects\LRZ\Turbine.c" />
+    <ClCompile Include="Objects\LRZ\WalkerLegs.c" />
+    <ClCompile Include="Objects\MMZ\ConveyorBelt.c" />
+    <ClCompile Include="Objects\MMZ\ConveyorWheel.c" />
+    <ClCompile Include="Objects\MMZ\MatryoshkaBom.c" />
+    <ClCompile Include="Objects\MMZ\MechaBu.c" />
+    <ClCompile Include="Objects\MMZ\PohBee.c" />
+    <ClCompile Include="Objects\MMZ\Scarab.c" />
+    <ClCompile Include="Objects\MSZ\Armadiloid.c" />
+    <ClCompile Include="Objects\MSZ\Bumpalo.c" />
+    <ClCompile Include="Objects\MSZ\Cactula.c" />
+    <ClCompile Include="Objects\MSZ\RollerMKII.c" />
+    <ClCompile Include="Objects\MSZ\RotatingSpikes.c" />
+    <ClCompile Include="Objects\MSZ\SwingRope.c" />
+    <ClCompile Include="Objects\MSZ\Tornado.c" />
+    <ClCompile Include="Objects\OOZ\Aquis.c" />
+    <ClCompile Include="Objects\OOZ\Octus.c" />
+    <ClCompile Include="Objects\OOZ\PullSwitch.c" />
+    <ClCompile Include="Objects\OOZ\PushSpring.c" />
+    <ClCompile Include="Objects\OOZ\Sol.c" />
+    <ClCompile Include="Objects\OOZ\Valve.c" />
+    <ClCompile Include="Objects\PGZ\Acetone.c" />
+    <ClCompile Include="Objects\PGZ\Crate.c" />
+    <ClCompile Include="Objects\PGZ\DoorTrigger.c" />
+    <ClCompile Include="Objects\PGZ\Dragonfly.c" />
+    <ClCompile Include="Objects\PGZ\FrostThrower.c" />
+    <ClCompile Include="Objects\PGZ\Ice.c" />
+    <ClCompile Include="Objects\PGZ\IceBomba.c" />
+    <ClCompile Include="Objects\PGZ\Ink.c" />
+    <ClCompile Include="Objects\PGZ\InkWipe.c" />
+    <ClCompile Include="Objects\PGZ\JuggleSaw.c" />
+    <ClCompile Include="Objects\PGZ\PetalPile.c" />
+    <ClCompile Include="Objects\PGZ\Press.c" />
+    <ClCompile Include="Objects\PGZ\PrintBlock.c" />
+    <ClCompile Include="Objects\PGZ\PSZDoor.c" />
+    <ClCompile Include="Objects\PGZ\SP500.c" />
+    <ClCompile Include="Objects\PGZ\Woodrow.c" />
+    <ClCompile Include="Objects\SBZ\Bomb.c" />
+    <ClCompile Include="Objects\SBZ\Caterkiller.c" />
+    <ClCompile Include="Objects\SBZ\Orbinaut.c" />
+    <ClCompile Include="Objects\SPZ\Canista.c" />
+    <ClCompile Include="Objects\SPZ\CircleBumper.c" />
+    <ClCompile Include="Objects\SPZ\Clapperboard.c" />
+    <ClCompile Include="Objects\SPZ\DirectorChair.c" />
+    <ClCompile Include="Objects\SPZ\FilmReel.c" />
+    <ClCompile Include="Objects\SPZ\LEDPanel.c" />
+    <ClCompile Include="Objects\SPZ\MicDrop.c" />
+    <ClCompile Include="Objects\SPZ\PathInverter.c" />
+    <ClCompile Include="Objects\SPZ\RockemSockem.c" />
+    <ClCompile Include="Objects\SPZ\Shutterbug.c" />
+    <ClCompile Include="Objects\SPZ\Tubinaut.c" />
+    <ClCompile Include="Objects\SSZ\Dango.c" />
+    <ClCompile Include="Objects\SSZ\FlowerPod.c" />
+    <ClCompile Include="Objects\SSZ\Hotaru.c" />
+    <ClCompile Include="Objects\SSZ\HotaruMKII.c" />
+    <ClCompile Include="Objects\SSZ\JunctionWheel.c" />
+    <ClCompile Include="Objects\SSZ\Kabasira.c" />
+    <ClCompile Include="Objects\SSZ\Kanabun.c" />
+    <ClCompile Include="Objects\SSZ\MSHologram.c" />
+    <ClCompile Include="Objects\SSZ\MSOrb.c" />
+    <ClCompile Include="Objects\SSZ\RTeleporter.c" />
+    <ClCompile Include="Objects\SSZ\SparkRail.c" />
+    <ClCompile Include="Objects\SSZ\SSZSpikeBall.c" />
+    <ClCompile Include="Objects\SSZ\YoyoPulley.c" />
+    <ClCompile Include="Objects\TMZ\BallHog.c" />
+    <ClCompile Include="Objects\TMZ\FlasherMKII.c" />
+    <ClCompile Include="Objects\TMZ\GymBar.c" />
+    <ClCompile Include="Objects\TMZ\LaunchSpring.c" />
+    <ClCompile Include="Objects\TMZ\MagnetSphere.c" />
+    <ClCompile Include="Objects\TMZ\SentryBug.c" />
+    <ClCompile Include="Objects\TMZ\TeeterTotter.c" />
+    <ClCompile Include="Objects\TMZ\WallBumper.c" />
+    <ClCompile Include="UnlockCodes.c" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="..\GameAPI\C\GameAPI\Game.h" />
+    <ClInclude Include="..\GameAPI\C\GameAPI\GameLink.h" />
+    <ClInclude Include="..\GameAPI\C\GameAPI\GameObjects.h" />
+    <ClInclude Include="..\GameAPI\C\GameAPI\GameVariables.h" />
+    <ClInclude Include="Objects\AIZ\AIZTornado.h" />
+    <ClInclude Include="Objects\AIZ\Bloominator.h" />
+    <ClInclude Include="Objects\AIZ\Rhinobot.h" />
+    <ClInclude Include="Objects\AIZ\Sweep.h" />
+    <ClInclude Include="Objects\All.h" />
+    <ClInclude Include="Objects\Common\Button.h" />
+    <ClInclude Include="Objects\Common\Decoration.h" />
+    <ClInclude Include="Objects\Common\ParallaxSprite.h" />
+    <ClInclude Include="Objects\Common\Platform.h" />
+    <ClInclude Include="Objects\Common\Water.h" />
+    <ClInclude Include="Objects\CPZ\Ball.h" />
+    <ClInclude Include="Objects\CPZ\Bubbler.h" />
+    <ClInclude Include="Objects\CPZ\CaterkillerJr.h" />
+    <ClInclude Include="Objects\CPZ\OneWayDoor.h" />
+    <ClInclude Include="Objects\CPZ\SpeedBooster.h" />
+    <ClInclude Include="Objects\CPZ\TubeSpring.h" />
+    <ClInclude Include="Objects\Cutscene\CutsceneHBH.h" />
+    <ClInclude Include="Objects\Cutscene\RubyPortal.h" />
+    <ClInclude Include="Objects\FBZ\Blaster.h" />
+    <ClInclude Include="Objects\FBZ\ElectroMagnet.h" />
+    <ClInclude Include="Objects\FBZ\FlameSpring.h" />
+    <ClInclude Include="Objects\FBZ\HangGlider.h" />
+    <ClInclude Include="Objects\FBZ\HangPoint.h" />
+    <ClInclude Include="Objects\FBZ\MagSpikeBall.h" />
+    <ClInclude Include="Objects\FBZ\Technosqueek.h" />
+    <ClInclude Include="Objects\FBZ\Tuesday.h" />
+    <ClInclude Include="Objects\FBZ\TwistingDoor.h" />
+    <ClInclude Include="Objects\GHZ\Batbrain.h" />
+    <ClInclude Include="Objects\GHZ\Bridge.h" />
+    <ClInclude Include="Objects\GHZ\BuzzBomber.h" />
+    <ClInclude Include="Objects\GHZ\CheckerBall.h" />
+    <ClInclude Include="Objects\GHZ\Chopper.h" />
+    <ClInclude Include="Objects\GHZ\Crabmeat.h" />
+    <ClInclude Include="Objects\GHZ\Fireball.h" />
+    <ClInclude Include="Objects\GHZ\Motobug.h" />
+    <ClInclude Include="Objects\GHZ\Newtron.h" />
+    <ClInclude Include="Objects\GHZ\SpikeLog.h" />
+    <ClInclude Include="Objects\GHZ\Splats.h" />
+    <ClInclude Include="Objects\GHZ\ZipLine.h" />
+    <ClInclude Include="Objects\Global\Spikes.h" />
+    <ClInclude Include="Objects\HCZ\Blastoid.h" />
+    <ClInclude Include="Objects\HCZ\ButtonDoor.h" />
+    <ClInclude Include="Objects\HCZ\Current.h" />
+    <ClInclude Include="Objects\HCZ\DCEvent.h" />
+    <ClInclude Include="Objects\HCZ\DiveEggman.h" />
+    <ClInclude Include="Objects\HCZ\Fan.h" />
+    <ClInclude Include="Objects\HCZ\Jawz.h" />
+    <ClInclude Include="Objects\HCZ\Jellygnite.h" />
+    <ClInclude Include="Objects\HCZ\MegaChopper.h" />
+    <ClInclude Include="Objects\HCZ\Pointdexter.h" />
+    <ClInclude Include="Objects\HCZ\ScrewMobile.h" />
+    <ClInclude Include="Objects\HCZ\TurboSpiker.h" />
+    <ClInclude Include="Objects\LRZ\Drillerdroid.h" />
+    <ClInclude Include="Objects\LRZ\DrillerdroidO.h" />
+    <ClInclude Include="Objects\LRZ\Fireworm.h" />
+    <ClInclude Include="Objects\LRZ\Flamethrower.h" />
+    <ClInclude Include="Objects\LRZ\Iwamodoki.h" />
+    <ClInclude Include="Objects\LRZ\LavaFall.h" />
+    <ClInclude Include="Objects\LRZ\LavaGeyser.h" />
+    <ClInclude Include="Objects\LRZ\LRZFireball.h" />
+    <ClInclude Include="Objects\LRZ\LRZRockPile.h" />
+    <ClInclude Include="Objects\LRZ\OrbitSpike.h" />
+    <ClInclude Include="Objects\LRZ\Rexon.h" />
+    <ClInclude Include="Objects\LRZ\RockDrill.h" />
+    <ClInclude Include="Objects\LRZ\Stalactite.h" />
+    <ClInclude Include="Objects\LRZ\Toxomister.h" />
+    <ClInclude Include="Objects\LRZ\Turbine.h" />
+    <ClInclude Include="Objects\LRZ\WalkerLegs.h" />
+    <ClInclude Include="Objects\MMZ\ConveyorBelt.h" />
+    <ClInclude Include="Objects\MMZ\ConveyorWheel.h" />
+    <ClInclude Include="Objects\MMZ\MatryoshkaBom.h" />
+    <ClInclude Include="Objects\MMZ\MechaBu.h" />
+    <ClInclude Include="Objects\MMZ\PohBee.h" />
+    <ClInclude Include="Objects\MMZ\Scarab.h" />
+    <ClInclude Include="Objects\MSZ\Armadiloid.h" />
+    <ClInclude Include="Objects\MSZ\Bumpalo.h" />
+    <ClInclude Include="Objects\MSZ\Cactula.h" />
+    <ClInclude Include="Objects\MSZ\RollerMKII.h" />
+    <ClInclude Include="Objects\MSZ\RotatingSpikes.h" />
+    <ClInclude Include="Objects\MSZ\SwingRope.h" />
+    <ClInclude Include="Objects\MSZ\Tornado.h" />
+    <ClInclude Include="Objects\OOZ\Aquis.h" />
+    <ClInclude Include="Objects\OOZ\Octus.h" />
+    <ClInclude Include="Objects\OOZ\PullSwitch.h" />
+    <ClInclude Include="Objects\OOZ\PushSpring.h" />
+    <ClInclude Include="Objects\OOZ\Sol.h" />
+    <ClInclude Include="Objects\OOZ\Valve.h" />
+    <ClInclude Include="Objects\PGZ\Acetone.h" />
+    <ClInclude Include="Objects\PGZ\Crate.h" />
+    <ClInclude Include="Objects\PGZ\DoorTrigger.h" />
+    <ClInclude Include="Objects\PGZ\Dragonfly.h" />
+    <ClInclude Include="Objects\PGZ\FrostThrower.h" />
+    <ClInclude Include="Objects\PGZ\Ice.h" />
+    <ClInclude Include="Objects\PGZ\IceBomba.h" />
+    <ClInclude Include="Objects\PGZ\Ink.h" />
+    <ClInclude Include="Objects\PGZ\InkWipe.h" />
+    <ClInclude Include="Objects\PGZ\JuggleSaw.h" />
+    <ClInclude Include="Objects\PGZ\PetalPile.h" />
+    <ClInclude Include="Objects\PGZ\Press.h" />
+    <ClInclude Include="Objects\PGZ\PrintBlock.h" />
+    <ClInclude Include="Objects\PGZ\PSZDoor.h" />
+    <ClInclude Include="Objects\PGZ\SP500.h" />
+    <ClInclude Include="Objects\PGZ\Woodrow.h" />
+    <ClInclude Include="Objects\SBZ\Bomb.h" />
+    <ClInclude Include="Objects\SBZ\Caterkiller.h" />
+    <ClInclude Include="Objects\SBZ\Orbinaut.h" />
+    <ClInclude Include="Objects\SPZ\Canista.h" />
+    <ClInclude Include="Objects\SPZ\CircleBumper.h" />
+    <ClInclude Include="Objects\SPZ\Clapperboard.h" />
+    <ClInclude Include="Objects\SPZ\DirectorChair.h" />
+    <ClInclude Include="Objects\SPZ\FilmReel.h" />
+    <ClInclude Include="Objects\SPZ\LEDPanel.h" />
+    <ClInclude Include="Objects\SPZ\MicDrop.h" />
+    <ClInclude Include="Objects\SPZ\PathInverter.h" />
+    <ClInclude Include="Objects\SPZ\RockemSockem.h" />
+    <ClInclude Include="Objects\SPZ\Shutterbug.h" />
+    <ClInclude Include="Objects\SPZ\Tubinaut.h" />
+    <ClInclude Include="Objects\SSZ\Dango.h" />
+    <ClInclude Include="Objects\SSZ\FlowerPod.h" />
+    <ClInclude Include="Objects\SSZ\Hotaru.h" />
+    <ClInclude Include="Objects\SSZ\HotaruMKII.h" />
+    <ClInclude Include="Objects\SSZ\JunctionWheel.h" />
+    <ClInclude Include="Objects\SSZ\Kabasira.h" />
+    <ClInclude Include="Objects\SSZ\Kanabun.h" />
+    <ClInclude Include="Objects\SSZ\MSHologram.h" />
+    <ClInclude Include="Objects\SSZ\MSOrb.h" />
+    <ClInclude Include="Objects\SSZ\RTeleporter.h" />
+    <ClInclude Include="Objects\SSZ\SparkRail.h" />
+    <ClInclude Include="Objects\SSZ\SSZSpikeBall.h" />
+    <ClInclude Include="Objects\SSZ\YoyoPulley.h" />
+    <ClInclude Include="Objects\TMZ\BallHog.h" />
+    <ClInclude Include="Objects\TMZ\FlasherMKII.h" />
+    <ClInclude Include="Objects\TMZ\GymBar.h" />
+    <ClInclude Include="Objects\TMZ\LaunchSpring.h" />
+    <ClInclude Include="Objects\TMZ\MagnetSphere.h" />
+    <ClInclude Include="Objects\TMZ\SentryBug.h" />
+    <ClInclude Include="Objects\TMZ\TeeterTotter.h" />
+    <ClInclude Include="Objects\TMZ\WallBumper.h" />
+    <ClInclude Include="Overloads.h" />
+    <ClInclude Include="UnlockCodes.h" />
+  </ItemGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+  <ImportGroup Label="ExtensionTargets">
+  </ImportGroup>
+</Project>
