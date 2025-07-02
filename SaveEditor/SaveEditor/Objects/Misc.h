@@ -11,6 +11,19 @@
 
 #define UIDIALOG_OPTION_COUNT (3)
 
+#if MANIA_USE_PLUS
+#define Menu_HandleUnlocks                                                                                                                           \
+    CompetitionMenu_HandleUnlocks();                                                                                                                 \
+    ExtrasMenu_HandleUnlocks();                                                                                                                      \
+    MainMenu_HandleUnlocks();                                                                                                                        \
+    ManiaModeMenu_HandleUnlocks();                                                                                                                   \
+    OptionsMenu_HandleUnlocks();                                                                                                                     \
+    TimeAttackMenu_HandleUnlocks();                                                                                                                  \
+    UISubHeading_HandleUnlocks
+#else
+#define Menu_HandleUnlocks MenuSetup_HandleUnlocks
+#endif
+
 typedef struct {
     RSDK_OBJECT
     bool32 isProcessingInput;

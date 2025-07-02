@@ -583,17 +583,7 @@ void UISaveSlot_Edit_ExitCB(void)
 #endif
 {
     UIWaitSpinner_FinishWait();
-#if MANIA_USE_PLUS
-    CompetitionMenu_HandleUnlocks();
-    ExtrasMenu_HandleUnlocks();
-    MainMenu_HandleUnlocks();
-    ManiaModeMenu_HandleUnlocks();
-    OptionsMenu_HandleUnlocks();
-    TimeAttackMenu_HandleUnlocks();
-    UISubHeading_HandleUnlocks();
-#else
-    MenuSetup_HandleUnlocks();
-#endif
+    Menu_HandleUnlocks();
     Mod_UISaveSlot->state = StateMachine_None;
 }
 

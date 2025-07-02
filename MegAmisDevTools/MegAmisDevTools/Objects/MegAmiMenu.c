@@ -284,7 +284,7 @@ void MegAmiMenu_State_P2Char(void)
     if (confirmPress) {
         EntityPlayer *sidekick = RSDK_GET_ENTITY(RSDK.GetEntitySlot(player) + 1, Player);
         if (sidekick->classID == Player->classID) {
-            if (self->subSelection == 0) {
+            if (self->subSelection == CHARACTER_NONE) {
                 // Get rid of P2
                 Player_ChangeCharacter(sidekick, ID_NONE);
                 destroyEntity(sidekick);
@@ -305,7 +305,7 @@ void MegAmiMenu_State_P2Char(void)
             else
                 Player_ChangeCharacter(sidekick, 1 << (self->subSelection - 1)); // P2 already exists, just change the character
         }
-        else if (self->subSelection > 0) {
+        else if (self->subSelection != CHARACTER_NONE) {
             // P2 doesn't exist, spawn them
             Entity *powerup2 = RSDK_GET_ENTITY_GEN(2 * Player->playerCount + RSDK.GetEntitySlot(player));
             if (powerup2->classID)
