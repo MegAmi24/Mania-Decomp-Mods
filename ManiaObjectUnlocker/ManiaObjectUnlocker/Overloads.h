@@ -1,3 +1,8 @@
+#ifndef OVERLOADS_H
+#define OVERLOADS_H
+
+// This file is auto-generated, do not edit it
+
 #include "GameAPI/Game.h"
 #include "Objects/All.h"
 
@@ -140,3 +145,5 @@ void RegisterOverloads(void) {
     MOD_REGISTER_OBJ_OVERLOAD(TeeterTotter, NULL, NULL, NULL, NULL, NULL, TeeterTotter_StageLoad, NULL, NULL, NULL);
     MOD_REGISTER_OBJ_OVERLOAD(WallBumper, NULL, NULL, NULL, NULL, NULL, WallBumper_StageLoad, NULL, NULL, NULL);
 }
+
+#endif //! OVERLOADS_H

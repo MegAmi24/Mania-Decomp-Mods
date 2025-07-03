@@ -1,3 +1,5 @@
+// This file is auto-generated, do not edit it
+
 #include "AIZ/AIZTornado.h"
 #include "AIZ/Bloominator.h"
 #include "AIZ/Rhinobot.h"

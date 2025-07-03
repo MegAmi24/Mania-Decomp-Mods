@@ -1,3 +1,6 @@
+#ifndef UNLOCKCODES_H
+#define UNLOCKCODES_H
+
 #include "GameAPI/Game.h"
 
 #define FileIO                                          FILE
@@ -29,3 +32,5 @@ extern int32 unlockedCount;
 void Trim(char *str);
 void InitUnlocks(void);
 bool32 CheckUnlock(const char *unlock);
+
+#endif //! UNLOCKCODES_H

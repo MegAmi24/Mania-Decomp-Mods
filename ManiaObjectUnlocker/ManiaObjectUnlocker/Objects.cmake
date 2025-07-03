@@ -1,3 +1,5 @@
+# This file is auto-generated, do not edit it
+
 set(GENERATED_SOURCES
 	${MOD_NAME}/Objects/AIZ/AIZTornado.c
 	${MOD_NAME}/Objects/AIZ/Bloominator.c

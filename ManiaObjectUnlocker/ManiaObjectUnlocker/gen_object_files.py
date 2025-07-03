@@ -48,16 +48,16 @@ for dir_, _, files in os.walk("Objects"):
 print("Writing Objects.cmake...")
 filescmake = ["\t${MOD_NAME}/Objects/" + f + "\n" for f in filenames if f.endswith(".c")]
 with open("Objects.cmake", "w") as f:
-    f.writelines(["set(GENERATED_SOURCES\n"] + filescmake + [")\n"])
+    f.writelines(["# This file is auto-generated, do not edit it\n\nset(GENERATED_SOURCES\n"] + filescmake + [")\n"])
 
 print("Writing Objects/All.h...")
 filesheader = ['#include "' + f + '"\n' for f in filenames if f.endswith(".h") and not f.endswith("All.h")]
 with open("Objects/All.h", "w") as f:
-    f.writelines(filesheader)
+    f.writelines(["// This file is auto-generated, do not edit it\n\n"] + filesheader)
 
 print("Writing Overloads.h...")
 with open("Overloads.h", "w") as f:
-    f.writelines(['#include "GameAPI/Game.h"\n#include "Objects/All.h"\n\nvoid RegisterOverloads(void) {\n'] + overloads + ["}"])
+    f.writelines(['#ifndef OVERLOADS_H\n#define OVERLOADS_H\n\n// This file is auto-generated, do not edit it\n\n#include "GameAPI/Game.h"\n#include "Objects/All.h"\n\nvoid RegisterOverloads(void) {\n'] + overloads + ["}\n\n#endif //! OVERLOADS_H\n"])
 
 print("Checking unlocks...\n")
 unused = set()
