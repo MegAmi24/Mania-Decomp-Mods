@@ -79,3 +79,6 @@
 [submodule "ManiaObjectUnlocker/GameAPI"]
 	path = ManiaObjectUnlocker/GameAPI
 	url = https://github.com/RSDKModding/RSDKv5-GameAPI
+[submodule "DropDashSDW/GameAPI"]
+	path = DropDashSDW/GameAPI
+	url = https://github.com/RSDKModding/RSDKv5-GameAPI
