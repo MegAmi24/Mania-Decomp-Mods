@@ -46,8 +46,7 @@ endif()
 add_library(DropDashSDW SHARED
     ${GAMEAPI}/C/GameAPI/Game.c
     ${MOD_NAME}/dllmain.c
-    ${MOD_NAME}/Player.c
-    ${MOD_NAME}/Misc.c
+    ${MOD_NAME}/SDashWheel.c
 )
 
 target_include_directories(DropDashSDW PRIVATE
