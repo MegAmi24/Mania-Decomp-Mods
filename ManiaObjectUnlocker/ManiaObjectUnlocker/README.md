@@ -1,5 +1,7 @@
 # Helper Scripts
 
+These are Python scripts that automate some tasks with unlock code implementation as well as check for errors.
+
 ## gen_object_files.py
 
 Running this script will:
