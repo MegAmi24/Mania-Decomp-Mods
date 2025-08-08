@@ -8,20 +8,11 @@
 
 ModConfig config;
 
-// Resolve externals
 #if !MANIA_USE_PLUS
-bool32 (*APICallback_GetConfirmButtonFlip)(void);
+bool32 (*APICallback_GetConfirmButtonFlip)(void) = NULL;
 #endif
-Hitbox *(*Player_GetAltHitbox)(EntityPlayer *player);
-void (*Player_GiveRings)(EntityPlayer *player, int32 amount, bool32 playSfx);
-void (*Player_ChangeCharacter)(EntityPlayer *player, int32 character);
-bool32 (*Player_TryTransform)(EntityPlayer *player, uint8 emeraldMasks);
-void (*Player_ApplyShield)(EntityPlayer *player);
-void (*Player_UpdatePhysicsState)(EntityPlayer *entity);
-StateMachine(Player_State_Death);
-StateMachine(Player_State_Drown);
-void (*Music_PlayJingle)(uint8 trackID);
-int32 (*HUD_CharacterIndexFromID)(int32 characterID);
+void (*Music_PlayJingle)(uint8 trackID) = NULL;
+int32 (*HUD_CharacterIndexFromID)(int32 characterID) = NULL;
 
 #if RETRO_USE_MOD_LOADER
 DLLExport bool32 LinkModLogic(EngineInfo *info, const char *id);

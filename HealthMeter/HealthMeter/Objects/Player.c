@@ -2,6 +2,9 @@
 #include "Player.h"
 #include "../ModConfig.h"
 
+StateMachine(Player_State_Hurt) = NULL;
+StateMachine(Player_State_Death) = NULL;
+
 ObjectPlayer *Player;
 ModObjectPlayer *Mod_Player;
 

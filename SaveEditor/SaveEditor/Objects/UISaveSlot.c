@@ -2,6 +2,8 @@
 #include "UISaveSlot.h"
 #include "GameProgress.h"
 
+void (*UISaveSlot_LoadSaveInfo)(void) = NULL;
+
 ObjectUISaveSlot *UISaveSlot;
 ModObjectUISaveSlot *Mod_UISaveSlot;
 

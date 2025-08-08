@@ -4,6 +4,16 @@
 #include "TitleEggman.h"
 #include "ModConfig.h"
 
+#if MANIA_USE_PLUS
+void (*TitleSetup_CheckCheatCode)(void) = NULL;
+#endif
+StateMachine(TitleSetup_State_WaitForSonic) = NULL;
+StateMachine(TitleSetup_State_SetupLogo) = NULL;
+#if MANIA_USE_PLUS
+StateMachine(TitleSetup_State_SetupPlusLogo) = NULL;
+StateMachine(TitleSetup_State_WaitForEnter) = NULL;
+#endif
+
 ObjectTitleSetup *TitleSetup;
 
 #if MANIA_USE_PLUS

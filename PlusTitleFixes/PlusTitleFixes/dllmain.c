@@ -5,18 +5,8 @@
 
 ModConfig config;
 
-// Resolve externals
-#if MANIA_USE_PLUS
-void (*TitleSetup_CheckCheatCode)(void);
-#endif
-StateMachine(TitleSetup_State_WaitForSonic);
-StateMachine(TitleSetup_State_SetupLogo);
-#if MANIA_USE_PLUS
-StateMachine(TitleSetup_State_SetupPlusLogo);
-StateMachine(TitleSetup_State_WaitForEnter);
-#endif
-void (*TitleLogo_SetupPressStart)(void);
-StateMachine(TitleLogo_State_HandleSetup);
+void (*TitleLogo_SetupPressStart)(void) = NULL;
+StateMachine(TitleLogo_State_HandleSetup) = NULL;
 
 #if RETRO_USE_MOD_LOADER
 DLLExport bool32 LinkModLogic(EngineInfo *info, const char *id);

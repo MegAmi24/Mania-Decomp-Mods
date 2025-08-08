@@ -1,6 +1,10 @@
 #include "GameAPI/Game.h"
 #include "Player.h"
 
+StateMachine(Player_State_Air) = NULL;
+StateMachine(Player_Input_P2_AI) = NULL;
+bool32 (*Player_TryTransform)(EntityPlayer *player, uint8 emeraldMasks) = NULL;
+
 ObjectPlayer *Player;
 
 bool32 Player_OldSuperInput(bool32 skipped)

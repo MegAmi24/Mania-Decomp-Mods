@@ -2,6 +2,10 @@
 #include "Player.h"
 #include "Shield.h"
 
+StateMachine(Player_State_Air) = NULL;
+StateMachine(Player_State_DropDash) = NULL;
+StateMachine(Shield_State_Insta) = NULL;
+
 ObjectPlayer *Player;
 
 void Player_SetRollJumpLock(void)

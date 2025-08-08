@@ -3,6 +3,8 @@
 #include "Misc.h"
 #include "ModConfig.h"
 
+StateMachine(UFO_Setup_State_FinishFadeout) = NULL;
+
 ObjectUFO_Setup *UFO_Setup;
 
 bool32 UFO_Setup_State_FinishFadeout_Hook(bool32 skippedState)

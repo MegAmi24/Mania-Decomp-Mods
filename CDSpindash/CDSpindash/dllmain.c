@@ -2,13 +2,6 @@
 #include "Player.h"
 #include "Misc.h"
 
-// Resolve externals
-bool32 (*Player_CheckCollisionTouch)(EntityPlayer *player, void *e, Hitbox *entityHitbox);
-StateMachine(Player_State_Ground);
-StateMachine(Player_State_Roll);
-StateMachine(Player_State_Spindash);
-StateMachine(Camera_State_FollowY);
-
 #if RETRO_USE_MOD_LOADER
 DLLExport bool32 LinkModLogic(EngineInfo *info, const char *id);
 

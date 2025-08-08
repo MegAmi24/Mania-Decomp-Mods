@@ -2,6 +2,11 @@
 #include "Player.h"
 #include "Misc.h"
 
+void (*Player_ApplyShield)(EntityPlayer *player) = NULL;
+StateMachine(Player_State_Air) = NULL;
+StateMachine(Player_State_BubbleBounce) = NULL;
+StateMachine(Player_JumpAbility_Sonic) = NULL;
+
 ObjectPlayer *Player;
 
 void Player_Update()

@@ -1,8 +1,7 @@
 #include "GameAPI/Game.h"
 #include "Music.h"
 
-void (*Music_SetMusicTrack)(const char *path, uint8 track, uint32 loopPoint);
-bool32 (*Zone_IsZoneLastAct)(void);
+bool32 (*Zone_IsZoneLastAct)(void) = NULL;
 
 #if RETRO_USE_MOD_LOADER
 DLLExport bool32 LinkModLogic(EngineInfo *info, const char *id);

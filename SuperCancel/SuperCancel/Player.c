@@ -1,6 +1,10 @@
 #include "GameAPI/Game.h"
 #include "Player.h"
 
+StateMachine(Player_State_Air) = NULL;
+StateMachine(Player_State_Transform) = NULL;
+StateMachine(Player_Input_P2_AI) = NULL;
+
 ObjectPlayer *Player;
 
 bool32 Player_SuperCancel(bool32 skipped)

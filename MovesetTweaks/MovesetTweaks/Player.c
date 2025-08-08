@@ -1,6 +1,13 @@
 #include "GameAPI/Game.h"
 #include "Player.h"
 
+void (*Player_Action_Jump)(EntityPlayer *entity) = NULL;
+StateMachine(Player_Action_Spindash) = NULL;
+StateMachine(Player_State_Air) = NULL;
+StateMachine(Player_State_FlyCarried) = NULL;
+StateMachine(Player_Input_P2_AI) = NULL;
+StateMachine(Player_Input_P2_Player) = NULL;
+
 bool32 superCancel = false;
 
 ObjectPlayer *Player;

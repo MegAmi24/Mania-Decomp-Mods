@@ -4,25 +4,10 @@
 #include "Misc.h"
 #include "Player.h"
 
-// Resolve externals
-StateMachine(ItemBox_DebugDraw);
-StateMachine(ItemBox_DebugSpawn);
-void (*ItemBox_CheckHit)(void);
-void (*ItemBox_GivePowerup)(void);
-void (*ItemBox_Break)(EntityItemBox *itemBox, EntityPlayer *player);
-bool32 (*ItemBox_HandleFallingCollision)(void);
-bool32 (*ItemBox_HandlePlatformCollision)(void *platform);
-void (*ItemBox_HandleObjectCollisions)(void);
-StateMachine(ItemBox_State_Broken);
-StateMachine(ItemBox_State_Break);
-StateMachine(ItemBox_State_IconFinish);
-StateMachine(ItemBox_State_Idle);
-StateMachine(ItemBox_State_Falling);
-StateMachine(ItemBox_State_Conveyor);
-int32 (*BadnikHelpers_Oscillate)(int32 origin, int32 speed, int32 amplitude);
-Vector2 (*LRZConvItem_HandleLRZConvPhys)(void *e);
-StateMachine(Debris_State_Fall);
-bool32 (*Player_CheckCollisionTouch)(EntityPlayer *player, void *entity, Hitbox *entityHitbox);
+int32 (*BadnikHelpers_Oscillate)(int32 origin, int32 speed, int32 amplitude) = NULL;
+Vector2 (*LRZConvItem_HandleLRZConvPhys)(void *e) = NULL;
+StateMachine(Debris_State_Fall) = NULL;
+bool32 (*Player_CheckCollisionTouch)(EntityPlayer *player, void *entity, Hitbox *entityHitbox) = NULL;
 
 #if RETRO_USE_MOD_LOADER
 #define ADD_PUBLIC_FUNC(func) Mod.AddPublicFunction(#func, (void *)(func))

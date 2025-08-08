@@ -3,6 +3,8 @@
 #include "HUD.h"
 #include "../ModConfig.h"
 
+StateMachine(ItemBox_State_Break) = NULL;
+
 ObjectItemBox *ItemBox;
 
 void ItemBox_StageLoad(void)

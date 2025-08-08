@@ -2,6 +2,15 @@
 #include "Player.h"
 #include "MegAmiMenu.h"
 
+Hitbox *(*Player_GetAltHitbox)(EntityPlayer *player) = NULL;
+void (*Player_GiveRings)(EntityPlayer *player, int32 amount, bool32 playSfx) = NULL;
+void (*Player_ChangeCharacter)(EntityPlayer *player, int32 character) = NULL;
+bool32 (*Player_TryTransform)(EntityPlayer *player, uint8 emeraldMasks) = NULL;
+void (*Player_ApplyShield)(EntityPlayer *player) = NULL;
+void (*Player_UpdatePhysicsState)(EntityPlayer *entity) = NULL;
+StateMachine(Player_State_Death) = NULL;
+StateMachine(Player_State_Drown) = NULL;
+
 ObjectPlayer *Player;
 
 void Player_Update(void)

@@ -2,11 +2,7 @@
 #include "Player.h"
 #include "HUD.h"
 
-// Resolve externals
-StateMachine(Player_State_Air);
-StateMachine(Player_Input_P2_AI);
-bool32 (*Player_TryTransform)(EntityPlayer *player, uint8 emeraldMasks);
-SaveRAM *(*SaveGame_GetSaveRAM)(void);
+SaveRAM *(*SaveGame_GetSaveRAM)(void) = NULL;
 
 #if RETRO_USE_MOD_LOADER
 DLLExport bool32 LinkModLogic(EngineInfo *info, const char *id);
@@ -17,10 +13,10 @@ DLLExport bool32 LinkModLogic(EngineInfo *info, const char *id);
 void InitModAPI(void)
 {
     // Get Public Functions
-    Player_State_Air       = Mod.GetPublicFunction(NULL, "Player_State_Air");
-    Player_Input_P2_AI     = Mod.GetPublicFunction(NULL, "Player_Input_P2_AI");
-    Player_TryTransform    = Mod.GetPublicFunction(NULL, "Player_TryTransform");
-    SaveGame_GetSaveRAM    = Mod.GetPublicFunction(NULL, "SaveGame_GetSaveRAM");
+    Player_State_Air    = Mod.GetPublicFunction(NULL, "Player_State_Air");
+    Player_Input_P2_AI  = Mod.GetPublicFunction(NULL, "Player_Input_P2_AI");
+    Player_TryTransform = Mod.GetPublicFunction(NULL, "Player_TryTransform");
+    SaveGame_GetSaveRAM = Mod.GetPublicFunction(NULL, "SaveGame_GetSaveRAM");
 
     // Add Public Functions
     Mod.RegisterStateHook(Player_State_Air, Player_OldSuperInput, true);

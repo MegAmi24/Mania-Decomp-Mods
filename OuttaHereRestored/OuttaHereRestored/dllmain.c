@@ -4,8 +4,7 @@
 
 ModConfig config;
 
-// Resolve externals
-int32 (*HUD_CharacterIndexFromID)(int32 characterID);
+int32 (*HUD_CharacterIndexFromID)(int32 characterID) = NULL;
 
 #if RETRO_USE_MOD_LOADER
 DLLExport bool32 LinkModLogic(EngineInfo *info, const char *id);

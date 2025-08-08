@@ -5,6 +5,7 @@
 
 ObjectUIUsernamePopup *UIUsernamePopup;
 ObjectUIWaitSpinner *UIWaitSpinner;
+
 ModConfig config;
 
 #if RETRO_USE_MOD_LOADER

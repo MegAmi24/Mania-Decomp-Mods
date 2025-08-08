@@ -3,6 +3,21 @@
 #include "Player.h"
 #include "Misc.h"
 
+StateMachine(ItemBox_DebugDraw) = NULL;
+StateMachine(ItemBox_DebugSpawn) = NULL;
+void (*ItemBox_CheckHit)(void) = NULL;
+void (*ItemBox_GivePowerup)(void) = NULL;
+void (*ItemBox_Break)(EntityItemBox *itemBox, EntityPlayer *player) = NULL;
+bool32 (*ItemBox_HandleFallingCollision)(void) = NULL;
+bool32 (*ItemBox_HandlePlatformCollision)(void *platform) = NULL;
+void (*ItemBox_HandleObjectCollisions)(void) = NULL;
+StateMachine(ItemBox_State_Broken) = NULL;
+StateMachine(ItemBox_State_Break) = NULL;
+StateMachine(ItemBox_State_IconFinish) = NULL;
+StateMachine(ItemBox_State_Idle) = NULL;
+StateMachine(ItemBox_State_Falling) = NULL;
+StateMachine(ItemBox_State_Conveyor) = NULL;
+
 ObjectItemBox *ItemBox;
 ModObjectItemBox *Mod_ItemBox;
 

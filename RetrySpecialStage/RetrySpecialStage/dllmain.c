@@ -5,11 +5,9 @@
 
 ModConfig config;
 
-// Resolve externals
-StateMachine(UFO_Setup_State_FinishFadeout);
-SaveRAM *(*SaveGame_GetSaveRAM)(void);
+SaveRAM *(*SaveGame_GetSaveRAM)(void) = NULL;
 EntityUIDialog *(*UIDialog_CreateDialogYesNo)(String *text, void (*callbackYes)(void), void (*callbackNo)(void), bool32 closeOnSelect_Yes,
-                                              bool32 closeOnSelect_No);
+                                              bool32 closeOnSelect_No) = NULL;
 
 #if RETRO_USE_MOD_LOADER
 DLLExport bool32 LinkModLogic(EngineInfo *info, const char *id);

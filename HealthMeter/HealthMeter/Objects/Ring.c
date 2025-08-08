@@ -1,6 +1,10 @@
 #include "GameAPI/Game.h"
 #include "Ring.h"
 
+StateMachine(Ring_State_Lost) = NULL;
+StateMachine(Ring_State_LostFX) = NULL;
+StateMachine(Ring_State_Big) = NULL;
+
 ObjectRing *Ring;
 
 void Ring_LateUpdate(void)

@@ -4,12 +4,8 @@
 #include "HUD.h"
 #endif
 
-// Resolve externals
-StateMachine(Player_State_Air);
-StateMachine(Player_State_Transform);
-StateMachine(Player_Input_P2_AI);
 #if GAME_VERSION != VER_100
-SaveRAM *(*SaveGame_GetSaveRAM)(void);
+SaveRAM *(*SaveGame_GetSaveRAM)(void) = NULL;
 #endif
 
 #if RETRO_USE_MOD_LOADER

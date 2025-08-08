@@ -1,15 +1,7 @@
 #include "GameAPI/Game.h"
 #include "Player.h"
 
-// Resolve externals
-void (*Player_Action_Jump)(EntityPlayer *entity);
-StateMachine(Player_Action_Spindash);
-StateMachine(Player_State_Air);
-StateMachine(Player_State_FlyCarried);
-StateMachine(Player_Input_P2_AI);
-StateMachine(Player_Input_P2_Player);
-
-SaveRAM *(*SaveGame_GetSaveRAM)(void);
+SaveRAM *(*SaveGame_GetSaveRAM)(void) = NULL;
 
 #if RETRO_USE_MOD_LOADER
 DLLExport bool32 LinkModLogic(EngineInfo *info, const char *id);

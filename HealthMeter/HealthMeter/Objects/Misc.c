@@ -3,6 +3,11 @@
 #include "Player.h"
 #include "../ModConfig.h"
 
+void (*CompSession_DeriveWinner)(int32 playerID, int32 finishType) = NULL;
+Vector2 (*LRZConvItem_HandleLRZConvPhys)(void *e) = NULL;
+StateMachine(Zone_TitleCard_SupressCB) = NULL;
+StateMachine(Zone_State_ReloadScene) = NULL;
+
 ObjectTitleCard *TitleCard;
 ObjectZone *Zone;
 

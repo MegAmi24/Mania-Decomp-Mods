@@ -1,6 +1,12 @@
 #include "GameAPI/Game.h"
 #include "Player.h"
 
+bool32 (*Player_CheckCollisionTouch)(EntityPlayer *player, void *e, Hitbox *entityHitbox) = NULL;
+StateMachine(Player_State_Ground) = NULL;
+StateMachine(Player_State_Roll) = NULL;
+StateMachine(Player_State_Spindash) = NULL;
+StateMachine(Camera_State_FollowY) = NULL;
+
 ObjectPlayer *Player;
 
 void Player_LateUpdate(void)

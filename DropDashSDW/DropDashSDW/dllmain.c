@@ -2,8 +2,7 @@
 #include "Player.h"
 #include "SDashWheel.h"
 
-// Resolve externals
-bool32 (*Player_CheckCollisionBox)(EntityPlayer *player, void *entity, Hitbox *entityHitbox);
+bool32 (*Player_CheckCollisionBox)(EntityPlayer *player, void *entity, Hitbox *entityHitbox) = NULL;
 
 #if RETRO_USE_MOD_LOADER
 DLLExport bool32 LinkModLogic(EngineInfo *info, const char *id);

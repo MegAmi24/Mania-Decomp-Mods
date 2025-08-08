@@ -9,21 +9,6 @@
 
 ModConfig config;
 
-// Resolve externals
-StateMachine(HUD_State_MoveIn);
-StateMachine(HUD_State_MoveOut);
-int32 (*HUD_CharacterIndexFromID)(int32 characterID);
-StateMachine(Player_State_Hurt);
-StateMachine(Player_State_Death);
-StateMachine(ItemBox_State_Break);
-StateMachine(Ring_State_Lost);
-StateMachine(Ring_State_LostFX);
-StateMachine(Ring_State_Big);
-void (*CompSession_DeriveWinner)(int32 playerID, int32 finishType);
-Vector2 (*LRZConvItem_HandleLRZConvPhys)(void *e);
-StateMachine(Zone_TitleCard_SupressCB);
-StateMachine(Zone_State_ReloadScene);
-
 #if RETRO_USE_MOD_LOADER
 DLLExport bool32 LinkModLogic(EngineInfo *info, const char *id);
 #endif

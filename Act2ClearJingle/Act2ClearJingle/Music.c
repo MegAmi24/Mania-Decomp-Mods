@@ -2,6 +2,8 @@
 #include "Music.h"
 #include "ActClear.h"
 
+void (*Music_SetMusicTrack)(const char *path, uint8 track, uint32 loopPoint) = NULL;
+
 ObjectMusic *Music;
 
 void Music_StaticUpdate(void)

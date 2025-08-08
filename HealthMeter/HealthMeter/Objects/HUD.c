@@ -1,6 +1,10 @@
 #include "GameAPI/Game.h"
 #include "HUD.h"
 
+StateMachine(HUD_State_MoveIn) = NULL;
+StateMachine(HUD_State_MoveOut) = NULL;
+int32 (*HUD_CharacterIndexFromID)(int32 characterID) = NULL;
+
 ObjectHUD *HUD;
 ModObjectHUD *Mod_HUD;
 

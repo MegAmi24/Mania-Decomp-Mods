@@ -6,43 +6,41 @@
 #include "Objects/GameProgress.h"
 #include "Objects/Misc.h"
 
-// Resolve externals
 #if !MANIA_USE_PLUS
-bool32 (*APICallback_GetConfirmButtonFlip)(void);
+bool32 (*APICallback_GetConfirmButtonFlip)(void) = NULL;
 #endif
-void (*Localization_GetZoneName)(String *string, uint8 zone);
-void (*UISaveSlot_LoadSaveInfo)(void);
-void (*UIWaitSpinner_StartWait)(void);
-void (*UIWaitSpinner_FinishWait)(void);
+void (*Localization_GetZoneName)(String *string, uint8 zone) = NULL;
+void (*UIWaitSpinner_StartWait)(void) = NULL;
+void (*UIWaitSpinner_FinishWait)(void) = NULL;
 #if MANIA_USE_PLUS
-int32 (*HUD_CharacterIndexFromID)(int32 characterID);
-int32 *(*SaveGame_GetDataPtr)(int32 slot, bool32 encore);
-void (*SaveGame_SaveFile)(void (*callback)(bool32 success));
+int32 (*HUD_CharacterIndexFromID)(int32 characterID) = NULL;
+int32 *(*SaveGame_GetDataPtr)(int32 slot, bool32 encore) = NULL;
+void (*SaveGame_SaveFile)(void (*callback)(bool32 success)) = NULL;
 #else
-int32 *(*SaveGame_GetDataPtr)(int32 slot);
-void (*SaveGame_SaveFile)(void (*callback)(void));
+int32 *(*SaveGame_GetDataPtr)(int32 slot) = NULL;
+void (*SaveGame_SaveFile)(void (*callback)(void)) = NULL;
 #endif
-EntityUIDialog *(*UIDialog_CreateDialogOk)(String *text, void (*callback)(void), bool32 closeOnSelect);
+EntityUIDialog *(*UIDialog_CreateDialogOk)(String *text, void (*callback)(void), bool32 closeOnSelect) = NULL;
 EntityUIDialog *(*UIDialog_CreateDialogYesNo)(String *text, void (*callbackYes)(void), void (*callbackNo)(void), bool32 closeOnSelect_Yes,
-                                              bool32 closeOnSelect_No);
-void (*UIDialog_CloseOnSel_HandleSelection)(EntityUIDialog *dialog, void (*callback)(void));
-void (*UIControl_ClearInputs)(uint8 buttonID);
-ProgressRAM *(*GameProgress_GetProgressRAM)(void);
-void (*GameProgress_ClearBSSSave)(void);
-void (*GameProgress_MarkZoneCompleted)(int32 zoneID);
-void (*GameProgress_GiveEmerald)(int32 emeraldID);
-void (*GameProgress_GiveEnding)(uint8 ending);
-void (*GameProgress_GiveMedal)(uint8 medalID, uint8 type);
+                                              bool32 closeOnSelect_No) = NULL;
+void (*UIDialog_CloseOnSel_HandleSelection)(EntityUIDialog *dialog, void (*callback)(void)) = NULL;
+void (*UIControl_ClearInputs)(uint8 buttonID) = NULL;
+ProgressRAM *(*GameProgress_GetProgressRAM)(void) = NULL;
+void (*GameProgress_ClearBSSSave)(void) = NULL;
+void (*GameProgress_MarkZoneCompleted)(int32 zoneID) = NULL;
+void (*GameProgress_GiveEmerald)(int32 emeraldID) = NULL;
+void (*GameProgress_GiveEnding)(uint8 ending) = NULL;
+void (*GameProgress_GiveMedal)(uint8 medalID, uint8 type) = NULL;
 #if MANIA_USE_PLUS
-int32 (*CompetitionMenu_HandleUnlocks)(void);
-void (*ExtrasMenu_HandleUnlocks)(void);
-void (*MainMenu_HandleUnlocks)(void);
-void (*ManiaModeMenu_HandleUnlocks)(void);
-void (*OptionsMenu_HandleUnlocks)(void);
-void (*TimeAttackMenu_HandleUnlocks)(void);
-void (*UISubHeading_HandleUnlocks)(void);
+int32 (*CompetitionMenu_HandleUnlocks)(void) = NULL;
+void (*ExtrasMenu_HandleUnlocks)(void) = NULL;
+void (*MainMenu_HandleUnlocks)(void) = NULL;
+void (*ManiaModeMenu_HandleUnlocks)(void) = NULL;
+void (*OptionsMenu_HandleUnlocks)(void) = NULL;
+void (*TimeAttackMenu_HandleUnlocks)(void) = NULL;
+void (*UISubHeading_HandleUnlocks)(void) = NULL;
 #else
-void (*MenuSetup_HandleUnlocks)(void);
+void (*MenuSetup_HandleUnlocks)(void) = NULL;
 #endif
 
 #if RETRO_USE_MOD_LOADER
