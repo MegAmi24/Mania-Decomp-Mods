@@ -44,21 +44,21 @@ else()
 endif()
 
 include(${MOD_NAME}/Objects.cmake)
-add_library(ManiaObjectUnlocker SHARED
+add_library(${MOD_NAME} SHARED
     ${GAMEAPI}/C/GameAPI/Game.c
     ${MOD_NAME}/dllmain.c
     ${MOD_NAME}/UnlockCodes.c
     ${GENERATED_SOURCES}
 )
 
-target_include_directories(ManiaObjectUnlocker PRIVATE
+target_include_directories(${MOD_NAME} PRIVATE
     ${MOD_NAME}/
     ${GAMEAPI}/C/
 )
 
-set_target_properties(ManiaObjectUnlocker PROPERTIES OUTPUT_NAME ${OUTPUT_NAME})
+set_target_properties(${MOD_NAME} PROPERTIES OUTPUT_NAME ${OUTPUT_NAME})
 
-target_compile_definitions(ManiaObjectUnlocker PRIVATE
+target_compile_definitions(${MOD_NAME} PRIVATE
     RETRO_REVISION=${RETRO_REVISION}
     RETRO_USE_MOD_LOADER=1
     RETRO_MOD_LOADER_VER=${RETRO_MOD_LOADER_VER}

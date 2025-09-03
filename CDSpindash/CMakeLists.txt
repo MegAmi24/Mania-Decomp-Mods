@@ -43,21 +43,21 @@ else()
   message(FATAL_ERROR "GameAPI not found for ${MOD_NAME}. Did you clone the repository recursively?")
 endif()
 
-add_library(CDSpindash SHARED
+add_library(${MOD_NAME} SHARED
     ${GAMEAPI}/C/GameAPI/Game.c
     ${MOD_NAME}/dllmain.c
     ${MOD_NAME}/Player.c
     ${MOD_NAME}/Misc.c
 )
 
-target_include_directories(CDSpindash PRIVATE
+target_include_directories(${MOD_NAME} PRIVATE
     ${MOD_NAME}/
     ${GAMEAPI}/C/
 )
 
-set_target_properties(CDSpindash PROPERTIES OUTPUT_NAME ${OUTPUT_NAME})
+set_target_properties(${MOD_NAME} PROPERTIES OUTPUT_NAME ${OUTPUT_NAME})
 
-target_compile_definitions(CDSpindash PRIVATE
+target_compile_definitions(${MOD_NAME} PRIVATE
     RETRO_REVISION=${RETRO_REVISION}
     RETRO_USE_MOD_LOADER=1
     RETRO_MOD_LOADER_VER=${RETRO_MOD_LOADER_VER}

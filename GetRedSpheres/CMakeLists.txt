@@ -43,7 +43,7 @@ else()
   message(FATAL_ERROR "GameAPI not found for ${MOD_NAME}. Did you clone the repository recursively?")
 endif()
 
-add_library(GetRedSpheres SHARED
+add_library(${MOD_NAME} SHARED
     ${GAMEAPI}/C/GameAPI/Game.c
     ${MOD_NAME}/dllmain.c
     ${MOD_NAME}/BSS_Message.c
@@ -52,14 +52,14 @@ add_library(GetRedSpheres SHARED
     ${MOD_NAME}/BSS_Collectable.c
 )
 
-target_include_directories(GetRedSpheres PRIVATE
+target_include_directories(${MOD_NAME} PRIVATE
     ${MOD_NAME}/
     ${GAMEAPI}/C/
 )
 
-set_target_properties(GetRedSpheres PROPERTIES OUTPUT_NAME ${OUTPUT_NAME})
+set_target_properties(${MOD_NAME} PROPERTIES OUTPUT_NAME ${OUTPUT_NAME})
 
-target_compile_definitions(GetRedSpheres PRIVATE
+target_compile_definitions(${MOD_NAME} PRIVATE
     RETRO_REVISION=${RETRO_REVISION}
     RETRO_USE_MOD_LOADER=1
     RETRO_MOD_LOADER_VER=${RETRO_MOD_LOADER_VER}
